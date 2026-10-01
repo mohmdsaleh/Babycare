@@ -22,25 +22,36 @@
   html{font-size:17px;-webkit-text-size-adjust:100%;}
   body{margin:0;font-family:"Segoe UI",Tahoma,"Noto Kufi Arabic",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:1rem;line-height:1.6;padding-bottom:40px;}
 
+  /* ═══════════ الترويسة ═══════════ */
   header{position:relative;background:linear-gradient(135deg,#1e6091,#2d8fbf);color:#fff;padding:14px 16px 18px;text-align:center;border-radius:0 0 22px 22px;box-shadow:0 5px 16px rgba(30,96,145,.28);}
   header h1{margin:0;font-size:1.22rem;font-weight:800;letter-spacing:.2px;}
   .header-date{margin-top:5px;font-size:.88rem;font-weight:700;opacity:.95;}
+
   .header-left-tools{
     position:absolute;top:10px;left:10px;
     display:flex;flex-direction:column;gap:5px;
     align-items:stretch;z-index:3;
   }
   .header-left-tools .header-tool-btn{min-width:96px;}
-  .header-btn{position:absolute;top:10px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.45);color:#fff;font-family:inherit;font-size:.92rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;z-index:3;}
-  .header-btn:active{transform:scale(.94);background:rgba(255,255,255,.32);}
-  #fontSizeBtn{left:10px;}
-  #refreshBtn{left:56px;font-size:1.15rem;}
 
-  .header-right-tools{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;align-items:stretch;z-index:3;}
-  .header-tool-btn{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);color:#fff;font-family:inherit;font-size:.72rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;line-height:1;min-width:92px;}
+  .header-right-tools{
+    position:absolute;top:10px;right:10px;
+    display:flex;flex-direction:column;gap:5px;
+    align-items:stretch;z-index:3;
+  }
+  .header-right-tools .header-tool-btn{min-width:96px;}
+
+  .header-tool-btn{
+    padding:6px 12px;border-radius:999px;
+    background:rgba(255,255,255,.2);
+    border:1px solid rgba(255,255,255,.35);
+    color:#fff;font-family:inherit;font-size:.72rem;font-weight:700;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;
+    white-space:nowrap;line-height:1;
+  }
   .header-tool-btn:active{transform:scale(.95);background:rgba(255,255,255,.32);}
 
-  .sync-status{display:flex;align-items:center;gap:5px;font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;white-space:nowrap;}
+  .sync-status{display:flex;align-items:center;gap:5px;font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;white-space:nowrap;justify-content:center;}
   .sync-status .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;}
   .sync-status.saving .dot{background:#fbbf24;}
   .sync-status.error .dot{background:#ef4444;}
@@ -48,6 +59,7 @@
 
   main{max-width:720px;margin:0 auto;padding:0 12px;}
 
+  /* ═══════════ الإحصائيات ═══════════ */
   .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 12px;}
   .stat-box{background:var(--card);border-radius:var(--radius);padding:11px 10px;text-align:center;box-shadow:var(--shadow);border-top:3px solid var(--primary);}
   .stat-box.next{border-top-color:var(--success);}
@@ -56,13 +68,21 @@
   .stat-box.next .stat-num{color:var(--success);}
   .stat-lbl{font-size:.7rem;color:var(--text-soft);font-weight:700;margin-top:2px;line-height:1.3;}
 
+  /* ═══════════ مفتاح العرض ═══════════ */
   .view-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#e2e8f0;padding:5px;border-radius:14px;margin-bottom:14px;}
   .view-toggle button{padding:10px 8px;border:none;border-radius:10px;background:transparent;color:var(--text-muted);font-family:inherit;font-size:.9rem;font-weight:800;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:5px;}
   .view-toggle button.active{background:var(--card);color:var(--primary);box-shadow:0 2px 6px rgba(15,23,42,.1);}
   .view-toggle button:active{transform:scale(.98);}
 
+  /* ═══════════ عرض الدفعات ═══════════ */
   .payments-view{padding-bottom:6px;}
-  .payments-head{display:grid;grid-template-columns:1.4fr 1fr 0.9fr 1.4fr 32px;gap:6px;align-items:center;padding:10px 12px;background:var(--card);border-radius:12px;box-shadow:var(--shadow-sm);margin-bottom:14px;font-size:.7rem;font-weight:800;color:var(--text-muted);text-align:center;letter-spacing:.2px;}
+  .payments-head{
+    display:grid;grid-template-columns:1.4fr 1fr 0.9fr 1.4fr 32px;gap:6px;
+    align-items:center;padding:10px 12px;background:var(--card);
+    border-radius:12px;box-shadow:var(--shadow-sm);margin-bottom:14px;
+    font-size:.7rem;font-weight:800;color:var(--text-muted);
+    text-align:center;letter-spacing:.2px;
+  }
   .payments-head > div:first-child{text-align:right;}
 
   .month-wrap{margin-bottom:24px;}
@@ -70,7 +90,11 @@
   .month-block{border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);background:var(--card);}
   .month-title{background:#eff6ff;color:#1e6091;padding:7px 14px;font-size:.74rem;font-weight:800;border-bottom:1px solid #dbeafe;letter-spacing:.2px;}
 
-  .payment-row{display:grid;grid-template-columns:1.4fr 1fr 0.9fr 1.4fr 32px;gap:6px;align-items:center;padding:10px 12px;background:var(--card);border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .12s;}
+  .payment-row{
+    display:grid;grid-template-columns:1.4fr 1fr 0.9fr 1.4fr 32px;gap:6px;
+    align-items:center;padding:10px 12px;background:var(--card);
+    border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .12s;
+  }
   .payment-row:last-child{border-bottom:none;}
   .payment-row:active{background:#f8fafc;}
   .payment-row.paid{background:#f0fdf4;}
@@ -94,23 +118,27 @@
 
   .month-total{display:flex;justify-content:flex-end;padding:8px 14px 0;font-size:.74rem;font-weight:700;color:var(--text-muted);background:transparent;font-variant-numeric:tabular-nums;}
 
+  /* ═══════════ فلتر الوحدات ═══════════ */
   .details-filter-wrap{background:var(--card);border-radius:12px;padding:10px 12px;margin-bottom:12px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:8px;}
   .filter-label{font-size:.82rem;font-weight:800;color:#334155;white-space:nowrap;flex-shrink:0;}
   .filter-select{flex:1;min-width:0;padding:8px 32px 8px 12px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:.88rem;font-weight:700;background:#f8fafc;color:#0f172a;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center;}
   .filter-select:focus{outline:none;border-color:var(--primary-light);}
 
+  /* ═══════════ حالات فارغة ═══════════ */
   .empty-state{text-align:center;color:var(--text-muted);padding:50px 20px;font-size:1rem;line-height:2;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);}
   .empty-state .icon{font-size:2.6rem;margin-bottom:10px;}
   .empty-state .title{font-weight:800;color:var(--text);font-size:1.05rem;}
   .empty-state .desc{font-size:.88rem;margin-top:6px;}
   .empty-state .empty-btn{margin-top:16px;padding:11px 20px;border:none;border-radius:12px;background:linear-gradient(135deg,#1e6091,#2d8fbf);color:#fff;font-family:inherit;font-size:.92rem;font-weight:800;cursor:pointer;box-shadow:0 3px 9px rgba(30,96,145,.28);}
 
+  /* ═══════════ النوافذ المنبثقة ═══════════ */
   .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:14px;z-index:1500;opacity:0;pointer-events:none;transition:opacity .22s;}
   .modal-overlay.show{opacity:1;pointer-events:auto;}
   .modal-card{background:var(--card);border-radius:22px;padding:22px 18px 18px;max-width:440px;width:100%;box-shadow:var(--shadow-lg);transform:scale(.9);transition:transform .22s;max-height:92vh;overflow-y:auto;}
   .modal-overlay.show .modal-card{transform:scale(1);}
   .modal-title{margin:0 0 18px;font-size:1.12rem;font-weight:800;color:var(--text);text-align:center;}
 
+  /* ═══════════ نموذج ═══════════ */
   .form-field{margin-bottom:14px;}
   .form-field label{display:block;font-weight:700;margin-bottom:6px;font-size:.9rem;color:#334155;}
   .form-field input[type=text]{width:100%;padding:12px 14px;font-size:1rem;font-family:inherit;border:2px solid var(--border);border-radius:12px;background:#f8fafc;color:var(--text);transition:border-color .15s, background .15s, box-shadow .15s;}
@@ -121,6 +149,8 @@
   .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
   .method-grid button{padding:11px 6px;border:2px solid var(--border);background:#f8fafc;color:var(--text-muted);border-radius:12px;font-family:inherit;font-size:.86rem;font-weight:800;cursor:pointer;transition:.15s;}
   .method-grid button.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 3px 8px rgba(30,96,145,.28);}
+  .method-grid button:active{transform:scale(.97);}
+  .method-grid .custom-method-btn{grid-column:1 / -1;}
 
   .date-button{width:100%;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f8fafc;border:2px solid var(--border);border-radius:12px;font-family:inherit;font-size:1rem;font-weight:800;color:var(--text);cursor:pointer;text-align:right;}
 
@@ -130,6 +160,7 @@
   .btn-ghost{width:100%;padding:11px;font-size:.92rem;font-weight:700;font-family:inherit;background:#f1f5f9;color:var(--text-muted);border:none;border-radius:12px;cursor:pointer;}
   .btn-danger{width:100%;padding:13px;font-size:1rem;font-weight:800;font-family:inherit;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:none;border-radius:13px;cursor:pointer;box-shadow:0 4px 12px rgba(220,38,38,.28);}
 
+  /* ═══════════ الوحدات ═══════════ */
   .units-list{list-style:none;margin:0 0 14px;padding:0;}
   .unit-card{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
   .unit-card-info{flex:1;min-width:0;}
@@ -143,6 +174,7 @@
   .unit-card-actions .del-btn{background:#fef2f2;color:#dc2626;}
   .units-empty{text-align:center;color:var(--text-soft);padding:24px 16px;font-size:.9rem;font-weight:700;background:#f8fafc;border-radius:12px;margin-bottom:14px;}
 
+  /* ═══════════ تفاصيل الوحدة ═══════════ */
   .detail-unit-name{margin:0;text-align:center;font-size:1.25rem;font-weight:800;color:var(--text);letter-spacing:.2px;}
   .detail-unit-type{text-align:center;font-size:.8rem;font-weight:700;color:var(--text-soft);margin:2px 0 16px;}
   .detail-grid{background:#f8fafc;border:1px solid var(--border);border-radius:14px;padding:4px 14px;margin-bottom:14px;}
@@ -169,6 +201,7 @@
   .hist-del-btn{width:28px;height:28px;border-radius:50%;border:none;background:#fef2f2;color:#dc2626;font-size:1rem;font-weight:900;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1;padding:0;}
   .hist-empty{text-align:center;color:var(--text-soft);padding:18px;font-size:.85rem;font-weight:700;background:#f8fafc;border-radius:12px;}
 
+  /* ═══════════ تأكيدات ═══════════ */
   .pay-icon,.delete-icon{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 14px;}
   .pay-icon{background:linear-gradient(135deg,#d1fae5,#a7f3d0);box-shadow:0 6px 18px rgba(16,185,129,.22);}
   .delete-icon{background:linear-gradient(135deg,#fee2e2,#fecaca);box-shadow:0 6px 18px rgba(220,38,38,.18);}
@@ -189,6 +222,7 @@
   .delete-text strong{color:var(--danger);font-size:1.02rem;}
   .delete-warning{background:#fef5f5;border:1px solid #fecaca;border-radius:12px;padding:12px;margin-bottom:16px;font-size:.84rem;font-weight:700;color:#b91c1c;text-align:center;line-height:1.6;}
 
+  /* ═══════════ السجل ═══════════ */
   .log-list{list-style:none;margin:0 0 16px;padding:0;background:#f8fafc;border-radius:12px;overflow:hidden;}
   .log-item{display:flex;gap:10px;padding:11px 12px;border-bottom:1px solid #eaf2ef;align-items:flex-start;}
   .log-item:last-child{border-bottom:none;}
@@ -198,6 +232,7 @@
   .log-time{font-size:.68rem;color:var(--text-soft);margin-top:3px;font-weight:600;direction:ltr;text-align:right;}
   .log-empty{text-align:center;color:var(--text-soft);padding:16px;font-size:.82rem;font-weight:600;background:#f8fafc;border-radius:12px;margin-bottom:16px;}
 
+  /* ═══════════ منتقي التاريخ ═══════════ */
   .picker-card{background:#fff;border-radius:22px;padding:16px 14px;max-width:390px;width:100%;box-shadow:var(--shadow-lg);transform:scale(.9);transition:transform .22s;max-height:94vh;overflow-y:auto;}
   .modal-overlay.show .picker-card{transform:scale(1);}
   .picker-title{margin:0 0 12px;text-align:center;font-size:1.02rem;font-weight:800;color:var(--text);}
@@ -220,6 +255,7 @@
   .day-grid button.selected{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 7px rgba(30,96,145,.28);}
   .day-grid button.today.selected{background:var(--primary);color:#fff;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.35);}
 
+  /* ═══════════ حجم الخط ═══════════ */
   .font-modal{max-width:340px;}
   .font-preview{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;font-size:1rem;color:#334155;font-weight:700;margin-bottom:16px;min-height:64px;display:flex;align-items:center;justify-content:center;line-height:1.5;}
   .font-controls{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
@@ -227,8 +263,11 @@
   .font-step:disabled{opacity:.3;cursor:not-allowed;transform:none;}
   .font-level{flex:1;text-align:center;font-weight:800;color:var(--text);font-size:1.02rem;}
 
+  /* ═══════════ التوست ═══════════ */
   .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(30px);background:#0f172a;color:#fff;padding:12px 20px;border-radius:13px;font-size:.9rem;font-weight:700;opacity:0;pointer-events:none;transition:.28s;z-index:3000;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(15,23,42,.4);}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  .hidden{display:none !important;}
 
   @media (max-width: 380px){
     .payments-head,.payment-row{grid-template-columns:1.3fr 0.95fr 0.85fr 1.3fr 30px;gap:4px;padding:9px 8px;}
@@ -317,7 +356,12 @@
           <button type="button" data-method="quarterly" class="active">ربع سنوي</button>
           <button type="button" data-method="semi">نصف سنوي</button>
           <button type="button" data-method="annual">سنوي</button>
+          <button type="button" data-method="custom" class="custom-method-btn">مخصص (كل عدد من الأشهر)</button>
         </div>
+      </div>
+      <div class="form-field hidden" id="customMonthsField">
+        <label for="customMonthsInput">عدد الأشهر بين كل دفعة</label>
+        <input type="text" id="customMonthsInput" placeholder="مثال: 4" inputmode="numeric" autocomplete="off">
       </div>
       <div class="form-field">
         <label>تاريخ أول استحقاق</label>
@@ -540,7 +584,6 @@
     if(typeof d === 'string') d = fromISO(d);
     return AR_DAYS_SHORT[d.getDay()] + ' ' + formatDate(d);
   }
-  /* ✅ إصلاح: تقريب الأرقام وإزالة الكسور */
   function formatMoney(n){
     const v = Number(n);
     if(isNaN(v)) return '0';
@@ -598,6 +641,7 @@
   let pendingDeleteUnitId = null;
   let currentDetailUnitId = null;
   let selectedMethod = 'quarterly';
+  let selectedCustomMonths = 4;
   let selectedStartDate = null;
   let pickerYear, pickerMonth, pickerDay;
   let detailsFilterUnitId = null;
@@ -652,6 +696,8 @@
   const unitNameInput = document.getElementById('unitName');
   const unitRentInput = document.getElementById('unitRent');
   const methodGrid = document.getElementById('methodGrid');
+  const customMonthsField = document.getElementById('customMonthsField');
+  const customMonthsInput = document.getElementById('customMonthsInput');
   const dateButton = document.getElementById('dateButton');
   const dateDisplay = document.getElementById('dateDisplay');
   const submitBtn = document.getElementById('submitBtn');
@@ -836,8 +882,30 @@
   }
 
   /* ========= حسابات الإيجار ========= */
+  function getMonthsForUnit(unit){
+    if(unit.paymentMethod === 'custom'){
+      const cm = Number(unit.customMonths);
+      return (cm >= 1 && cm <= 120) ? cm : 1;
+    }
+    const m = PAYMENT_METHODS[unit.paymentMethod];
+    return m ? m.months : 1;
+  }
+  function getMethodLabel(unit){
+    if(unit.paymentMethod === 'custom'){
+      return 'كل ' + (Number(unit.customMonths) || 1) + ' شهور';
+    }
+    const m = PAYMENT_METHODS[unit.paymentMethod];
+    return m ? m.label : '—';
+  }
+  function getMethodShort(unit){
+    if(unit.paymentMethod === 'custom'){
+      return 'كل ' + (Number(unit.customMonths) || 1) + ' ش';
+    }
+    const m = PAYMENT_METHODS[unit.paymentMethod];
+    return m ? m.short : '—';
+  }
   function getPaymentAmount(unit){
-    const months = PAYMENT_METHODS[unit.paymentMethod].months;
+    const months = getMonthsForUnit(unit);
     return Number(unit.annualRent) * months / 12;
   }
   function getHistoryMap(unit){
@@ -848,7 +916,7 @@
   function getNextDue(unit){
     if(!unit.startDate) return null;
     const start = fromISO(unit.startDate);
-    const months = PAYMENT_METHODS[unit.paymentMethod].months;
+    const months = getMonthsForUnit(unit);
     const historyMap = getHistoryMap(unit);
     let due = new Date(start);
     for(let i = 0; i < 500; i++){
@@ -864,7 +932,7 @@
     const schedule = [];
     if(!unit.startDate) return schedule;
     const start = fromISO(unit.startDate);
-    const months = PAYMENT_METHODS[unit.paymentMethod].months;
+    const months = getMonthsForUnit(unit);
     const minDate = new Date(CURRENT_YEAR, 0, 1);
     const maxDate = new Date(NEXT_YEAR + 1, 0, 1);
     const historyMap = getHistoryMap(unit);
@@ -898,6 +966,7 @@
     return { totalCurrent: totalCurrent, totalNext: totalNext };
   }
 
+  /* ========= تجميع حسب الشهر ========= */
   function groupByMonth(payments){
     const groups = {};
     payments.forEach(function(p){
@@ -956,7 +1025,7 @@
           else { level = 'ok'; text = days + ' يوم'; }
           daysCell = '<span class="days-pill ' + level + '">' + text + '</span>';
         }
-        const method = PAYMENT_METHODS[p.method] || PAYMENT_METHODS.monthly;
+        const methodLabel = p.methodLabel || '—';
         let actionCell = '';
         if(showButton && !p.paid){
           actionCell = '<button type="button" class="pay-btn" data-pay-unit="' + p.unitId + '" data-pay-due="' + p.dueDate + '" aria-label="تسجيل دفعة">✓</button>';
@@ -966,7 +1035,7 @@
           '<div class="pr-due">' + formatDate(d) + '</div>' +
           '<div class="pr-days">' + daysCell + '</div>' +
           '<div class="pr-amount">' +
-            '<div class="pr-method">' + method.label + '</div>' +
+            '<div class="pr-method">' + esc(methodLabel) + '</div>' +
             '<div class="pr-money">' + formatMoney(p.amount) + ' ' + CURRENCY + '</div>' +
           '</div>' +
           '<div class="pr-action">' + actionCell + '</div>' +
@@ -1021,6 +1090,7 @@
         if(!p.paid){
           allPayments.push({
             unitId: u.id, unitName: u.name, method: u.paymentMethod,
+            methodLabel: getMethodShort(u),
             dueDate: p.dueDate, amount: p.amount, paid: false, paidDate: null
           });
         }
@@ -1058,6 +1128,7 @@
       getSchedule(u).forEach(function(p){
         allPayments.push({
           unitId: u.id, unitName: u.name, method: u.paymentMethod,
+          methodLabel: getMethodShort(u),
           dueDate: p.dueDate, amount: p.amount, paid: p.paid, paidDate: p.paidDate
         });
       });
@@ -1133,7 +1204,7 @@
     }
     let html = '';
     units.forEach(function(u){
-      const method = PAYMENT_METHODS[u.paymentMethod] || PAYMENT_METHODS.monthly;
+      const methodLabel = getMethodLabel(u);
       const paymentAmt = getPaymentAmount(u);
       html +=
         '<li class="unit-card">' +
@@ -1141,7 +1212,7 @@
             '<div class="unit-card-name">' + esc(u.name) + '</div>' +
             '<div class="unit-card-meta">' +
               'الإيجار السنوي: <span class="rent-amount">' + formatMoneyFull(u.annualRent) + '</span>' +
-              ' — <span class="method-tag">' + method.label + '</span>' +
+              ' — <span class="method-tag">' + esc(methodLabel) + '</span>' +
               '<br>قيمة الدفعة: <span class="rent-amount">' + formatMoneyFull(paymentAmt) + '</span>' +
             '</div>' +
           '</div>' +
@@ -1169,6 +1240,11 @@
     Array.prototype.forEach.call(methodGrid.children, function(b){
       b.classList.toggle('active', b.dataset.method === m);
     });
+    if(m === 'custom'){
+      customMonthsField.classList.remove('hidden');
+    } else {
+      customMonthsField.classList.add('hidden');
+    }
   }
   methodGrid.addEventListener('click', function(e){
     const b = e.target.closest('button[data-method]');
@@ -1185,6 +1261,7 @@
     editingUnitId = id || null;
     unitNameInput.classList.remove('input-error');
     unitRentInput.classList.remove('input-error');
+    customMonthsInput.classList.remove('input-error');
 
     if(id){
       const u = units.find(function(x){ return x.id === id; });
@@ -1193,12 +1270,21 @@
       unitNameInput.value = u.name;
       unitRentInput.value = u.annualRent;
       setMethod(u.paymentMethod || 'monthly');
+      if(u.paymentMethod === 'custom'){
+        selectedCustomMonths = Number(u.customMonths) || 4;
+        customMonthsInput.value = selectedCustomMonths;
+      } else {
+        customMonthsInput.value = '';
+        selectedCustomMonths = 4;
+      }
       selectedStartDate = u.startDate;
       submitBtn.textContent = '💾 حفظ التعديل';
     } else {
       formTitle.textContent = 'إضافة وحدة جديدة';
       unitNameInput.value = '';
       unitRentInput.value = '';
+      customMonthsInput.value = '';
+      selectedCustomMonths = 4;
       setMethod('quarterly');
       selectedStartDate = toISO(todayMidnight());
       submitBtn.textContent = '➕ إضافة الوحدة';
@@ -1217,12 +1303,20 @@
     unitRentInput.classList.remove('input-error');
   });
   unitNameInput.addEventListener('input', function(){ unitNameInput.classList.remove('input-error'); });
+  customMonthsInput.addEventListener('input', function(){
+    const v = customMonthsInput.value;
+    const c = normalizeDigits(v);
+    if(c !== v) customMonthsInput.value = c;
+    customMonthsInput.classList.remove('input-error');
+  });
 
   unitForm.addEventListener('submit', function(e){
     e.preventDefault();
     unitNameInput.classList.remove('input-error');
     unitRentInput.classList.remove('input-error');
+    customMonthsInput.classList.remove('input-error');
     unitRentInput.value = normalizeDigits(unitRentInput.value);
+    customMonthsInput.value = normalizeDigits(customMonthsInput.value);
 
     const name = unitNameInput.value.trim();
     const rentRaw = unitRentInput.value.trim();
@@ -1231,6 +1325,19 @@
     let firstInvalid = null;
     if(!name){ unitNameInput.classList.add('input-error'); firstInvalid = firstInvalid || unitNameInput; }
     if(!rentRaw || isNaN(rent) || rent <= 0){ unitRentInput.classList.add('input-error'); firstInvalid = firstInvalid || unitRentInput; }
+
+    let customMonthsValue = null;
+    if(selectedMethod === 'custom'){
+      const cmRaw = customMonthsInput.value.trim();
+      const cm = Number(cmRaw);
+      if(!cmRaw || isNaN(cm) || cm < 1 || cm > 120 || Math.floor(cm) !== cm){
+        customMonthsInput.classList.add('input-error');
+        firstInvalid = firstInvalid || customMonthsInput;
+      } else {
+        customMonthsValue = cm;
+      }
+    }
+
     if(firstInvalid){ firstInvalid.focus(); toast('⚠️ الرجاء إكمال الحقول المميّزة بالأحمر'); return; }
     if(!selectedStartDate){ toast('⚠️ الرجاء اختيار تاريخ أول استحقاق'); return; }
 
@@ -1245,6 +1352,7 @@
         u.name = name;
         u.annualRent = rent;
         u.paymentMethod = selectedMethod;
+        u.customMonths = (selectedMethod === 'custom') ? customMonthsValue : null;
         u.startDate = selectedStartDate;
         addLog('unit-edit', { name: name, changes: changes });
       }
@@ -1252,7 +1360,9 @@
     } else {
       units.push({
         id: uid(), name: name, annualRent: rent,
-        paymentMethod: selectedMethod, startDate: selectedStartDate, history: []
+        paymentMethod: selectedMethod,
+        customMonths: (selectedMethod === 'custom') ? customMonthsValue : null,
+        startDate: selectedStartDate, history: []
       });
       addLog('unit-add', { name: name });
       toast('✅ تمت إضافة ' + name);
@@ -1269,11 +1379,11 @@
     currentDetailUnitId = id;
 
     const nextDue = getNextDue(u);
-    const method = PAYMENT_METHODS[u.paymentMethod] || PAYMENT_METHODS.monthly;
+    const methodLabel = getMethodLabel(u);
     const paymentAmt = getPaymentAmount(u);
 
     detailName.textContent = u.name;
-    detailType.textContent = method.label;
+    detailType.textContent = methodLabel;
 
     let nextDueText = '—';
     let daysText = '—';
@@ -1287,7 +1397,7 @@
     }
 
     detailGrid.innerHTML =
-      '<div class="detail-row"><span class="detail-label">طريقة الدفع</span><span class="detail-value rtl">' + method.label + '</span></div>' +
+      '<div class="detail-row"><span class="detail-label">طريقة الدفع</span><span class="detail-value rtl">' + esc(methodLabel) + '</span></div>' +
       '<div class="detail-row"><span class="detail-label">الإيجار السنوي</span><span class="detail-value">' + formatMoneyFull(u.annualRent) + '</span></div>' +
       '<div class="detail-row"><span class="detail-label">قيمة الدفعة</span><span class="detail-value">' + formatMoneyFull(paymentAmt) + '</span></div>' +
       '<div class="detail-row"><span class="detail-label">الاستحقاق القادم</span><span class="detail-value">' + nextDueText + '</span></div>' +
@@ -1372,8 +1482,8 @@
     pendingPayUnitId = unitId;
     payModal.dataset.payDue = toISO(dueDate);
 
-    const method = PAYMENT_METHODS[u.paymentMethod] || PAYMENT_METHODS.monthly;
-    const after = addMonths(dueDate, method.months);
+    const months = getMonthsForUnit(u);
+    const after = addMonths(dueDate, months);
     const today = todayMidnight();
     const days = Math.round((after - today) / 86400000);
 
