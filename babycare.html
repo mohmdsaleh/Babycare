@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f7a6b">
+<title>حضانة الأطفال - متابعة الدفعات</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Tahoma,"Noto Kufi Arabic",Arial,sans-serif;
+    background:#eef4f2;color:#1e2f2c;font-size:17px;line-height:1.6;
+    padding-bottom:40px;
+  }
+
+  /* ===== الترويسة ===== */
+  header{
+    background:linear-gradient(135deg,#1f7a6b,#37b39a);
+    color:#fff;padding:14px 16px 18px;text-align:center;
+    border-radius:0 0 22px 22px;
+    box-shadow:0 5px 16px rgba(31,122,107,.25);
+  }
+  header h1{margin:0;font-size:1.3rem;font-weight:800;}
+  .header-date{
+    margin-top:6px;font-size:.98rem;font-weight:700;
+    letter-spacing:.2px;
+  }
+
+  main{max-width:640px;margin:0 auto;padding:0 12px;}
+
+  /* ===== الإحصائيات ===== */
+  .stats-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:9px;
+    margin:14px 0 10px;
+  }
+  .stat-box{
+    background:#fff;border-radius:14px;padding:11px 6px;
+    text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06);
+    border-bottom:3px solid #37b39a;
+  }
+  .stat-num{
+    font-size:1.15rem;font-weight:800;color:#1f7a6b;
+    line-height:1.25;white-space:nowrap;
+  }
+  .stat-lbl{
+    font-size:.76rem;color:#5a6f6b;font-weight:700;margin-top:3px;
+    line-height:1.3;
+  }
+
+  /* ===== زر الإضافة ===== */
+  .add-btn{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    width:100%;margin:2px 0 14px;padding:12px;
+    background:#1f7a6b;color:#fff;border:none;border-radius:14px;
+    font-family:inherit;font-size:1rem;font-weight:800;cursor:pointer;
+    box-shadow:0 3px 10px rgba(31,122,107,.28);
+  }
+  .add-btn:active{transform:scale(.985);}
+
+  /* ===== الجدول ===== */
+  .table-wrap{
+    background:#fff;border-radius:16px;overflow:hidden;
+    box-shadow:0 2px 12px rgba(0,0,0,.07);
+  }
+  .children-table{
+    width:100%;border-collapse:collapse;table-layout:fixed;
+  }
+  .children-table th{
+    background:#f3f8f6;color:#46605b;
+    padding:10px 8px;font-size:.88rem;font-weight:800;
+    text-align:center;border-bottom:2px solid #e2eeea;
+  }
+  .children-table td{
+    padding:12px 8px;border-bottom:1px solid #eef4f2;
+    font-size:.95rem;vertical-align:middle;
+  }
+  .children-table th:nth-child(1),
+  .children-table td:nth-child(1){width:44%;text-align:right;padding-right:12px;}
+  .children-table th:nth-child(2),
+  .children-table td:nth-child(2){width:24%;text-align:center;}
+  .children-table th:nth-child(3),
+  .children-table td:nth-child(3){width:32%;text-align:center;}
+
+  .child-row{cursor:pointer;transition:background .15s;}
+  .child-row:active{background:#f0f7f5;}
+  /* الصف الموسّع: خلفية حمراء فاتحة */
+  .child-row.expanded{background:#fdeceb;}
+  .child-row.expanded td{border-bottom:none;}
+
+  .name-cell{
+    font-weight:800;color:#17302b;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+    display:flex;align-items:center;gap:5px;
+  }
+  .name-cell .arrow{
+    font-size:.65rem;color:#8fa39e;transition:transform .2s;
+    flex-shrink:0;
+  }
+  .child-row.expanded .name-cell .arrow{transform:rotate(90deg);color:#c0392b;}
+
+  .amount-cell{font-weight:800;color:#1f7a6b;white-space:nowrap;}
+  .days-cell{white-space:nowrap;}
+
+  .pill{
+    display:inline-block;padding:4px 10px;border-radius:999px;
+    font-size:.82rem;font-weight:800;
+  }
+  .pill.ok{background:#e2f7ee;color:#0d7a55;}
+  .pill.warn{background:#fff4e0;color:#a86a00;}
+  .pill.danger{background:#fdeceb;color:#c0392b;}
+
+  /* ===== الصف التفصيلي ===== */
+  .details-row{background:#fdeceb;}
+  .details-row td{
+    padding:0 12px 12px;border-bottom:2px solid #f5c9c5;
+  }
+  .details-inner{
+    background:#fff;border-radius:12px;padding:12px;
+    box-shadow:0 1px 6px rgba(0,0,0,.05);
+  }
+  .detail-row{
+    display:flex;justify-content:space-between;gap:10px;
+    padding:6px 0;font-size:.92rem;border-bottom:1px dashed #eef4f2;
+  }
+  .detail-row:last-of-type{border-bottom:none;}
+  .detail-label{color:#5a6f6b;font-weight:700;flex-shrink:0;}
+  .detail-value{color:#17302b;font-weight:800;text-align:left;direction:ltr;}
+
+  .detail-actions{
+    display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:6px;
+    margin-top:10px;
+  }
+  .detail-actions button{
+    padding:10px 4px;border:none;border-radius:10px;
+    font-family:inherit;font-size:.88rem;font-weight:800;cursor:pointer;
+  }
+  .detail-actions button:active{transform:scale(.97);}
+  .detail-actions .btn-pay{
+    background:#1f7a6b;color:#fff;
+    box-shadow:0 2px 7px rgba(31,122,107,.28);
+  }
+  .detail-actions .btn-edit{background:#eef4f2;color:#37514c;}
+  .detail-actions .btn-del{background:#fdeceb;color:#c0392b;}
+
+  .history-head{
+    margin-top:12px;padding-top:10px;
+    border-top:1.5px dashed #d8ebe5;
+    font-size:.9rem;font-weight:800;color:#46605b;
+  }
+  .history-list{list-style:none;margin:6px 0 0;padding:0;}
+  .history-list li{
+    display:flex;align-items:center;gap:8px;
+    padding:8px 4px;border-bottom:1px solid #f2f6f5;
+  }
+  .history-list li:last-child{border-bottom:none;}
+  .hist-info{flex:1;min-width:0;}
+  .hist-greg{
+    font-size:.88rem;font-weight:700;color:#37514c;
+    direction:ltr;text-align:right;
+  }
+  .hist-age{
+    font-size:.72rem;font-weight:700;color:#8fa39e;
+    margin-top:2px;
+  }
+  .hist-age.advance{color:#a86a00;}
+  .hist-amount{font-size:.92rem;font-weight:800;color:#1f7a6b;white-space:nowrap;}
+  .hist-del{
+    width:28px;height:28px;border-radius:50%;border:none;
+    background:#fdeceb;color:#c0392b;font-size:.95rem;font-weight:800;
+    cursor:pointer;flex-shrink:0;display:flex;align-items:center;
+    justify-content:center;font-family:inherit;line-height:1;padding:0;
+  }
+  .hist-del:active{transform:scale(.92);}
+
+  .empty{
+    text-align:center;color:#7d918c;padding:40px 20px;
+    font-size:1rem;line-height:2;
+    background:#fff;border-radius:16px;
+    box-shadow:0 2px 12px rgba(0,0,0,.06);
+  }
+
+  /* ===== النوافذ المنبثقة ===== */
+  .modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(20,45,40,.62);
+    -webkit-backdrop-filter:blur(5px);
+    backdrop-filter:blur(5px);
+    display:flex;align-items:center;justify-content:center;
+    padding:14px;z-index:1500;
+    opacity:0;pointer-events:none;transition:opacity .25s;
+  }
+  .modal-overlay.show{opacity:1;pointer-events:auto;}
+
+  .modal-card{
+    background:#fff;border-radius:22px;
+    padding:20px 18px;max-width:420px;width:100%;
+    box-shadow:0 24px 70px rgba(0,0,0,.35);
+    transform:scale(.9);transition:transform .25s;
+    max-height:92vh;overflow-y:auto;
+  }
+  .modal-overlay.show .modal-card{transform:scale(1);}
+
+  .modal-title{
+    margin:0 0 16px;font-size:1.15rem;font-weight:800;
+    color:#17302b;text-align:center;
+  }
+
+  /* ===== نموذج الإضافة ===== */
+  .form-field{margin-bottom:13px;}
+  .form-field label{
+    display:block;font-weight:700;margin-bottom:6px;
+    font-size:.95rem;color:#3c4f4b;
+  }
+  .form-field input[type=text],
+  .form-field input[type=number]{
+    width:100%;padding:12px;font-size:1.05rem;font-family:inherit;
+    border:2px solid #cfe3de;border-radius:12px;background:#f8fcfb;
+    color:#1e2f2c;
+  }
+  .form-field input:focus{
+    outline:none;border-color:#37b39a;background:#fff;
+  }
+
+  .cycle-toggle{display:flex;gap:8px;}
+  .cycle-toggle button{
+    flex:1;padding:11px 8px;font-size:1rem;font-weight:800;
+    font-family:inherit;border:2px solid #cfe3de;background:#f8fcfb;
+    color:#5a6f6b;border-radius:11px;cursor:pointer;transition:.15s;
+  }
+  .cycle-toggle button.active{
+    background:#1f7a6b;border-color:#1f7a6b;color:#fff;
+    box-shadow:0 2px 7px rgba(31,122,107,.3);
+  }
+
+  .date-button{
+    width:100%;padding:12px;
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    background:#f8fcfb;border:2px solid #cfe3de;border-radius:12px;
+    font-family:inherit;font-size:1.05rem;font-weight:800;
+    color:#17302b;cursor:pointer;text-align:right;
+  }
+  .date-button:active{background:#eef8f4;}
+  .date-button .icon{font-size:1.15rem;}
+
+  .date-preview{
+    margin-top:8px;padding:9px 11px;
+    background:#f8fcfb;border:1px solid #d6ebe5;border-radius:11px;
+    font-size:.86rem;line-height:1.6;
+  }
+  .date-preview:empty{display:none;padding:0;border:none;margin:0;}
+  .preview-row{color:#37514c;font-weight:700;}
+  .preview-days{
+    margin-top:6px;padding:7px 10px;border-radius:8px;
+    font-weight:800;text-align:center;font-size:.95rem;
+  }
+  .preview-days.ok{background:#e2f7ee;color:#0d7a55;}
+  .preview-days.warn{background:#fff4e0;color:#a86a00;}
+  .preview-days.danger{background:#fdeceb;color:#c0392b;}
+
+  .modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+  .btn-primary{
+    width:100%;padding:12px;font-size:1rem;font-weight:800;
+    font-family:inherit;background:#1f7a6b;color:#fff;border:none;
+    border-radius:13px;cursor:pointer;
+    box-shadow:0 3px 9px rgba(31,122,107,.3);
+  }
+  .btn-primary:active{transform:scale(.985);}
+  .btn-ghost{
+    width:100%;padding:10px;font-size:.95rem;font-weight:700;
+    font-family:inherit;background:#f0f2f1;color:#5a6f6b;
+    border:none;border-radius:12px;cursor:pointer;
+  }
+  .btn-ghost:active{transform:scale(.985);}
+  .btn-danger{
+    width:100%;padding:12px;font-size:1rem;font-weight:800;
+    font-family:inherit;background:#c0392b;color:#fff;border:none;
+    border-radius:13px;cursor:pointer;
+    box-shadow:0 3px 9px rgba(192,57,43,.3);
+  }
+  .btn-danger:active{transform:scale(.985);}
+
+  /* ===== نافذة اختيار التاريخ ===== */
+  .picker-card{
+    background:#fff;border-radius:22px;
+    padding:16px 14px;max-width:390px;width:100%;
+    box-shadow:0 24px 70px rgba(0,0,0,.4);
+    transform:scale(.9);transition:transform .25s;
+    max-height:94vh;overflow-y:auto;
+  }
+  .modal-overlay.show .picker-card{transform:scale(1);}
+
+  .picker-title{
+    margin:0 0 10px;text-align:center;
+    font-size:1.05rem;font-weight:800;color:#17302b;
+  }
+  .picker-selected{
+    text-align:center;background:#eef4f2;border-radius:12px;
+    padding:10px;margin-bottom:12px;
+  }
+  .picker-selected-value{
+    font-size:1.5rem;font-weight:800;color:#1f7a6b;
+    letter-spacing:1px;direction:ltr;
+  }
+  .picker-selected-label{
+    font-size:.76rem;font-weight:700;color:#5a6f6b;margin-top:2px;
+  }
+
+  .year-nav{
+    display:flex;align-items:center;justify-content:space-between;
+    background:#eef4f2;border-radius:12px;padding:5px;
+    margin-bottom:10px;
+  }
+  .year-nav button{
+    width:38px;height:38px;border-radius:9px;border:none;
+    background:#fff;font-size:1rem;font-weight:800;
+    color:#1f7a6b;cursor:pointer;font-family:inherit;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+  }
+  .year-nav button:active{transform:scale(.94);}
+  .year-nav .year-display{
+    font-size:1.15rem;font-weight:800;color:#17302b;
+    letter-spacing:.5px;direction:ltr;
+  }
+
+  .section-mini-label{
+    font-size:.76rem;font-weight:800;color:#5a6f6b;
+    margin:3px 0 6px;
+  }
+
+  .month-grid{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:5px;
+    margin-bottom:10px;
+  }
+  .month-grid button{
+    padding:9px 2px;font-size:.92rem;font-weight:800;
+    font-family:inherit;background:#f8fcfb;
+    border:2px solid #cfe3de;border-radius:10px;
+    color:#37514c;cursor:pointer;transition:.15s;
+  }
+  .month-grid button:active{transform:scale(.95);}
+  .month-grid button.active{
+    background:#1f7a6b;color:#fff;border-color:#1f7a6b;
+    box-shadow:0 2px 7px rgba(31,122,107,.28);
+  }
+
+  /* ===== شبكة الأيام ===== */
+  .weekday-header{
+    display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+    margin-bottom:4px;
+  }
+  .weekday-header span{
+    text-align:center;font-size:.72rem;font-weight:800;
+    color:#7d918c;padding:4px 0;
+  }
+  .day-grid{
+    display:grid;grid-template-columns:repeat(7,1fr);gap:4px;
+    margin-bottom:10px;
+  }
+  .day-grid button,
+  .day-empty{
+    aspect-ratio:1/1;padding:2px;font-size:.9rem;font-weight:700;
+    font-family:inherit;background:#f8fcfb;
+    border:2px solid #cfe3de;border-radius:9px;
+    color:#37514c;cursor:pointer;transition:.15s;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .day-grid button:active{transform:scale(.93);}
+  .day-empty{
+    background:transparent;border-color:transparent;
+    cursor:default;pointer-events:none;
+  }
+  .day-grid button.today{
+    border-color:#e05a4f;
+    color:#e05a4f;
+    font-weight:900;
+    background:#fff5f4;
+  }
+  .day-grid button.selected{
+    background:#1f7a6b;
+    color:#fff;
+    border-color:#1f7a6b;
+    box-shadow:0 2px 7px rgba(31,122,107,.28);
+  }
+  .day-grid button.today.selected{
+    background:#1f7a6b;
+    color:#fff;
+    border-color:#e05a4f;
+    box-shadow:0 0 0 3px rgba(224,90,79,.35);
+  }
+
+  .picker-info{
+    background:#f8fcfb;border:1.5px dashed #b8e0d2;
+    border-radius:11px;padding:9px 11px;margin-bottom:10px;
+    text-align:center;min-height:36px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .picker-info-days{
+    font-size:.9rem;font-weight:800;color:#17302b;
+  }
+  .picker-info-days.danger{color:#c0392b;}
+  .picker-info-days.warn{color:#a86a00;}
+  .picker-info-days.ok{color:#0d7a55;}
+
+  /* ===== تأكيد الدفعة ===== */
+  .confirm-icon{
+    width:60px;height:60px;border-radius:50%;
+    background:linear-gradient(135deg,#e2f7ee,#c4ecd9);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.9rem;margin:0 auto 12px;
+    box-shadow:0 6px 18px rgba(31,122,107,.2);
+  }
+  .confirm-child{
+    margin:0 0 14px;font-size:.95rem;color:#5a6f6b;
+    font-weight:700;text-align:center;
+  }
+  .confirm-child strong{color:#1f7a6b;font-size:1.05rem;}
+  .confirm-amount{
+    background:linear-gradient(135deg,#1f7a6b,#37b39a);
+    border-radius:14px;padding:14px;color:#fff;margin-bottom:12px;
+    box-shadow:0 6px 18px rgba(31,122,107,.28);
+    text-align:center;
+  }
+  .confirm-amount-label{
+    display:block;font-size:.8rem;opacity:.9;margin-bottom:3px;font-weight:700;
+  }
+  .confirm-amount-value{
+    display:block;font-size:1.65rem;font-weight:800;line-height:1.2;
+  }
+  .confirm-next{
+    background:#f8fcfb;border:1.5px dashed #b8e0d2;
+    border-radius:12px;padding:11px;margin-bottom:14px;text-align:center;
+  }
+  .confirm-next-label{
+    font-size:.8rem;font-weight:700;color:#5a6f6b;margin-bottom:5px;
+  }
+  .confirm-next-date{
+    font-size:1rem;font-weight:800;color:#17302b;
+    direction:ltr;
+  }
+  .confirm-next-days{
+    display:inline-block;margin-top:7px;padding:4px 11px;
+    border-radius:999px;font-size:.85rem;font-weight:800;
+    background:#e2f7ee;color:#0d7a55;
+  }
+  .confirm-next-days.warn{background:#fff4e0;color:#a86a00;}
+  .confirm-next-days.danger{background:#fdeceb;color:#c0392b;}
+
+  /* ===== تأكيد الحذف ===== */
+  .delete-icon{
+    width:60px;height:60px;border-radius:50%;
+    background:linear-gradient(135deg,#fdeceb,#f8d5d2);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.9rem;margin:0 auto 12px;
+    box-shadow:0 6px 18px rgba(192,57,43,.18);
+  }
+  .delete-text{
+    text-align:center;font-size:1rem;color:#37514c;
+    margin:0 0 10px;font-weight:700;line-height:1.65;
+  }
+  .delete-text strong{color:#c0392b;font-size:1.08rem;}
+  .delete-warning{
+    background:#fff5f4;border:1px solid #f8d5d2;
+    border-radius:11px;padding:11px;margin-bottom:14px;
+    font-size:.88rem;font-weight:700;color:#a03a2f;
+    text-align:center;line-height:1.6;
+  }
+  .delete-warning strong{color:#c0392b;font-size:1rem;}
+
+  /* ===== التوست ===== */
+  .toast{
+    position:fixed;bottom:22px;left:50%;
+    transform:translateX(-50%) translateY(30px);
+    background:#17302b;color:#fff;padding:12px 18px;
+    border-radius:12px;font-size:.95rem;font-weight:700;
+    opacity:0;pointer-events:none;transition:.3s;
+    z-index:3000;max-width:90vw;text-align:center;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🏫 حضانة الأطفال</h1>
+  <div class="header-date" id="headerDate">—</div>
+</header>
+
+<main>
+
+  <!-- ===== الإحصائيات ===== -->
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-num" id="statChildren">0</div>
+      <div class="stat-lbl">عدد الأطفال</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-lbl">إجمالي المبالغ</div>
+    </div>
+  </div>
+
+  <button class="add-btn" id="addBtn">➕ إضافة طفل جديد</button>
+
+  <div id="tableContainer"></div>
+</main>
+
+<!-- ===== نافذة الإضافة / التعديل ===== -->
+<div class="modal-overlay" id="formModal">
+  <div class="modal-card">
+    <h3 class="modal-title" id="formTitle">إضافة طفل جديد</h3>
+    <form id="childForm" autocomplete="off">
+
+      <div class="form-field">
+        <label for="nameInput">اسم الطفل</label>
+        <input type="text" id="nameInput" placeholder="مثال: محمد أحمد"
+               autocomplete="off" autocorrect="off" autocapitalize="off"
+               spellcheck="false" required>
+      </div>
+
+      <div class="form-field">
+        <label for="amountInput">المبلغ</label>
+        <input type="number" id="amountInput" placeholder="مثال: 500" min="1" step="any"
+               inputmode="decimal" autocomplete="off" required>
+      </div>
+
+      <div class="form-field">
+        <label>طريقة الدفع</label>
+        <div class="cycle-toggle" id="cycleToggle">
+          <button type="button" data-cycle="monthly" class="active">شهري</button>
+          <button type="button" data-cycle="weekly">أسبوعي</button>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>تاريخ استحقاق الدفعة القادمة</label>
+        <button type="button" class="date-button" id="dateButton">
+          <span id="dateDisplay">اختر التاريخ</span>
+          <span class="icon">📅</span>
+        </button>
+        <div class="date-preview" id="datePreview"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary" id="submitBtn">➕ إضافة الطفل</button>
+        <button type="button" class="btn-ghost" id="formCancel">إلغاء</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== نافذة اختيار التاريخ ===== -->
+<div class="modal-overlay" id="pickerModal">
+  <div class="picker-card">
+    <h3 class="picker-title">اختر التاريخ</h3>
+
+    <div class="picker-selected">
+      <div class="picker-selected-value" id="pickerSelectedValue">—</div>
+      <div class="picker-selected-label">يوم / شهر / سنة</div>
+    </div>
+
+    <div class="year-nav">
+      <button type="button" id="yearPrev" aria-label="السنة السابقة">◀</button>
+      <span class="year-display" id="yearDisplay">2026</span>
+      <button type="button" id="yearNext" aria-label="السنة التالية">▶</button>
+    </div>
+
+    <div class="section-mini-label">الشهر</div>
+    <div class="month-grid" id="monthGrid"></div>
+
+    <div class="section-mini-label">اليوم</div>
+    <div class="weekday-header">
+      <span>أحد</span><span>اثنين</span><span>ثلاثاء</span><span>أربعاء</span>
+      <span>خميس</span><span>جمعة</span><span>سبت</span>
+    </div>
+    <div class="day-grid" id="dayGrid"></div>
+
+    <div class="picker-info">
+      <div class="picker-info-days" id="pickerInfoDays">—</div>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" id="pickerConfirm">✔ تأكيد التاريخ</button>
+      <button type="button" class="btn-ghost" id="pickerCancel">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== نافذة تأكيد الدفعة ===== -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-card">
+    <div class="confirm-icon">✅</div>
+    <h3 class="modal-title">تأكيد استلام الدفعة</h3>
+    <p class="confirm-child">للطفل: <strong id="confirmChildName"></strong></p>
+
+    <div class="confirm-amount">
+      <span class="confirm-amount-label">المبلغ المستلم</span>
+      <span class="confirm-amount-value" id="confirmAmount"></span>
+    </div>
+
+    <div class="confirm-next">
+      <div class="confirm-next-label">الدفعة القادمة ستكون في</div>
+      <div class="confirm-next-date" id="confirmNextDate"></div>
+      <div class="confirm-next-days" id="confirmNextDays"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" id="confirmYes">✅ نعم، استلمت المبلغ</button>
+      <button type="button" class="btn-ghost" id="confirmNo">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== نافذة تأكيد الحذف ===== -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-card">
+    <div class="delete-icon">🗑️</div>
+    <h3 class="modal-title">تأكيد حذف الطفل</h3>
+    <p class="delete-text">سيتم حذف الطفل <strong id="deleteChildName">—</strong></p>
+    <div class="delete-warning">
+      ⚠️ سيتم حذف جميع سجل دفعاته (<strong id="deleteHistCount">0</strong> دفعة) نهائياً.<br>
+      لا يمكن التراجع عن هذه العملية.
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-danger" id="deleteConfirm">🗑️ نعم، احذف نهائياً</button>
+      <button type="button" class="btn-ghost" id="deleteCancel">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ========= الإعدادات ========= */
+  const CURRENCY    = 'ر.س';
+  const STORAGE_KEY = 'nursery_children_v2';
+
+  /* ========= أدوات التاريخ ========= */
+  const AR_DAYS_SHORT = ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+
+  function todayMidnight(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
+
+  function toISO(d){
+    return d.getFullYear() + '-' +
+           String(d.getMonth()+1).padStart(2,'0') + '-' +
+           String(d.getDate()).padStart(2,'0');
+  }
+  function fromISO(s){ const p = s.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); }
+
+  function formatShort(d){
+    return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+  }
+  function formatDayName(d){
+    return AR_DAYS_SHORT[d.getDay()];
+  }
+  function formatShortWithDay(d){
+    return formatDayName(d) + ' ' + formatShort(d);
+  }
+  function formatMoney(n){ return Number(n).toLocaleString('en-US') + ' ' + CURRENCY; }
+  function daysWord(n){
+    if(n === 1) return 'يوم واحد';
+    if(n === 2) return 'يومان';
+    if(n >= 3 && n <= 10) return n + ' أيام';
+    return n + ' يوم';
+  }
+  function addPeriod(date, cycle){
+    const d = new Date(date);
+    if(cycle === 'weekly'){ d.setDate(d.getDate() + 7); return d; }
+    const day = d.getDate();
+    d.setDate(1);
+    d.setMonth(d.getMonth() + 1);
+    const lastDay = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+    d.setDate(Math.min(day, lastDay));
+    return d;
+  }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
+  }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  /* ========= الحالة ========= */
+  let children = [];
+  let editingId = null;
+  let selectedCycle = 'monthly';
+  let selectedDueDate = null;
+  let expandedId = null;
+  let pendingPayChildId = null;
+  let pendingDeleteId = null;
+
+  let pickerYear, pickerMonth, pickerDay;
+
+  /* ========= عناصر الصفحة ========= */
+  const tableContainer = document.getElementById('tableContainer');
+  const addBtn         = document.getElementById('addBtn');
+  const toastEl        = document.getElementById('toast');
+
+  const statChildren = document.getElementById('statChildren');
+  const statTotal    = document.getElementById('statTotal');
+
+  const headerDate = document.getElementById('headerDate');
+
+  const formModal   = document.getElementById('formModal');
+  const formTitle   = document.getElementById('formTitle');
+  const childForm   = document.getElementById('childForm');
+  const nameInput   = document.getElementById('nameInput');
+  const amountInput = document.getElementById('amountInput');
+  const cycleToggle = document.getElementById('cycleToggle');
+  const dateButton  = document.getElementById('dateButton');
+  const dateDisplay = document.getElementById('dateDisplay');
+  const datePreview = document.getElementById('datePreview');
+  const submitBtn   = document.getElementById('submitBtn');
+  const formCancel  = document.getElementById('formCancel');
+
+  const pickerModal         = document.getElementById('pickerModal');
+  const pickerSelectedValue = document.getElementById('pickerSelectedValue');
+  const yearDisplay         = document.getElementById('yearDisplay');
+  const yearPrev            = document.getElementById('yearPrev');
+  const yearNext            = document.getElementById('yearNext');
+  const monthGrid           = document.getElementById('monthGrid');
+  const dayGrid             = document.getElementById('dayGrid');
+  const pickerInfoDays      = document.getElementById('pickerInfoDays');
+  const pickerConfirm       = document.getElementById('pickerConfirm');
+  const pickerCancel        = document.getElementById('pickerCancel');
+
+  const confirmModal    = document.getElementById('confirmModal');
+  const confirmChildName= document.getElementById('confirmChildName');
+  const confirmAmount   = document.getElementById('confirmAmount');
+  const confirmNextDate = document.getElementById('confirmNextDate');
+  const confirmNextDays = document.getElementById('confirmNextDays');
+  const confirmYes      = document.getElementById('confirmYes');
+  const confirmNo       = document.getElementById('confirmNo');
+
+  const deleteModal     = document.getElementById('deleteModal');
+  const deleteChildName = document.getElementById('deleteChildName');
+  const deleteHistCount = document.getElementById('deleteHistCount');
+  const deleteConfirm   = document.getElementById('deleteConfirm');
+  const deleteCancel    = document.getElementById('deleteCancel');
+
+  /* ========= الحفظ ========= */
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(children)); } catch(e){}
+  }
+  function load(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const data = raw ? JSON.parse(raw) : [];
+      children = Array.isArray(data) ? data.filter(function(c){ return c && c.id && c.name; }) : [];
+    } catch(e){ children = []; }
+  }
+
+  /* ========= حالة الدفعة ========= */
+  function getStatus(child){
+    const due   = fromISO(child.dueDate);
+    const today = todayMidnight();
+    const days  = Math.round((due - today) / 86400000);
+    let level;
+    if(days < 0 || days === 0) level = 'danger';
+    else if(days <= 7)         level = 'warn';
+    else                       level = 'ok';
+    return { days: days, level: level, due: due };
+  }
+
+  function daysPillText(days){
+    if(days < 0) return 'متأخر ' + Math.abs(days) + ' يوم';
+    if(days === 0) return 'اليوم';
+    if(days === 1) return 'يوم واحد';
+    if(days === 2) return 'يومان';
+    if(days <= 10) return days + ' أيام';
+    return days + ' يوم';
+  }
+
+  function calculateNextDue(child){
+    const today = todayMidnight();
+    let due = fromISO(child.dueDate);
+    let guard = 0;
+    do {
+      due = addPeriod(due, child.cycle);
+      guard++;
+    } while(due <= today && guard < 300);
+    return due;
+  }
+
+  /* ========= نص عمر الدفعة ========= */
+  function paymentAgeText(paymentDateISO){
+    const pd = fromISO(paymentDateISO);
+    const today = todayMidnight();
+    const diff = Math.round((today - pd) / 86400000);
+    if(diff === 0) return { text: 'اليوم', advance: false };
+    if(diff > 0)  return { text: 'منذ ' + daysWord(diff), advance: false };
+    const adv = Math.abs(diff);
+    return { text: 'مقدم بـ ' + daysWord(adv), advance: true };
+  }
+
+  /* ========= الترويسة ========= */
+  function renderHeader(){
+    const t = todayMidnight();
+    headerDate.textContent = formatShortWithDay(t);
+  }
+
+  /* ========= الإحصائيات ========= */
+  function renderStats(){
+    statChildren.textContent = children.length;
+    let totalSum = 0;
+    for(let i = 0; i < children.length; i++){
+      totalSum += Number(children[i].amount) || 0;
+    }
+    statTotal.textContent = totalSum.toLocaleString('en-US');
+  }
+
+  /* ========= التنبيه ========= */
+  let toastTimer;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2200);
+  }
+
+  /* ========= رسم الواجهة ========= */
+  function render(){
+    renderHeader();
+    renderStats();
+
+    if(children.length === 0){
+      tableContainer.innerHTML =
+        '<div class="empty">لا يوجد أطفال بعد 🌸<br>اضغطي على زر الإضافة في الأعلى ☝️</div>';
+      return;
+    }
+
+    const sorted = children.slice().sort(function(a,b){
+      return a.dueDate < b.dueDate ? -1 : (a.dueDate > b.dueDate ? 1 : 0);
+    });
+
+    let rows = '';
+    for(let i = 0; i < sorted.length; i++) rows += childRowsHTML(sorted[i]);
+
+    tableContainer.innerHTML =
+      '<div class="table-wrap">' +
+        '<table class="children-table">' +
+          '<thead><tr>' +
+            '<th>الاسم</th>' +
+            '<th>المبلغ</th>' +
+            '<th>المتبقي</th>' +
+          '</tr></thead>' +
+          '<tbody>' + rows + '</tbody>' +
+        '</table>' +
+      '</div>';
+  }
+
+  function childRowsHTML(c){
+    const s = getStatus(c);
+    const isExpanded = expandedId === c.id;
+    const cycleTxt = c.cycle === 'weekly' ? 'أسبوعي' : 'شهري';
+    const hist = Array.isArray(c.history) ? c.history : [];
+
+    let histHTML = '';
+    if(hist.length){
+      const items = hist.map(function(h, i){ return { h: h, i: i }; })
+        .reverse()
+        .map(function(item){
+          const hd = fromISO(item.h.date);
+          const age = paymentAgeText(item.h.date);
+          return '<li>' +
+            '<div class="hist-info">' +
+              '<div class="hist-greg">📅 ' + formatShortWithDay(hd) + '</div>' +
+              '<div class="hist-age' + (age.advance ? ' advance' : '') + '">' + age.text + '</div>' +
+            '</div>' +
+            '<span class="hist-amount">' + formatMoney(item.h.amount) + '</span>' +
+            '<button class="hist-del" data-action="del-hist" data-id="' + c.id +
+              '" data-idx="' + item.i + '" title="حذف الدفعة">×</button>' +
+          '</li>';
+        }).join('');
+
+      histHTML =
+        '<div class="history-head">📋 سجل الدفعات (' + hist.length + ')</div>' +
+        '<ul class="history-list">' + items + '</ul>';
+    }
+
+    let html =
+      '<tr class="child-row ' + (isExpanded ? 'expanded' : '') + '" data-action="toggle" data-id="' + c.id + '">' +
+        '<td class="name-cell"><span class="arrow">▶</span><span>' + esc(c.name) + '</span></td>' +
+        '<td class="amount-cell">' + formatMoney(c.amount) + '</td>' +
+        '<td class="days-cell"><span class="pill ' + s.level + '">' + daysPillText(s.days) + '</span></td>' +
+      '</tr>';
+
+    if(isExpanded){
+      html +=
+        '<tr class="details-row">' +
+          '<td colspan="3">' +
+            '<div class="details-inner">' +
+              '<div class="detail-row">' +
+                '<span class="detail-label">🔁 طريقة الدفع</span>' +
+                '<span class="detail-value">' + cycleTxt + '</span>' +
+              '</div>' +
+              '<div class="detail-row">' +
+                '<span class="detail-label">📅 تاريخ الاستحقاق</span>' +
+                '<span class="detail-value">' + formatShort(s.due) + '</span>' +
+              '</div>' +
+              '<div class="detail-actions">' +
+                '<button type="button" class="btn-pay"  data-action="pay"  data-id="' + c.id + '">✔ تسجيل دفعة</button>' +
+                '<button type="button" class="btn-edit" data-action="edit" data-id="' + c.id + '">تعديل</button>' +
+                '<button type="button" class="btn-del"  data-action="del"  data-id="' + c.id + '">حذف</button>' +
+              '</div>' +
+              histHTML +
+            '</div>' +
+          '</td>' +
+        '</tr>';
+    }
+
+    return html;
+  }
+
+  /* ========= أحداث الجدول ========= */
+  tableContainer.addEventListener('click', function(e){
+    const el = e.target.closest('[data-action]');
+    if(!el) return;
+    const action = el.dataset.action;
+    const id = el.dataset.id;
+
+    if(action === 'toggle'){
+      expandedId = (expandedId === id) ? null : id;
+      render();
+    } else if(action === 'pay'){
+      openConfirmModal(id);
+    } else if(action === 'edit'){
+      openFormModal(id);
+    } else if(action === 'del'){
+      openDeleteModal(id);
+    } else if(action === 'del-hist'){
+      deleteHistory(id, parseInt(el.dataset.idx, 10));
+    }
+  });
+
+  /* ========= نافذة الإضافة / التعديل ========= */
+  function openFormModal(id){
+    editingId = id || null;
+    if(id){
+      const c = children.find(function(x){ return x.id === id; });
+      if(!c) return;
+      formTitle.textContent = 'تعديل بيانات الطفل';
+      nameInput.value = c.name;
+      amountInput.value = c.amount;
+      setCycle(c.cycle === 'weekly' ? 'weekly' : 'monthly');
+      selectedDueDate = c.dueDate;
+      submitBtn.textContent = '💾 حفظ التعديل';
+    } else {
+      formTitle.textContent = 'إضافة طفل جديد';
+      nameInput.value = '';
+      amountInput.value = '';
+      setCycle('monthly');
+      selectedDueDate = toISO(todayMidnight());
+      submitBtn.textContent = '➕ إضافة الطفل';
+    }
+    updateDateUI();
+    formModal.classList.add('show');
+    // ← لا نقوم بتركيز أي حقل حتى لا تظهر لوحة المفاتيح تلقائياً
+  }
+
+  function closeFormModal(){
+    formModal.classList.remove('show');
+    editingId = null;
+  }
+
+  addBtn.addEventListener('click', function(){ openFormModal(null); });
+  formCancel.addEventListener('click', closeFormModal);
+  formModal.addEventListener('click', function(e){
+    if(e.target === formModal) closeFormModal();
+  });
+
+  /* ========= تبديل نوع الدفع ========= */
+  function setCycle(cycle){
+    selectedCycle = cycle;
+    Array.prototype.forEach.call(cycleToggle.children, function(b){
+      b.classList.toggle('active', b.dataset.cycle === cycle);
+    });
+  }
+  cycleToggle.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-cycle]');
+    if(!b) return;
+    setCycle(b.dataset.cycle);
+  });
+
+  /* ========= عرض التاريخ داخل النموذج ========= */
+  function updateDateUI(){
+    if(!selectedDueDate){
+      dateDisplay.textContent = 'اختر التاريخ';
+      datePreview.innerHTML = '';
+      return;
+    }
+    const d = fromISO(selectedDueDate);
+    dateDisplay.textContent = formatShort(d);
+
+    const today = todayMidnight();
+    const days = Math.round((d - today) / 86400000);
+
+    let daysMsg, daysClass;
+    if(days < 0){
+      daysMsg = '⚠️ متأخرة ' + daysWord(Math.abs(days));
+      daysClass = 'danger';
+    } else if(days === 0){
+      daysMsg = '⚠️ مستحقة اليوم';
+      daysClass = 'danger';
+    } else if(days === 1){
+      daysMsg = '⏰ مستحقة غداً';
+      daysClass = 'warn';
+    } else if(days <= 7){
+      daysMsg = '⏰ باقي ' + daysWord(days) + ' على الدفعة القادمة';
+      daysClass = 'warn';
+    } else {
+      daysMsg = '✅ باقي ' + daysWord(days) + ' على الدفعة القادمة';
+      daysClass = 'ok';
+    }
+
+    datePreview.innerHTML =
+      '<div class="preview-row">📅 ' + formatShortWithDay(d) + '</div>' +
+      '<div class="preview-days ' + daysClass + '">' + daysMsg + '</div>';
+  }
+
+  /* ========= منتقي التاريخ ========= */
+  function openPicker(){
+    const base = selectedDueDate ? fromISO(selectedDueDate) : todayMidnight();
+    pickerYear  = base.getFullYear();
+    pickerMonth = base.getMonth();
+    pickerDay   = base.getDate();
+    renderPicker();
+    pickerModal.classList.add('show');
+  }
+
+  function closePicker(){ pickerModal.classList.remove('show'); }
+
+  function renderPicker(){
+    pickerSelectedValue.textContent = pickerDay + '/' + (pickerMonth+1) + '/' + pickerYear;
+    yearDisplay.textContent = pickerYear;
+
+    // الأشهر 1 - 12
+    let mh = '';
+    for(let m = 0; m < 12; m++){
+      mh += '<button type="button" data-month="' + m + '"' +
+            (m === pickerMonth ? ' class="active"' : '') + '>' + (m+1) + '</button>';
+    }
+    monthGrid.innerHTML = mh;
+
+    // شبكة الأيام مع بداية الأحد
+    const daysInMonth = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    const firstDayOfWeek = new Date(pickerYear, pickerMonth, 1).getDay(); // 0 = أحد
+    const today = todayMidnight();
+
+    let dh = '';
+    // خلايا فارغة قبل اليوم الأول
+    for(let i = 0; i < firstDayOfWeek; i++){
+      dh += '<span class="day-empty"></span>';
+    }
+    for(let d = 1; d <= daysInMonth; d++){
+      const isSel = d === pickerDay;
+      const isToday = (pickerYear === today.getFullYear() &&
+                       pickerMonth === today.getMonth() &&
+                       d === today.getDate());
+      let cls = [];
+      if(isSel) cls.push('selected');
+      if(isToday) cls.push('today');
+      dh += '<button type="button" data-day="' + d + '"' +
+            (cls.length ? ' class="' + cls.join(' ') + '"' : '') + '>' + d + '</button>';
+    }
+    dayGrid.innerHTML = dh;
+
+    // معلومات الأيام المتبقية
+    const d = new Date(pickerYear, pickerMonth, pickerDay);
+    const days = Math.round((d - today) / 86400000);
+
+    let daysMsg, daysClass;
+    if(days < 0){
+      daysMsg = '⚠️ متأخر ' + daysWord(Math.abs(days));
+      daysClass = 'danger';
+    } else if(days === 0){
+      daysMsg = '⚠️ هذا هو اليوم';
+      daysClass = 'danger';
+    } else if(days === 1){
+      daysMsg = '⏰ غداً (باقي يوم واحد)';
+      daysClass = 'warn';
+    } else if(days <= 7){
+      daysMsg = '⏰ باقي ' + daysWord(days);
+      daysClass = 'warn';
+    } else {
+      daysMsg = '✅ باقي ' + daysWord(days);
+      daysClass = 'ok';
+    }
+
+    pickerInfoDays.textContent = daysMsg;
+    pickerInfoDays.className = 'picker-info-days ' + daysClass;
+  }
+
+  dateButton.addEventListener('click', openPicker);
+  pickerCancel.addEventListener('click', closePicker);
+  pickerModal.addEventListener('click', function(e){
+    if(e.target === pickerModal) closePicker();
+  });
+
+  yearPrev.addEventListener('click', function(){
+    pickerYear--;
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+  yearNext.addEventListener('click', function(){
+    pickerYear++;
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+
+  monthGrid.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-month]');
+    if(!b) return;
+    pickerMonth = parseInt(b.dataset.month, 10);
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+
+  dayGrid.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-day]');
+    if(!b) return;
+    pickerDay = parseInt(b.dataset.day, 10);
+    renderPicker();   // لا نغلق النافذة
+  });
+
+  pickerConfirm.addEventListener('click', function(){
+    const d = new Date(pickerYear, pickerMonth, pickerDay);
+    selectedDueDate = toISO(d);
+    updateDateUI();
+    closePicker();
+  });
+
+  /* ========= إرسال النموذج ========= */
+  childForm.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = nameInput.value.trim();
+    const amount = Number(amountInput.value);
+
+    if(!name){ nameInput.focus(); return; }
+    if(!amount || amount <= 0){ amountInput.focus(); return; }
+    if(!selectedDueDate){ toast('الرجاء اختيار التاريخ'); return; }
+
+    if(editingId){
+      const c = children.find(function(x){ return x.id === editingId; });
+      if(c){
+        c.name = name;
+        c.amount = amount;
+        c.cycle = selectedCycle;
+        c.dueDate = selectedDueDate;
+      }
+      toast('✅ تم حفظ التعديل');
+    } else {
+      children.push({
+        id: uid(),
+        name: name,
+        amount: amount,
+        cycle: selectedCycle,
+        dueDate: selectedDueDate,
+        history: []
+      });
+      toast('✅ تمت إضافة ' + name);
+    }
+
+    save();
+    closeFormModal();
+    render();
+  });
+
+  /* ========= نافذة تأكيد الحذف ========= */
+  function openDeleteModal(id){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c) return;
+    pendingDeleteId = id;
+    deleteChildName.textContent = c.name;
+    const cnt = Array.isArray(c.history) ? c.history.length : 0;
+    deleteHistCount.textContent = cnt;
+    deleteModal.classList.add('show');
+  }
+
+  function closeDeleteModal(){
+    deleteModal.classList.remove('show');
+    pendingDeleteId = null;
+  }
+
+  deleteCancel.addEventListener('click', closeDeleteModal);
+  deleteModal.addEventListener('click', function(e){
+    if(e.target === deleteModal) closeDeleteModal();
+  });
+  deleteConfirm.addEventListener('click', function(){
+    if(!pendingDeleteId) return;
+    const id = pendingDeleteId;
+    children = children.filter(function(x){ return x.id !== id; });
+    if(expandedId === id) expandedId = null;
+    save();
+    closeDeleteModal();
+    render();
+    toast('🗑️ تم الحذف');
+  });
+
+  /* ========= نافذة تأكيد الدفعة ========= */
+  function openConfirmModal(id){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c) return;
+
+    pendingPayChildId = id;
+    const nextDue = calculateNextDue(c);
+    const today = todayMidnight();
+    const days = Math.round((nextDue - today) / 86400000);
+
+    confirmChildName.textContent = c.name;
+    confirmAmount.textContent = formatMoney(c.amount);
+    confirmNextDate.textContent = formatShortWithDay(nextDue);
+
+    let daysMsg, daysClass;
+    if(days <= 7) { daysMsg = 'باقي ' + daysWord(days); daysClass = 'warn'; }
+    else { daysMsg = 'باقي ' + daysWord(days); daysClass = 'ok'; }
+    confirmNextDays.textContent = daysMsg;
+    confirmNextDays.className = 'confirm-next-days ' + daysClass;
+
+    confirmModal.classList.add('show');
+  }
+
+  function closeConfirmModal(){
+    confirmModal.classList.remove('show');
+    pendingPayChildId = null;
+  }
+
+  confirmNo.addEventListener('click', closeConfirmModal);
+  confirmModal.addEventListener('click', function(e){
+    if(e.target === confirmModal) closeConfirmModal();
+  });
+
+  confirmYes.addEventListener('click', function(){
+    if(!pendingPayChildId) return;
+    confirmPayment(pendingPayChildId);
+    closeConfirmModal();
+  });
+
+  function confirmPayment(id){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c) return;
+
+    const today = todayMidnight();
+    const nextDue = calculateNextDue(c);
+
+    if(!Array.isArray(c.history)) c.history = [];
+    c.history.push({
+      date: toISO(today),
+      amount: c.amount,
+      prevDue: c.dueDate
+    });
+    c.dueDate = toISO(nextDue);
+
+    save();
+    render();
+    toast('✅ تم تسجيل دفعة ' + c.name);
+  }
+
+  /* ========= حذف دفعة من السجل ========= */
+  function deleteHistory(id, idx){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c || !Array.isArray(c.history)) return;
+    if(idx < 0 || idx >= c.history.length) return;
+
+    const entry = c.history[idx];
+    const entryDate = fromISO(entry.date);
+
+    if(!confirm('حذف دفعة ' + formatMoney(entry.amount) + '\nبتاريخ ' + formatShortWithDay(entryDate) + ' ؟')) return;
+
+    c.history.splice(idx, 1);
+
+    if(entry.prevDue && idx === c.history.length){
+      c.dueDate = entry.prevDue;
+    }
+
+    save();
+    render();
+    toast('🗑️ تم حذف الدفعة');
+  }
+
+  /* ========= بدء التشغيل ========= */
+  load();
+  render();
+
+})();
+</script>
+</body>
+</html>
