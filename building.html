@@ -27,35 +27,50 @@
   header h1{margin:0;font-size:1.22rem;font-weight:800;letter-spacing:.2px;}
   .header-date{margin-top:5px;font-size:.88rem;font-weight:700;opacity:.95;}
 
+  /* الأزرار اليسرى (كبيرة) */
   .header-left-tools{
     position:absolute;top:10px;left:10px;
     display:flex;flex-direction:column;gap:5px;
     align-items:stretch;z-index:3;
   }
-  .header-left-tools .header-tool-btn{min-width:96px;}
-
-  .header-right-tools{
-    position:absolute;top:10px;right:10px;
-    display:flex;flex-direction:column;gap:5px;
-    align-items:stretch;z-index:3;
-  }
-  .header-right-tools .header-tool-btn{min-width:96px;}
-
   .header-tool-btn{
     padding:6px 12px;border-radius:999px;
     background:rgba(255,255,255,.2);
     border:1px solid rgba(255,255,255,.35);
     color:#fff;font-family:inherit;font-size:.72rem;font-weight:700;
     cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;
-    white-space:nowrap;line-height:1;
+    white-space:nowrap;line-height:1;min-width:96px;
   }
   .header-tool-btn:active{transform:scale(.95);background:rgba(255,255,255,.32);}
 
-  .sync-status{display:flex;align-items:center;gap:5px;font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;white-space:nowrap;justify-content:center;}
-  .sync-status .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;}
-  .sync-status.saving .dot{background:#fbbf24;}
-  .sync-status.error .dot{background:#ef4444;}
-  .sync-status.offline .dot{background:#9ca3af;}
+  /* الأزرار اليمنى (صغيرة جداً) */
+  .header-right-tools{
+    position:absolute;top:10px;right:10px;
+    display:flex;flex-direction:column;gap:5px;
+    align-items:center;z-index:3;
+  }
+  .header-mini-btn{
+    width:30px;height:30px;border-radius:50%;
+    background:rgba(255,255,255,.2);
+    border:1px solid rgba(255,255,255,.35);
+    color:#fff;font-family:inherit;font-size:.72rem;font-weight:800;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    line-height:1;padding:0;
+  }
+  .header-mini-btn:active{transform:scale(.9);background:rgba(255,255,255,.35);}
+
+  /* نقطة المزامنة */
+  .sync-dot{
+    width:10px;height:10px;border-radius:50%;
+    background:#9ca3af;
+    margin-top:2px;
+    box-shadow:0 0 0 rgba(0,0,0,0);
+    transition:background .3s, box-shadow .3s;
+  }
+  .sync-dot.gray{background:#9ca3af;box-shadow:none;}
+  .sync-dot.green{background:#4ade80;box-shadow:0 0 7px rgba(74,222,128,.85);}
+  .sync-dot.orange{background:#fbbf24;box-shadow:0 0 7px rgba(251,191,36,.85);}
+  .sync-dot.red{background:#ef4444;box-shadow:0 0 7px rgba(239,68,68,.85);}
 
   main{max-width:720px;margin:0 auto;padding:0 12px;}
 
@@ -77,7 +92,7 @@
   /* ═══════════ عرض الدفعات ═══════════ */
   .payments-view{padding-bottom:6px;}
   .payments-head{
-    display:grid;grid-template-columns:1.4fr 1fr 0.9fr 1.4fr 32px;gap:6px;
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1.4fr 32px;gap:6px;
     align-items:center;padding:10px 12px;background:var(--card);
     border-radius:12px;box-shadow:var(--shadow-sm);margin-bottom:14px;
     font-size:.7rem;font-weight:800;color:var(--text-muted);
@@ -91,7 +106,7 @@
   .month-title{background:#eff6ff;color:#1e6091;padding:7px 14px;font-size:.74rem;font-weight:800;border-bottom:1px solid #dbeafe;letter-spacing:.2px;}
 
   .payment-row{
-    display:grid;grid-template-columns:1.4fr 1fr 0.9fr 1.4fr 32px;gap:6px;
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1.4fr 32px;gap:6px;
     align-items:center;padding:10px 12px;background:var(--card);
     border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .12s;
   }
@@ -102,11 +117,18 @@
   .pr-unit{font-size:.9rem;font-weight:800;color:var(--text);overflow-wrap:break-word;word-break:normal;line-height:1.25;text-align:right;}
   .pr-due{font-size:.72rem;font-weight:700;color:#334155;direction:ltr;text-align:center;white-space:nowrap;}
   .pr-days{text-align:center;white-space:nowrap;}
+
+  /* بطاقة الأيام مع تفصيل الشهور */
+  .days-info{
+    display:inline-flex;flex-direction:column;align-items:center;gap:2px;
+  }
   .days-pill{display:inline-block;padding:3px 7px;border-radius:999px;font-size:.66rem;font-weight:800;white-space:nowrap;line-height:1.4;}
   .days-pill.ok{background:var(--success-soft);color:var(--success);}
   .days-pill.warn{background:var(--warning-soft);color:var(--warning);}
   .days-pill.danger{background:var(--danger-soft);color:var(--danger);}
   .days-pill.paid{background:#d1fae5;color:#047857;}
+  .days-months{font-size:.58rem;font-weight:700;color:var(--text-soft);line-height:1.2;white-space:nowrap;}
+
   .pr-amount{text-align:center;line-height:1.15;min-width:0;}
   .pr-method{font-size:.56rem;font-weight:700;color:var(--text-soft);letter-spacing:-.1px;margin-bottom:1px;white-space:nowrap;}
   .pr-money{font-size:.78rem;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums;white-space:nowrap;}
@@ -183,6 +205,8 @@
   .detail-label{color:var(--text-muted);font-weight:700;flex-shrink:0;font-size:.85rem;}
   .detail-value{color:var(--text);font-weight:800;text-align:left;direction:ltr;font-size:.88rem;}
   .detail-value.rtl{direction:rtl;text-align:right;}
+  .detail-value .sub-months{display:block;font-size:.72rem;color:var(--text-soft);font-weight:700;margin-top:2px;}
+
   .detail-actions{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:7px;margin-bottom:16px;}
   .detail-actions button{padding:11px 4px;border:none;border-radius:11px;font-family:inherit;font-size:.85rem;font-weight:800;cursor:pointer;line-height:1.3;}
   .detail-actions .btn-pay{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 2px 8px rgba(16,185,129,.3);}
@@ -217,6 +241,7 @@
   .confirm-next-days{display:inline-block;margin-top:8px;padding:4px 11px;border-radius:999px;font-size:.8rem;font-weight:800;background:var(--success-soft);color:var(--success);}
   .confirm-next-days.warn{background:var(--warning-soft);color:var(--warning);}
   .confirm-next-days.danger{background:var(--danger-soft);color:var(--danger);}
+  .confirm-next-months{display:block;font-size:.72rem;color:var(--text-soft);font-weight:700;margin-top:4px;}
 
   .delete-text{text-align:center;font-size:.95rem;color:#334155;margin:0 0 12px;font-weight:700;line-height:1.6;}
   .delete-text strong{color:var(--danger);font-size:1.02rem;}
@@ -270,12 +295,13 @@
   .hidden{display:none !important;}
 
   @media (max-width: 380px){
-    .payments-head,.payment-row{grid-template-columns:1.3fr 0.95fr 0.85fr 1.3fr 30px;gap:4px;padding:9px 8px;}
+    .payments-head,.payment-row{grid-template-columns:1.3fr 0.95fr 0.9fr 1.3fr 30px;gap:4px;padding:9px 8px;}
     .pr-unit{font-size:.84rem;}
     .pr-due{font-size:.66rem;}
     .pr-money{font-size:.72rem;}
     .pr-method{font-size:.52rem;}
     .days-pill{font-size:.6rem;padding:2px 5px;}
+    .days-months{font-size:.52rem;}
     .pay-btn{width:26px;height:26px;font-size:.8rem;}
   }
 </style>
@@ -284,18 +310,15 @@
 
 <header>
   <div class="header-left-tools">
-    <button class="header-tool-btn" id="fontSizeBtn" title="حجم الخط">Aa</button>
     <button class="header-tool-btn" onclick="location.href='babycare.html'" title="الذهاب إلى الحضانة">👼 الحضانة</button>
     <button class="header-tool-btn" id="unitsBtn" title="الوحدات">🏠 الوحدات</button>
-    <button class="header-tool-btn" id="logBtn" title="السجل">📋</button>
+    <button class="header-tool-btn" id="logBtn" title="السجل">📋 السجل</button>
   </div>
 
   <div class="header-right-tools">
-    <button class="header-tool-btn" id="refreshBtn" title="تحديث">🔄</button>
-    <div class="sync-status" id="syncStatus">
-      <span class="dot"></span>
-      <span id="syncText">جارٍ الاتصال…</span>
-    </div>
+    <button class="header-mini-btn" id="refreshBtn" title="تحديث">🔄</button>
+    <button class="header-mini-btn" id="fontSizeBtn" title="حجم الخط">Aa</button>
+    <div class="sync-dot gray" id="syncDot" title="حالة المزامنة"></div>
   </div>
 
   <h1>🏢 إدارة الإيجارات</h1>
@@ -418,6 +441,7 @@
       <div class="confirm-next-label">الدفعة القادمة ستكون في</div>
       <div class="confirm-next-date" id="payNextDate">—</div>
       <div class="confirm-next-days" id="payNextDays">—</div>
+      <div class="confirm-next-months" id="payNextMonths"></div>
     </div>
     <div class="modal-actions">
       <button type="button" class="btn-success" id="payConfirmBtn">✓ نعم، استلمت المبلغ</button>
@@ -515,19 +539,18 @@
   'use strict';
 
   /* ═══════════════════════════════════════════════════════════════
-     🔥🔥🔥  ضعي هنا نفس إعدادات Firebase المستخدمة في babycare.html
+     Firebase Config — نفس إعدادات babycare.html
      ═══════════════════════════════════════════════════════════════ */
   const firebaseConfig = {
-  apiKey: "AIzaSyAfJAirfIorI6HvT8zUEmWYQYzH1et1i4c",
-  authDomain: "babycare-132a9.firebaseapp.com",
-  projectId: "babycare-132a9",
-  storageBucket: "babycare-132a9.firebasestorage.app",
-  messagingSenderId: "665179210280",
-  appId: "1:665179210280:web:c834e420d7ec43d9796b1d",
-  measurementId: "G-HWRVRWPNDP",
+    apiKey: "AIzaSyAfJAirfIorI6HvT8zUEmWYQYzH1et1i4c",
+    authDomain: "babycare-132a9.firebaseapp.com",
+    projectId: "babycare-132a9",
+    storageBucket: "babycare-132a9.firebasestorage.app",
+    messagingSenderId: "665179210280",
+    appId: "1:665179210280:web:c834e420d7ec43d9796b1d",
+    measurementId: "G-HWRVRWPNDP",
     databaseURL: "https://babycare-132a9-default-rtdb.firebaseio.com/"
   };
-  /* ═══════════════════════════════════════════════════════════════ */
 
   const CURRENCY     = 'ريال';
   const STORAGE_KEY  = 'rental_units_v2';
@@ -550,7 +573,9 @@
     annual:    { label: 'سنوي',     short: 'سنوي',  months: 12 }
   };
 
-  /* ========= حجم الخط ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     حجم الخط
+     ═══════════════════════════════════════════════════════════════ */
   const FONT_SIZES  = [15, 16, 17, 18, 19, 20, 22];
   const FONT_LABELS = ['صغير جداً','صغير','متوسط','كبير','كبير جداً','أكبر','الأكبر'];
   const FONT_DEFAULT_INDEX = 2;
@@ -568,7 +593,9 @@
     } catch(e){}
   }
 
-  /* ========= أدوات ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     أدوات
+     ═══════════════════════════════════════════════════════════════ */
   function todayMidnight(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
   function toISO(d){
     return d.getFullYear() + '-' +
@@ -597,6 +624,15 @@
     if(n === 2) return 'يومان';
     if(n >= 3 && n <= 10) return n + ' أيام';
     return n + ' يوم';
+  }
+  /* ✅ دالة تفصيل الشهور للأيام فوق 30 */
+  function monthsBreakdown(days){
+    if(days <= 30) return '';
+    const months = Math.floor(days / 30);
+    const rem = days % 30;
+    let str = months + ' شهر';
+    if(rem > 0) str += ' ' + rem + ' يوم';
+    return str;
   }
   function daysAgoText(isoDate){
     const d = fromISO(isoDate);
@@ -632,7 +668,9 @@
     return String(str).replace(/[٠-٩۰-۹]/g, function(ch){ return ARABIC_DIGITS_MAP[ch] || ch; });
   }
 
-  /* ========= الحالة ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     الحالة
+     ═══════════════════════════════════════════════════════════════ */
   let units = [];
   let activityLog = [];
   let currentView = 'table';
@@ -646,7 +684,9 @@
   let pickerYear, pickerMonth, pickerDay;
   let detailsFilterUnitId = null;
 
-  /* ========= Firebase ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     Firebase
+     ═══════════════════════════════════════════════════════════════ */
   let rtdb = null;
   let rtdbRef = null;
   let firebaseReady = false;
@@ -668,7 +708,9 @@
     firebaseReady = false;
   }
 
-  /* ========= عناصر الصفحة ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     عناصر الصفحة
+     ═══════════════════════════════════════════════════════════════ */
   const headerDate = document.getElementById('headerDate');
   const statYearCurrent = document.getElementById('statYearCurrent');
   const statYearNext = document.getElementById('statYearNext');
@@ -677,8 +719,7 @@
   const viewToggle = document.getElementById('viewToggle');
   const contentArea = document.getElementById('contentArea');
   const toastEl = document.getElementById('toast');
-  const syncStatusEl = document.getElementById('syncStatus');
-  const syncTextEl = document.getElementById('syncText');
+  const syncDotEl = document.getElementById('syncDot');
 
   const fontSizeBtn = document.getElementById('fontSizeBtn');
   const refreshBtn = document.getElementById('refreshBtn');
@@ -720,6 +761,7 @@
   const payDueDate = document.getElementById('payDueDate');
   const payNextDate = document.getElementById('payNextDate');
   const payNextDays = document.getElementById('payNextDays');
+  const payNextMonths = document.getElementById('payNextMonths');
   const payConfirmBtn = document.getElementById('payConfirmBtn');
   const payCancelBtn = document.getElementById('payCancelBtn');
 
@@ -755,14 +797,20 @@
   const refreshPageBtn = document.getElementById('refreshPageBtn');
   const refreshCancel = document.getElementById('refreshCancel');
 
-  /* ========= حالة المزامنة ========= */
-  function setSyncState(state, text){
-    syncStatusEl.classList.remove('saving','error','offline');
-    if(state) syncStatusEl.classList.add(state);
-    syncTextEl.textContent = text;
+  /* ═══════════════════════════════════════════════════════════════
+     حالة المزامنة — نقطة فقط
+     ═══════════════════════════════════════════════════════════════ */
+  function setSyncState(state){
+    syncDotEl.classList.remove('gray','green','orange','red');
+    if(state === 'saving')      syncDotEl.classList.add('orange');
+    else if(state === 'error')  syncDotEl.classList.add('red');
+    else if(state === 'offline') syncDotEl.classList.add('gray');
+    else                         syncDotEl.classList.add('green');
   }
 
-  /* ========= التخزين ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     التخزين
+     ═══════════════════════════════════════════════════════════════ */
   function buildState(){ return { units: units, activityLog: activityLog }; }
   function saveLocal(){
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(buildState())); } catch(e){}
@@ -778,16 +826,16 @@
 
   async function save(){
     saveLocal();
-    if(!firebaseReady || !rtdbRef){ setSyncState('offline', 'محلي فقط'); return; }
-    setSyncState('saving', 'جارٍ الحفظ…');
+    if(!firebaseReady || !rtdbRef){ setSyncState('offline'); return; }
+    setSyncState('saving');
     const payload = JSON.stringify(buildState());
     lastSavedJSON = payload;
     try {
       await rtdbRef.set(Object.assign(buildState(), { updatedAt: Date.now() }));
-      setSyncState('', 'متزامن');
+      setSyncState('synced');
     } catch(e){
       console.error('RTDB save error:', e);
-      setSyncState('error', 'تعذّر الحفظ');
+      setSyncState('error');
       toast('⚠️ تعذّر الحفظ في السحابة');
     }
   }
@@ -795,8 +843,8 @@
   async function load(){
     loadLocal();
     render();
-    if(!firebaseReady || !rtdbRef){ setSyncState('offline', 'غير متصل'); return; }
-    setSyncState('saving', 'جارٍ التحميل…');
+    if(!firebaseReady || !rtdbRef){ setSyncState('offline'); return; }
+    setSyncState('saving');
     try {
       const snap = await rtdbRef.once('value');
       if(snap.exists()){
@@ -806,16 +854,16 @@
         lastSavedJSON = JSON.stringify(buildState());
         saveLocal();
         render();
-        setSyncState('', 'متزامن');
+        setSyncState('synced');
       } else if(units.length > 0){
         await save();
       } else {
-        setSyncState('', 'متزامن');
+        setSyncState('synced');
       }
       listenRealtime();
     } catch(e){
       console.error('RTDB load error:', e);
-      setSyncState('error', 'تعذّر الاتصال');
+      setSyncState('error');
     }
   }
 
@@ -835,15 +883,17 @@
       lastSavedJSON = incomingJSON;
       saveLocal();
       render();
-      setSyncState('', 'متزامن');
+      setSyncState('synced');
       toast('☁️ تم تحديث البيانات من جهاز آخر');
     }, function(err){
       console.error('RTDB listen error:', err);
-      setSyncState('error', 'انقطع الاتصال');
+      setSyncState('error');
     });
   }
 
-  /* ========= السجل ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     السجل
+     ═══════════════════════════════════════════════════════════════ */
   function addLog(type, data){
     const entry = Object.assign({ id: uid(), type: type, timestamp: Date.now() }, data || {});
     activityLog.unshift(entry);
@@ -881,7 +931,9 @@
     return formatDate(d) + ' - ' + h + ':' + m + ' ' + p;
   }
 
-  /* ========= حسابات الإيجار ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     حسابات الإيجار
+     ═══════════════════════════════════════════════════════════════ */
   function getMonthsForUnit(unit){
     if(unit.paymentMethod === 'custom'){
       const cm = Number(unit.customMonths);
@@ -966,7 +1018,6 @@
     return { totalCurrent: totalCurrent, totalNext: totalNext };
   }
 
-  /* ========= تجميع حسب الشهر ========= */
   function groupByMonth(payments){
     const groups = {};
     payments.forEach(function(p){
@@ -1015,7 +1066,7 @@
         let daysCell = '';
         if(p.paid){
           const agoTxt = p.paidDate ? daysAgoText(p.paidDate) : 'اليوم';
-          daysCell = '<span class="days-pill paid">' + agoTxt + '</span>';
+          daysCell = '<div class="days-info"><span class="days-pill paid">' + agoTxt + '</span></div>';
         } else {
           const days = Math.round((d - today) / 86400000);
           let level, text;
@@ -1023,7 +1074,13 @@
           else if(days === 0){ level = 'danger'; text = 'اليوم'; }
           else if(days <= 7){ level = 'warn'; text = days === 1 ? 'يوم' : days + ' أيام'; }
           else { level = 'ok'; text = days + ' يوم'; }
-          daysCell = '<span class="days-pill ' + level + '">' + text + '</span>';
+          let monthsText = '';
+          if(days > 30) monthsText = monthsBreakdown(days);
+          else if(days < -30) monthsText = monthsBreakdown(Math.abs(days));
+          daysCell = '<div class="days-info">' +
+            '<span class="days-pill ' + level + '">' + text + '</span>' +
+            (monthsText ? '<span class="days-months">' + monthsText + '</span>' : '') +
+          '</div>';
         }
         const methodLabel = p.methodLabel || '—';
         let actionCell = '';
@@ -1051,7 +1108,9 @@
     return html;
   }
 
-  /* ========= الرسم ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     الرسم
+     ═══════════════════════════════════════════════════════════════ */
   function render(){
     headerDate.textContent = formatDateWithDay(todayMidnight());
     renderStats();
@@ -1190,7 +1249,9 @@
     renderContent();
   });
 
-  /* ========= نافذة الوحدات ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     نافذة الوحدات
+     ═══════════════════════════════════════════════════════════════ */
   function openUnitsModal(){ renderUnitsList(); unitsModal.classList.add('show'); }
   function closeUnitsModal(){ unitsModal.classList.remove('show'); }
   unitsBtn.addEventListener('click', openUnitsModal);
@@ -1234,7 +1295,9 @@
 
   addUnitBtn.addEventListener('click', function(){ closeUnitsModal(); openFormModal(null); });
 
-  /* ========= نموذج ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     نموذج
+     ═══════════════════════════════════════════════════════════════ */
   function setMethod(m){
     selectedMethod = m;
     Array.prototype.forEach.call(methodGrid.children, function(b){
@@ -1372,7 +1435,9 @@
     render();
   });
 
-  /* ========= تفاصيل الوحدة ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     تفاصيل الوحدة
+     ═══════════════════════════════════════════════════════════════ */
   function openDetailModal(id){
     const u = units.find(function(x){ return x.id === id; });
     if(!u) return;
@@ -1386,14 +1451,24 @@
     detailType.textContent = methodLabel;
 
     let nextDueText = '—';
-    let daysText = '—';
+    let daysTextHtml = '—';
     if(nextDue){
       nextDueText = formatDate(nextDue.date);
       const today = todayMidnight();
       const days = Math.round((nextDue.date - today) / 86400000);
-      if(days < 0) daysText = 'متأخر ' + daysWord(Math.abs(days));
-      else if(days === 0) daysText = 'مستحق اليوم';
-      else daysText = 'باقي ' + daysWord(days);
+      if(days < 0){
+        daysTextHtml = 'متأخر ' + daysWord(Math.abs(days));
+        const mb = monthsBreakdown(Math.abs(days));
+        if(mb) daysTextHtml += '<span class="sub-months">' + mb + '</span>';
+      }
+      else if(days === 0){
+        daysTextHtml = 'مستحق اليوم';
+      }
+      else {
+        daysTextHtml = 'باقي ' + daysWord(days);
+        const mb = monthsBreakdown(days);
+        if(mb) daysTextHtml += '<span class="sub-months">' + mb + '</span>';
+      }
     }
 
     detailGrid.innerHTML =
@@ -1401,7 +1476,7 @@
       '<div class="detail-row"><span class="detail-label">الإيجار السنوي</span><span class="detail-value">' + formatMoneyFull(u.annualRent) + '</span></div>' +
       '<div class="detail-row"><span class="detail-label">قيمة الدفعة</span><span class="detail-value">' + formatMoneyFull(paymentAmt) + '</span></div>' +
       '<div class="detail-row"><span class="detail-label">الاستحقاق القادم</span><span class="detail-value">' + nextDueText + '</span></div>' +
-      '<div class="detail-row"><span class="detail-label">المتبقي</span><span class="detail-value rtl">' + daysText + '</span></div>';
+      '<div class="detail-row"><span class="detail-label">المتبقي</span><span class="detail-value rtl">' + daysTextHtml + '</span></div>';
 
     const hist = Array.isArray(u.history) ? u.history.slice().sort(function(a, b){
       return a.dueDate < b.dueDate ? 1 : (a.dueDate > b.dueDate ? -1 : 0);
@@ -1462,7 +1537,9 @@
     undoPayment(btn.dataset.histDel, btn.dataset.histDue);
   });
 
-  /* ========= تأكيد الدفعة ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     تأكيد الدفعة
+     ═══════════════════════════════════════════════════════════════ */
   function openPayModal(unitId, dueIso){
     const u = units.find(function(x){ return x.id === unitId; });
     if(!u) return;
@@ -1498,6 +1575,9 @@
     else { daysMsg = 'باقي ' + daysWord(days); daysClass = ''; }
     payNextDays.textContent = daysMsg;
     payNextDays.className = 'confirm-next-days ' + daysClass;
+
+    const mb = monthsBreakdown(Math.abs(days));
+    payNextMonths.textContent = (mb && Math.abs(days) > 30) ? mb : '';
 
     payModal.classList.add('show');
   }
@@ -1542,7 +1622,9 @@
     toast('↩️ تم إلغاء الدفعة');
   }
 
-  /* ========= تأكيد الحذف ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     تأكيد الحذف
+     ═══════════════════════════════════════════════════════════════ */
   function openDeleteModal(id){
     const u = units.find(function(x){ return x.id === id; });
     if(!u) return;
@@ -1568,7 +1650,9 @@
     toast('🗑️ تم حذف ' + name);
   });
 
-  /* ========= السجل ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     السجل
+     ═══════════════════════════════════════════════════════════════ */
   function openLogModal(){ renderLog(); logModal.classList.add('show'); }
   function closeLogModal(){ logModal.classList.remove('show'); }
   logBtn.addEventListener('click', openLogModal);
@@ -1594,7 +1678,9 @@
     logList.innerHTML = html;
   }
 
-  /* ========= منتقي التاريخ ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     منتقي التاريخ
+     ═══════════════════════════════════════════════════════════════ */
   function openPicker(){
     const base = selectedStartDate ? fromISO(selectedStartDate) : todayMidnight();
     pickerYear = base.getFullYear();
@@ -1665,7 +1751,9 @@
     closePicker();
   });
 
-  /* ========= حجم الخط ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     حجم الخط
+     ═══════════════════════════════════════════════════════════════ */
   function openFontModal(){ updateFontUI(); fontModal.classList.add('show'); }
   function closeFontModal(){ fontModal.classList.remove('show'); }
   function updateFontUI(){
@@ -1684,7 +1772,9 @@
     if(fontLevel < FONT_SIZES.length - 1){ fontLevel++; applyFontLevel(); saveFontLevel(); updateFontUI(); }
   });
 
-  /* ========= التحديث ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     التحديث
+     ═══════════════════════════════════════════════════════════════ */
   function openRefresh(){ refreshModal.classList.add('show'); }
   function closeRefresh(){ refreshModal.classList.remove('show'); }
   refreshBtn.addEventListener('click', openRefresh);
@@ -1694,7 +1784,7 @@
   refreshDataBtn.addEventListener('click', async function(){
     closeRefresh();
     if(!firebaseReady || !rtdbRef){ toast('⚠️ Firebase غير متصل'); return; }
-    setSyncState('saving', 'جارٍ التحديث…');
+    setSyncState('saving');
     toast('🔄 جارٍ تحديث البيانات…');
     try {
       const snap = await rtdbRef.once('value');
@@ -1705,15 +1795,15 @@
         lastSavedJSON = JSON.stringify(buildState());
         saveLocal();
         render();
-        setSyncState('', 'متزامن');
+        setSyncState('synced');
         toast('✅ تم تحديث البيانات');
       } else {
-        setSyncState('', 'متزامن');
+        setSyncState('synced');
         toast('ℹ️ لا توجد بيانات في السحابة بعد');
       }
     } catch(e){
       console.error('Refresh error:', e);
-      setSyncState('error', 'تعذّر التحديث');
+      setSyncState('error');
       toast('⚠️ تعذّر تحديث البيانات');
     }
   });
@@ -1740,7 +1830,9 @@
     } catch(e){ location.reload(); }
   });
 
-  /* ========= بدء التشغيل ========= */
+  /* ═══════════════════════════════════════════════════════════════
+     بدء التشغيل
+     ═══════════════════════════════════════════════════════════════ */
   loadFontLevel();
   applyFontLevel();
   load();
