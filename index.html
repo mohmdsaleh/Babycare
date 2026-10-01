@@ -8,7 +8,7 @@
 <style>
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
   html{
-    font-size:17px; /* قابل للتغيير من زر حجم الخط */
+    font-size:17px;
     -webkit-text-size-adjust:100%;
   }
   body{
@@ -43,7 +43,7 @@
   }
   .font-size-btn:active{transform:scale(.94);background:rgba(255,255,255,.32);}
 
-  main{max-width:660px;margin:0 auto;padding:0 12px;}
+  main{max-width:680px;margin:0 auto;padding:0 10px;}
 
   /* ===== الإحصائيات ===== */
   .stats-grid{
@@ -84,60 +84,66 @@
   }
   .children-table th{
     background:#f3f8f6;color:#46605b;
-    padding:10px 4px;font-size:.78rem;font-weight:800;
+    padding:9px 3px;font-size:.72rem;font-weight:800;
     text-align:center;border-bottom:2px solid #e2eeea;
+    white-space:nowrap;
   }
   .children-table td{
-    padding:10px 4px;border-bottom:1px solid #eef4f2;
-    font-size:.9rem;vertical-align:middle;
+    padding:10px 3px;border-bottom:1px solid #eef4f2;
+    vertical-align:middle;
   }
 
   /* توزيع الأعمدة: الاسم | المبلغ | التاريخ | المتبقي */
   .children-table th:nth-child(1),
-  .children-table td:nth-child(1){width:32%;text-align:right;padding-right:10px;}
+  .children-table td:nth-child(1){width:46%;text-align:right;padding-right:8px;}
   .children-table th:nth-child(2),
-  .children-table td:nth-child(2){width:17%;text-align:center;}
+  .children-table td:nth-child(2){width:16%;text-align:center;}
   .children-table th:nth-child(3),
-  .children-table td:nth-child(3){width:24%;text-align:center;}
+  .children-table td:nth-child(3){width:20%;text-align:center;}
   .children-table th:nth-child(4),
-  .children-table td:nth-child(4){width:27%;text-align:center;}
+  .children-table td:nth-child(4){width:18%;text-align:center;}
 
   .child-row{cursor:pointer;transition:background .15s;}
   .child-row:active{background:#f0f7f5;}
   .child-row.expanded{background:#fdeceb;}
   .child-row.expanded td{border-bottom:none;}
 
-  /* الاسم: يظهر حتى سطرين */
+  /* ===== خلية الاسم: عرض واسع، يلتف بشكل طبيعي ===== */
   .name-cell{
     font-weight:800;color:#17302b;
-    display:flex;align-items:center;gap:5px;
+    display:flex;align-items:flex-start;gap:5px;
   }
   .name-cell .arrow{
-    font-size:.65rem;color:#8fa39e;transition:transform .2s;
-    flex-shrink:0;
+    font-size:.6rem;color:#8fa39e;transition:transform .2s;
+    flex-shrink:0;margin-top:.35rem;
   }
   .child-row.expanded .name-cell .arrow{transform:rotate(90deg);color:#c0392b;}
   .name-text{
     flex:1;min-width:0;
-    display:-webkit-box;
-    -webkit-line-clamp:2;
-    -webkit-box-orient:vertical;
-    overflow:hidden;
-    word-break:break-word;
-    line-height:1.3;
+    /* كسر الكلمات العادية فقط عند الحاجة، وليس حرفاً حرفاً */
+    overflow-wrap:break-word;
+    word-break:normal;
+    line-break:auto;
+    line-height:1.35;
     text-align:right;
+    font-size:.98rem;
   }
 
-  .amount-cell{font-weight:800;color:#1f7a6b;white-space:nowrap;font-size:.85rem;}
+  /* ===== خلايا أخرى: خط أصغر ===== */
+  .amount-cell{
+    font-weight:800;color:#1f7a6b;
+    white-space:nowrap;font-size:.76rem;
+  }
   .date-cell{
-    font-weight:700;color:#46605b;white-space:nowrap;
-    direction:ltr;font-size:.82rem;
+    font-weight:700;color:#46605b;
+    white-space:nowrap;direction:ltr;font-size:.72rem;
   }
   .days-cell{white-space:nowrap;}
 
   .pill{
-    display:inline-block;padding:4px 8px;border-radius:999px;
-    font-size:.76rem;font-weight:800;white-space:nowrap;
+    display:inline-block;padding:3px 6px;border-radius:999px;
+    font-size:.68rem;font-weight:800;white-space:nowrap;
+    line-height:1.5;
   }
   .pill.ok{background:#e2f7ee;color:#0d7a55;}
   .pill.warn{background:#fff4e0;color:#a86a00;}
@@ -721,21 +727,18 @@
   const FONT_KEY    = 'nursery_font_level';
 
   /* ========= حجم الخط ========= */
-  const FONT_SIZES  = [15, 16, 17, 18, 19, 20, 22];  // 7 مستويات
+  const FONT_SIZES  = [15, 16, 17, 18, 19, 20, 22];
   const FONT_LABELS = ['صغير جداً','صغير','متوسط','كبير','كبير جداً','أكبر','الأكبر'];
-  const FONT_DEFAULT_INDEX = 2;  // 17px
+  const FONT_DEFAULT_INDEX = 2;
 
   let fontLevel = FONT_DEFAULT_INDEX;
 
   function applyFontLevel(){
     document.documentElement.style.fontSize = FONT_SIZES[fontLevel] + 'px';
-    // إعادة حساب ارتفاع الخلايا وما شابه — لا حاجة لتعديل شيء
   }
-
   function saveFontLevel(){
     try { localStorage.setItem(FONT_KEY, String(fontLevel)); } catch(e){}
   }
-
   function loadFontLevel(){
     try {
       const v = localStorage.getItem(FONT_KEY);
@@ -1064,7 +1067,6 @@
     }
     updateDateUI();
     formModal.classList.add('show');
-    // لا نقوم بتركيز أي حقل — لتجنّب ظهور لوحة المفاتيح تلقائياً
   }
 
   function closeFormModal(){
@@ -1387,7 +1389,6 @@
     fontLevelEl.textContent = FONT_LABELS[fontLevel];
     fontMinus.disabled = (fontLevel === 0);
     fontPlus.disabled  = (fontLevel === FONT_SIZES.length - 1);
-    // معاينة بحجم مختلف قليلاً لتوضيح الفرق
     fontPreview.textContent = 'نموذج للنص — ' + FONT_LABELS[fontLevel];
   }
 
