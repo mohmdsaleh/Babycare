@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1f7a6b">
+<title>حضانة بيبي كير</title>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{font-size:17px;-webkit-text-size-adjust:100%;}
+  body{margin:0;font-family:"Segoe UI",Tahoma,"Noto Kufi Arabic",Arial,sans-serif;background:#eef4f2;color:#1e2f2c;font-size:1rem;line-height:1.6;padding-bottom:40px;}
+
+  /* ===== الترويسة ===== */
+  header{position:relative;background:linear-gradient(135deg,#1f7a6b,#37b39a);color:#fff;padding:14px 16px 18px;text-align:center;border-radius:0 0 22px 22px;box-shadow:0 5px 16px rgba(31,122,107,.25);}
+  header h1{margin:0;font-size:1.3rem;font-weight:800;}
+  .header-date{margin-top:6px;font-size:.94rem;font-weight:700;letter-spacing:.2px;}
+
+  .header-btn{position:absolute;top:10px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.45);color:#fff;font-family:inherit;font-size:.92rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;}
+  .header-btn:active{transform:scale(.94);background:rgba(255,255,255,.32);}
+  #fontSizeBtn{left:10px;}
+  #refreshBtn{left:56px;font-size:1.15rem;}
+
+  .header-right-tools{position:absolute;top:14px;right:12px;display:flex;align-items:center;gap:5px;}
+  .log-btn{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);color:#fff;font-family:inherit;font-size:.7rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;}
+  .log-btn:active{transform:scale(.94);background:rgba(255,255,255,.3);}
+
+  .sync-status{display:flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;white-space:nowrap;}
+  .sync-status .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 5px rgba(74,222,128,.8);}
+  .sync-status.saving .dot{background:#fbbf24;box-shadow:0 0 5px rgba(251,191,36,.8);}
+  .sync-status.error .dot{background:#ef4444;box-shadow:0 0 5px rgba(239,68,68,.8);}
+  .sync-status.offline .dot{background:#9ca3af;box-shadow:none;}
+
+  main{max-width:680px;margin:0 auto;padding:0 10px;}
+
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0 10px;}
+  .stat-box{background:#fff;border-radius:14px;padding:11px 6px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06);border-bottom:3px solid #37b39a;}
+  .stat-num{font-size:1.15rem;font-weight:800;color:#1f7a6b;line-height:1.25;white-space:nowrap;}
+  .stat-lbl{font-size:.76rem;color:#5a6f6b;font-weight:700;margin-top:3px;line-height:1.3;}
+
+  .add-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;margin:2px 0 14px;padding:12px;background:#1f7a6b;color:#fff;border:none;border-radius:14px;font-family:inherit;font-size:1rem;font-weight:800;cursor:pointer;box-shadow:0 3px 10px rgba(31,122,107,.28);}
+  .add-btn:active{transform:scale(.985);}
+
+  .table-wrap{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.07);}
+  .children-table{width:100%;border-collapse:collapse;table-layout:fixed;}
+  .children-table th{background:#f3f8f6;color:#46605b;padding:9px 3px;font-size:.72rem;font-weight:800;text-align:center;border-bottom:2px solid #e2eeea;white-space:nowrap;}
+  .children-table td{padding:10px 3px;border-bottom:1px solid #eef4f2;vertical-align:middle;}
+  .children-table th:nth-child(1),.children-table td:nth-child(1){width:46%;text-align:right;padding-right:8px;}
+  .children-table th:nth-child(2),.children-table td:nth-child(2){width:16%;text-align:center;}
+  .children-table th:nth-child(3),.children-table td:nth-child(3){width:20%;text-align:center;}
+  .children-table th:nth-child(4),.children-table td:nth-child(4){width:18%;text-align:center;}
+
+  .child-row{cursor:pointer;transition:background .15s;}
+  .child-row:active{background:#f0f7f5;}
+  .child-row:last-child td{border-bottom:none;}
+
+  .name-cell{font-weight:800;color:#17302b;position:relative;}
+  .name-cell .arrow{
+    display:inline-block;
+    font-size:.6rem;color:#8fa39e;
+    vertical-align:middle;
+    margin-left:6px;
+    transition:transform .2s;
+    line-height:1;
+  }
+  .name-text{
+    display:inline;
+    overflow-wrap:break-word;
+    word-break:normal;
+    line-height:1.35;
+    font-size:.98rem;
+  }
+
+  .amount-cell{font-weight:800;color:#1f7a6b;white-space:nowrap;font-size:.76rem;}
+  .date-cell{font-weight:700;color:#46605b;white-space:nowrap;direction:ltr;font-size:.72rem;}
+  .days-cell{white-space:nowrap;}
+  .pill{display:inline-block;padding:3px 6px;border-radius:999px;font-size:.68rem;font-weight:800;white-space:nowrap;line-height:1.5;}
+  .pill.ok{background:#e2f7ee;color:#0d7a55;}
+  .pill.warn{background:#fff4e0;color:#a86a00;}
+  .pill.danger{background:#fdeceb;color:#c0392b;}
+
+  /* ===== قسم الملاحظات ===== */
+  .notes-section{margin-top:18px;}
+  .notes-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 4px;}
+  .notes-title{font-size:1.02rem;font-weight:800;color:#46605b;margin:0;}
+  .add-note-btn{padding:8px 14px;border-radius:11px;background:#1f7a6b;color:#fff;border:none;font-family:inherit;font-size:.85rem;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(31,122,107,.28);}
+  .add-note-btn:active{transform:scale(.97);}
+  .notes-list{display:flex;flex-direction:column;gap:8px;}
+  .note-item{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-right:5px solid #f0a500;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+  .note-content{flex:1;min-width:0;}
+  .note-text{font-size:.94rem;font-weight:700;color:#37514c;line-height:1.55;word-break:break-word;white-space:pre-wrap;}
+  .note-date{font-size:.72rem;color:#8fa39e;margin-top:5px;font-weight:600;}
+  .note-del-btn{width:30px;height:30px;border-radius:50%;border:none;background:#fdeceb;color:#c0392b;font-size:1rem;font-weight:800;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1;padding:0;}
+  .note-del-btn:active{transform:scale(.92);}
+  .notes-empty{text-align:center;color:#a0b3af;padding:20px;font-size:.9rem;font-weight:600;background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+
+  .empty{text-align:center;color:#7d918c;padding:40px 20px;font-size:1rem;line-height:2;background:#fff;border-radius:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);}
+
+  /* ===== النوافذ المنبثقة ===== */
+  .modal-overlay{position:fixed;inset:0;background:rgba(20,45,40,.62);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:14px;z-index:1500;opacity:0;pointer-events:none;transition:opacity .25s;}
+  .modal-overlay.show{opacity:1;pointer-events:auto;}
+  .modal-card{background:#fff;border-radius:22px;padding:20px 18px;max-width:420px;width:100%;box-shadow:0 24px 70px rgba(0,0,0,.35);transform:scale(.9);transition:transform .25s;max-height:92vh;overflow-y:auto;}
+  .modal-overlay.show .modal-card{transform:scale(1);}
+  .modal-title{margin:0 0 16px;font-size:1.15rem;font-weight:800;color:#17302b;text-align:center;}
+
+  .form-field{margin-bottom:13px;}
+  .form-field label{display:block;font-weight:700;margin-bottom:6px;font-size:.95rem;color:#3c4f4b;}
+  .form-field input[type=text],.form-field input[type=number],.form-field textarea{
+    width:100%;padding:12px;font-size:1.05rem;font-family:inherit;
+    border:2px solid #cfe3de;border-radius:12px;background:#f8fcfb;color:#1e2f2c;
+    transition:border-color .15s, background .15s, box-shadow .15s;
+  }
+  .form-field textarea{resize:vertical;min-height:100px;line-height:1.6;}
+  .form-field input:focus,.form-field textarea:focus{outline:none;border-color:#37b39a;background:#fff;}
+
+  /* ===== تمييز الحقل الناقص ===== */
+  .form-field input.input-error,
+  .form-field textarea.input-error{
+    border-color:#ef4444 !important;
+    background:#fff5f5 !important;
+    box-shadow:0 0 0 3px rgba(239,68,68,.18);
+    animation:shake .35s;
+  }
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    25%{transform:translateX(-4px);}
+    75%{transform:translateX(4px);}
+  }
+
+  .cycle-toggle{display:flex;gap:8px;}
+  .cycle-toggle button{flex:1;padding:11px 8px;font-size:1rem;font-weight:800;font-family:inherit;border:2px solid #cfe3de;background:#f8fcfb;color:#5a6f6b;border-radius:11px;cursor:pointer;transition:.15s;}
+  .cycle-toggle button.active{background:#1f7a6b;border-color:#1f7a6b;color:#fff;box-shadow:0 2px 7px rgba(31,122,107,.3);}
+
+  .date-button{width:100%;padding:12px;display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f8fcfb;border:2px solid #cfe3de;border-radius:12px;font-family:inherit;font-size:1.05rem;font-weight:800;color:#17302b;cursor:pointer;text-align:right;}
+  .date-button:active{background:#eef8f4;}
+  .date-button .icon{font-size:1.15rem;}
+
+  .date-preview{margin-top:8px;padding:9px 11px;background:#f8fcfb;border:1px solid #d6ebe5;border-radius:11px;font-size:.86rem;line-height:1.6;}
+  .date-preview:empty{display:none;padding:0;border:none;margin:0;}
+  .preview-row{color:#37514c;font-weight:700;}
+  .preview-days{margin-top:6px;padding:7px 10px;border-radius:8px;font-weight:800;text-align:center;font-size:.95rem;}
+  .preview-days.ok{background:#e2f7ee;color:#0d7a55;}
+  .preview-days.warn{background:#fff4e0;color:#a86a00;}
+  .preview-days.danger{background:#fdeceb;color:#c0392b;}
+
+  .modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+  .btn-primary{width:100%;padding:12px;font-size:1rem;font-weight:800;font-family:inherit;background:#1f7a6b;color:#fff;border:none;border-radius:13px;cursor:pointer;box-shadow:0 3px 9px rgba(31,122,107,.3);}
+  .btn-primary:active{transform:scale(.985);}
+  .btn-ghost{width:100%;padding:10px;font-size:.95rem;font-weight:700;font-family:inherit;background:#f0f2f1;color:#5a6f6b;border:none;border-radius:12px;cursor:pointer;}
+  .btn-ghost:active{transform:scale(.985);}
+  .btn-danger{width:100%;padding:12px;font-size:1rem;font-weight:800;font-family:inherit;background:#c0392b;color:#fff;border:none;border-radius:13px;cursor:pointer;box-shadow:0 3px 9px rgba(192,57,43,.3);}
+  .btn-danger:active{transform:scale(.985);}
+
+  /* ===== منتقي التاريخ ===== */
+  .picker-card{background:#fff;border-radius:22px;padding:16px 14px;max-width:390px;width:100%;box-shadow:0 24px 70px rgba(0,0,0,.4);transform:scale(.9);transition:transform .25s;max-height:94vh;overflow-y:auto;}
+  .modal-overlay.show .picker-card{transform:scale(1);}
+  .picker-title{margin:0 0 10px;text-align:center;font-size:1.05rem;font-weight:800;color:#17302b;}
+  .picker-selected{text-align:center;background:#eef4f2;border-radius:12px;padding:10px;margin-bottom:12px;}
+  .picker-selected-value{font-size:1.5rem;font-weight:800;color:#1f7a6b;letter-spacing:1px;direction:ltr;}
+  .picker-selected-label{font-size:.76rem;font-weight:700;color:#5a6f6b;margin-top:2px;}
+
+  .year-nav{display:flex;align-items:center;justify-content:space-between;background:#eef4f2;border-radius:12px;padding:5px;margin-bottom:10px;}
+  .year-nav button{width:38px;height:38px;border-radius:9px;border:none;background:#fff;font-size:1rem;font-weight:800;color:#1f7a6b;cursor:pointer;font-family:inherit;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .year-nav button:active{transform:scale(.94);}
+  .year-nav .year-display{font-size:1.15rem;font-weight:800;color:#17302b;letter-spacing:.5px;direction:ltr;}
+
+  .section-mini-label{font-size:.76rem;font-weight:800;color:#5a6f6b;margin:3px 0 6px;}
+  .month-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:10px;}
+  .month-grid button{padding:9px 2px;font-size:.92rem;font-weight:800;font-family:inherit;background:#f8fcfb;border:2px solid #cfe3de;border-radius:10px;color:#37514c;cursor:pointer;transition:.15s;}
+  .month-grid button:active{transform:scale(.95);}
+  .month-grid button.active{background:#1f7a6b;color:#fff;border-color:#1f7a6b;box-shadow:0 2px 7px rgba(31,122,107,.28);}
+
+  .weekday-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
+  .weekday-header span{text-align:center;font-size:.72rem;font-weight:800;color:#7d918c;padding:4px 0;}
+  .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px;}
+  .day-grid button,.day-empty{aspect-ratio:1/1;padding:2px;font-size:.9rem;font-weight:700;font-family:inherit;background:#f8fcfb;border:2px solid #cfe3de;border-radius:9px;color:#37514c;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;}
+  .day-grid button:active{transform:scale(.93);}
+  .day-empty{background:transparent;border-color:transparent;cursor:default;pointer-events:none;}
+  .day-grid button.today{border-color:#e05a4f;color:#e05a4f;font-weight:900;background:#fff5f4;}
+  .day-grid button.selected{background:#1f7a6b;color:#fff;border-color:#1f7a6b;box-shadow:0 2px 7px rgba(31,122,107,.28);}
+  .day-grid button.today.selected{background:#1f7a6b;color:#fff;border-color:#e05a4f;box-shadow:0 0 0 3px rgba(224,90,79,.35);}
+
+  .picker-info{background:#f8fcfb;border:1.5px dashed #b8e0d2;border-radius:11px;padding:9px 11px;margin-bottom:10px;text-align:center;min-height:36px;display:flex;align-items:center;justify-content:center;}
+  .picker-info-days{font-size:.9rem;font-weight:800;color:#17302b;}
+  .picker-info-days.danger{color:#c0392b;}
+  .picker-info-days.warn{color:#a86a00;}
+  .picker-info-days.ok{color:#0d7a55;}
+
+  /* ===== أيقونات التأكيد ===== */
+  .confirm-icon,.delete-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 12px;}
+  .confirm-icon{background:linear-gradient(135deg,#e2f7ee,#c4ecd9);box-shadow:0 6px 18px rgba(31,122,107,.2);}
+  .delete-icon{background:linear-gradient(135deg,#fdeceb,#f8d5d2);box-shadow:0 6px 18px rgba(192,57,43,.18);}
+
+  .confirm-child{margin:0 0 14px;font-size:.95rem;color:#5a6f6b;font-weight:700;text-align:center;}
+  .confirm-child strong{color:#1f7a6b;font-size:1.05rem;}
+  .confirm-amount{background:linear-gradient(135deg,#1f7a6b,#37b39a);border-radius:14px;padding:14px;color:#fff;margin-bottom:12px;box-shadow:0 6px 18px rgba(31,122,107,.28);text-align:center;}
+  .confirm-amount-label{display:block;font-size:.8rem;opacity:.9;margin-bottom:3px;font-weight:700;}
+  .confirm-amount-value{display:block;font-size:1.65rem;font-weight:800;line-height:1.2;}
+  .confirm-next{background:#f8fcfb;border:1.5px dashed #b8e0d2;border-radius:12px;padding:11px;margin-bottom:14px;text-align:center;}
+  .confirm-next-label{font-size:.8rem;font-weight:700;color:#5a6f6b;margin-bottom:5px;}
+  .confirm-next-date{font-size:1rem;font-weight:800;color:#17302b;direction:ltr;}
+  .confirm-next-days{display:inline-block;margin-top:7px;padding:4px 11px;border-radius:999px;font-size:.85rem;font-weight:800;background:#e2f7ee;color:#0d7a55;}
+  .confirm-next-days.warn{background:#fff4e0;color:#a86a00;}
+  .confirm-next-days.danger{background:#fdeceb;color:#c0392b;}
+
+  .delete-text{text-align:center;font-size:1rem;color:#37514c;margin:0 0 10px;font-weight:700;line-height:1.65;}
+  .delete-text strong{color:#c0392b;font-size:1.08rem;}
+  .delete-warning{background:#fff5f4;border:1px solid #f8d5d2;border-radius:11px;padding:11px;margin-bottom:14px;font-size:.88rem;font-weight:700;color:#a03a2f;text-align:center;line-height:1.6;}
+  .delete-warning strong{color:#c0392b;font-size:1rem;}
+
+  /* ===== نافذة تفاصيل الطفل ===== */
+  .child-modal-name{margin:0 0 14px;text-align:center;font-size:1.3rem;font-weight:800;color:#17302b;}
+  .child-info{background:#f8fcfb;border:1px solid #d6ebe5;border-radius:12px;padding:12px 14px;margin-bottom:14px;}
+  .child-info .detail-row{display:flex;justify-content:space-between;gap:10px;padding:7px 0;font-size:.94rem;border-bottom:1px dashed #e6efec;}
+  .child-info .detail-row:last-child{border-bottom:none;}
+  .child-info .detail-label{color:#5a6f6b;font-weight:700;flex-shrink:0;}
+  .child-info .detail-value{color:#17302b;font-weight:800;text-align:left;direction:ltr;}
+  .child-info .detail-value.hijri{color:#0d7a55;direction:rtl;}
+
+  .child-modal-actions{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:7px;margin-bottom:14px;}
+  .child-modal-actions button{padding:11px 4px;border:none;border-radius:11px;font-family:inherit;font-size:.88rem;font-weight:800;cursor:pointer;}
+  .child-modal-actions button:active{transform:scale(.97);}
+  .child-modal-actions .btn-pay{background:#1f7a6b;color:#fff;box-shadow:0 2px 7px rgba(31,122,107,.28);}
+  .child-modal-actions .btn-edit{background:#eef4f2;color:#37514c;}
+  .child-modal-actions .btn-del{background:#fdeceb;color:#c0392b;}
+
+  .history-head{margin-top:10px;padding-top:10px;border-top:1.5px dashed #d8ebe5;font-size:.9rem;font-weight:800;color:#46605b;}
+  .history-list{list-style:none;margin:6px 0 0;padding:0;}
+  .history-list li{display:flex;align-items:center;gap:8px;padding:8px 4px;border-bottom:1px solid #f2f6f5;}
+  .history-list li:last-child{border-bottom:none;}
+  .hist-info{flex:1;min-width:0;}
+  .hist-greg{font-size:.88rem;font-weight:700;color:#37514c;direction:ltr;text-align:right;}
+  .hist-age{font-size:.72rem;font-weight:700;color:#8fa39e;margin-top:2px;}
+  .hist-age.advance{color:#a86a00;}
+  .hist-amount{font-size:.92rem;font-weight:800;color:#1f7a6b;white-space:nowrap;}
+  .hist-del{width:28px;height:28px;border-radius:50%;border:none;background:#fdeceb;color:#c0392b;font-size:.95rem;font-weight:800;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1;padding:0;}
+  .hist-del:active{transform:scale(.92);}
+  .hist-empty{text-align:center;color:#a0b3af;padding:12px;font-size:.86rem;font-weight:600;}
+
+  /* ===== نافذة السجل ===== */
+  .log-card{max-width:460px;}
+  .log-section-title{margin:6px 0 8px;font-size:.92rem;font-weight:800;color:#46605b;padding:0 4px;}
+  .log-list,.deleted-list{list-style:none;margin:0 0 14px;padding:0;background:#f8fcfb;border-radius:12px;overflow:hidden;}
+  .log-item{display:flex;gap:9px;padding:10px 12px;border-bottom:1px solid #eaf2ef;align-items:flex-start;}
+  .log-item:last-child{border-bottom:none;}
+  .log-icon{font-size:1.1rem;line-height:1.3;flex-shrink:0;}
+  .log-body{flex:1;min-width:0;}
+  .log-text{font-size:.88rem;font-weight:700;color:#37514c;line-height:1.5;word-break:break-word;}
+  .log-time{font-size:.72rem;color:#8fa39e;margin-top:3px;font-weight:600;direction:ltr;text-align:right;}
+  .log-empty{text-align:center;color:#a0b3af;padding:16px;font-size:.86rem;font-weight:600;background:#f8fcfb;border-radius:12px;margin-bottom:14px;}
+
+  .deleted-item{padding:10px 12px;border-bottom:1px solid #eaf2ef;}
+  .deleted-item:last-child{border-bottom:none;}
+  .deleted-note-text{font-size:.88rem;font-weight:700;color:#37514c;line-height:1.5;word-break:break-word;white-space:pre-wrap;}
+  .deleted-note-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;}
+  .deleted-note-time{font-size:.72rem;color:#8fa39e;font-weight:600;direction:ltr;}
+  .restore-btn{padding:5px 10px;border-radius:9px;background:#1f7a6b;color:#fff;border:none;font-family:inherit;font-size:.74rem;font-weight:800;cursor:pointer;white-space:nowrap;}
+  .restore-btn:active{transform:scale(.95);}
+
+  /* ===== نافذة حجم الخط ===== */
+  .font-modal{max-width:340px;}
+  .font-preview{background:#f8fcfb;border:1px solid #d6ebe5;border-radius:12px;padding:16px;text-align:center;font-size:1rem;color:#37514c;font-weight:700;margin-bottom:16px;min-height:64px;display:flex;align-items:center;justify-content:center;line-height:1.5;}
+  .font-controls{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .font-step{flex:0 0 58px;height:58px;border-radius:14px;border:2px solid #cfe3de;background:#f8fcfb;color:#1f7a6b;font-size:1.7rem;font-weight:800;font-family:inherit;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;}
+  .font-step:active{transform:scale(.95);background:#e2f7ee;}
+  .font-step:disabled{opacity:.3;cursor:not-allowed;transform:none;}
+  .font-level{flex:1;text-align:center;font-weight:800;color:#17302b;font-size:1.05rem;}
+
+  /* ===== نافذة التحديث ===== */
+  .refresh-modal{max-width:380px;}
+  .refresh-option{display:flex;align-items:center;gap:12px;width:100%;padding:14px;margin-bottom:10px;background:#f8fcfb;border:2px solid #cfe3de;border-radius:14px;text-align:right;font-family:inherit;cursor:pointer;transition:.15s;}
+  .refresh-option:active{transform:scale(.98);background:#eef8f4;border-color:#37b39a;}
+  .refresh-option.primary{background:linear-gradient(135deg,#1f7a6b,#37b39a);border-color:#1f7a6b;color:#fff;box-shadow:0 4px 12px rgba(31,122,107,.28);}
+  .refresh-option.primary:active{background:linear-gradient(135deg,#1a6a5d,#2fa088);}
+  .refresh-option .icon{flex:0 0 44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:rgba(31,122,107,.1);}
+  .refresh-option.primary .icon{background:rgba(255,255,255,.22);}
+  .refresh-option .info{flex:1;min-width:0;}
+  .refresh-option .title{font-size:1rem;font-weight:800;color:#17302b;margin-bottom:2px;}
+  .refresh-option.primary .title{color:#fff;}
+  .refresh-option .desc{font-size:.78rem;font-weight:600;color:#5a6f6b;line-height:1.4;}
+  .refresh-option.primary .desc{color:rgba(255,255,255,.85);}
+
+  /* ===== التوست ===== */
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(30px);background:#17302b;color:#fff;padding:12px 18px;border-radius:12px;font-size:.95rem;font-weight:700;opacity:0;pointer-events:none;transition:.3s;z-index:3000;max-width:90vw;text-align:center;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+  .hidden{display:none !important;}
+</style>
+</head>
+<body>
+
+<header>
+  <button class="header-btn" id="fontSizeBtn" title="حجم الخط" aria-label="حجم الخط">Aa</button>
+  <button class="header-btn" id="refreshBtn" title="تحديث" aria-label="تحديث">🔄</button>
+
+  <div class="header-right-tools">
+    <button class="log-btn" id="switchBtn" title="الذهاب إلى العمارة" onclick="location.href='building.html'">🏢 العمارة</button>
+    <button class="log-btn" id="logBtn" title="السجل">📋 السجل</button>
+    <div class="sync-status" id="syncStatus">
+      <span class="dot"></span>
+      <span id="syncText">جارٍ الاتصال…</span>
+    </div>
+  </div>
+
+  <h1>👼 بيبي كير</h1>
+  <div class="header-date" id="headerDate">—</div>
+</header>
+
+<main>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-num" id="statChildren">0</div>
+      <div class="stat-lbl">عدد الأطفال</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-lbl">إجمالي المبالغ</div>
+    </div>
+  </div>
+
+  <button class="add-btn" id="addBtn">➕ إضافة طفل جديد</button>
+
+  <div id="tableContainer"></div>
+
+  <!-- ===== قسم الملاحظات ===== -->
+  <section class="notes-section">
+    <div class="notes-header">
+      <h3 class="notes-title">📝 الملاحظات</h3>
+      <button class="add-note-btn" id="addNoteBtn">+ إضافة ملاحظة</button>
+    </div>
+    <div class="notes-list" id="notesList"></div>
+  </section>
+</main>
+
+<!-- ===== نافذة الإضافة / التعديل ===== -->
+<div class="modal-overlay" id="formModal">
+  <div class="modal-card">
+    <h3 class="modal-title" id="formTitle">إضافة طفل جديد</h3>
+    <form id="childForm" autocomplete="off" novalidate>
+
+      <div class="form-field">
+        <label for="nameInput">اسم الطفل</label>
+        <input type="text" id="nameInput" placeholder="مثال: محمد أحمد"
+               autocomplete="off" autocorrect="off" autocapitalize="off"
+               spellcheck="false">
+      </div>
+
+      <div class="form-field">
+        <label for="amountInput">المبلغ</label>
+        <input type="text" id="amountInput" placeholder="مثال: 500"
+               inputmode="decimal" autocomplete="off">
+      </div>
+
+      <div class="form-field">
+        <label>طريقة الدفع</label>
+        <div class="cycle-toggle" id="cycleToggle">
+          <button type="button" data-cycle="monthly" class="active">شهري</button>
+          <button type="button" data-cycle="weekly">أسبوعي</button>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label>تاريخ استحقاق الدفعة القادمة</label>
+        <button type="button" class="date-button" id="dateButton">
+          <span id="dateDisplay">اختر التاريخ</span>
+          <span class="icon">📅</span>
+        </button>
+        <div class="date-preview" id="datePreview"></div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary" id="submitBtn">➕ إضافة الطفل</button>
+        <button type="button" class="btn-ghost" id="formCancel">إلغاء</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ===== نافذة تفاصيل الطفل ===== -->
+<div class="modal-overlay" id="childModal">
+  <div class="modal-card">
+    <h3 class="child-modal-name" id="childModalName">—</h3>
+    <div class="child-info" id="childInfoBox"></div>
+    <div class="child-modal-actions">
+      <button type="button" class="btn-pay" id="childPayBtn">✔ تسجيل دفعة</button>
+      <button type="button" class="btn-edit" id="childEditBtn">تعديل</button>
+      <button type="button" class="btn-del" id="childDelBtn">حذف</button>
+    </div>
+    <div class="history-head" id="childHistHead">📋 سجل الدفعات</div>
+    <ul class="history-list" id="childHistList"></ul>
+    <div class="modal-actions" style="margin-top:14px;">
+      <button type="button" class="btn-ghost" id="childModalClose">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== منتقي التاريخ ===== -->
+<div class="modal-overlay" id="pickerModal">
+  <div class="picker-card">
+    <h3 class="picker-title">اختر التاريخ</h3>
+    <div class="picker-selected">
+      <div class="picker-selected-value" id="pickerSelectedValue">—</div>
+      <div class="picker-selected-label">يوم / شهر / سنة</div>
+    </div>
+    <div class="year-nav">
+      <button type="button" id="yearPrev" aria-label="السنة السابقة">◀</button>
+      <span class="year-display" id="yearDisplay">2026</span>
+      <button type="button" id="yearNext" aria-label="السنة التالية">▶</button>
+    </div>
+    <div class="section-mini-label">الشهر</div>
+    <div class="month-grid" id="monthGrid"></div>
+    <div class="section-mini-label">اليوم</div>
+    <div class="weekday-header">
+      <span>أحد</span><span>اثنين</span><span>ثلاثاء</span><span>أربعاء</span>
+      <span>خميس</span><span>جمعة</span><span>سبت</span>
+    </div>
+    <div class="day-grid" id="dayGrid"></div>
+    <div class="picker-info"><div class="picker-info-days" id="pickerInfoDays">—</div></div>
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" id="pickerConfirm">✔ تأكيد التاريخ</button>
+      <button type="button" class="btn-ghost" id="pickerCancel">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== نافذة تأكيد الدفعة ===== -->
+<div class="modal-overlay" id="confirmModal">
+  <div class="modal-card">
+    <div class="confirm-icon">✅</div>
+    <h3 class="modal-title">تأكيد استلام الدفعة</h3>
+    <p class="confirm-child">للطفل: <strong id="confirmChildName"></strong></p>
+    <div class="confirm-amount">
+      <span class="confirm-amount-label">المبلغ المستلم</span>
+      <span class="confirm-amount-value" id="confirmAmount"></span>
+    </div>
+    <div class="confirm-next">
+      <div class="confirm-next-label">الدفعة القادمة ستكون في</div>
+      <div class="confirm-next-date" id="confirmNextDate"></div>
+      <div class="confirm-next-days" id="confirmNextDays"></div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" id="confirmYes">✅ نعم، استلمت المبلغ</button>
+      <button type="button" class="btn-ghost" id="confirmNo">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== نافذة تأكيد الحذف ===== -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-card">
+    <div class="delete-icon">🗑️</div>
+    <h3 class="modal-title">تأكيد حذف الطفل</h3>
+    <p class="delete-text">سيتم حذف الطفل <strong id="deleteChildName">—</strong></p>
+    <div class="delete-warning">
+      ⚠️ سيتم حذف جميع سجل دفعاته (<strong id="deleteHistCount">0</strong> دفعة) نهائياً.<br>
+      لا يمكن التراجع عن هذه العملية.
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-danger" id="deleteConfirm">🗑️ نعم، احذف نهائياً</button>
+      <button type="button" class="btn-ghost" id="deleteCancel">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ===== نافذة تأكيد حذف الملاحظة ===== -->
+<div class="modal-overlay" id="noteDeleteModal">
+  <div class="modal-card">
+    <div class="delete-icon">🗑️</div>
+    <h3 class="modal-title">تأكيد حذف الملاحظة</h3>
+    <p class="delete-text">هل تريدين حذف هذه الملاحظة؟</p>
+    <div class="delete-warning" id="noteDeletePreview">—</div>
+    <div class="delete-warning" style="background:#eef4f2;border-color:#cfe3de;color:#46605b;">
+      ℹ️ يمكنكِ استرجاعها لاحقاً من <strong>السجل</strong>.
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-danger" id="noteDeleteConfirm">🗑️ نعم، احذف</button>
+      <button type="button" class="btn-ghost" id="noteDeleteCancel">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== نافذة إضافة / تعديل ملاحظة ===== -->
+<div class="modal-overlay" id="noteModal">
+  <div class="modal-card">
+    <h3 class="modal-title" id="noteModalTitle">إضافة ملاحظة</h3>
+    <div class="form-field">
+      <label for="noteText">نص الملاحظة</label>
+      <textarea id="noteText" placeholder="اكتبي الملاحظة هنا…" autocomplete="off"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" id="noteSaveBtn">💾 حفظ الملاحظة</button>
+      <button type="button" class="btn-ghost" id="noteCancelBtn">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== نافذة السجل ===== -->
+<div class="modal-overlay" id="logModal">
+  <div class="modal-card log-card">
+    <h3 class="modal-title">📋 السجل</h3>
+
+    <div class="log-section-title">آخر العمليات</div>
+    <ul class="log-list" id="logList"></ul>
+
+    <div class="log-section-title">آخر الملاحظات المحذوفة</div>
+    <ul class="deleted-list" id="deletedList"></ul>
+
+    <button type="button" class="btn-ghost" id="logCloseBtn">إغلاق</button>
+  </div>
+</div>
+
+<!-- ===== نافذة حجم الخط ===== -->
+<div class="modal-overlay" id="fontModal">
+  <div class="modal-card font-modal">
+    <h3 class="modal-title">حجم الخط</h3>
+    <div class="font-preview" id="fontPreview">نموذج للنص</div>
+    <div class="font-controls">
+      <button type="button" class="font-step" id="fontMinus" aria-label="تصغير">−</button>
+      <div class="font-level" id="fontLevel">متوسط</div>
+      <button type="button" class="font-step" id="fontPlus" aria-label="تكبير">+</button>
+    </div>
+    <button type="button" class="btn-ghost" id="fontClose">إغلاق</button>
+  </div>
+</div>
+
+<!-- ===== نافذة التحديث ===== -->
+<div class="modal-overlay" id="refreshModal">
+  <div class="modal-card refresh-modal">
+    <h3 class="modal-title">التحديث</h3>
+    <button type="button" class="refresh-option" id="refreshDataBtn">
+      <div class="icon">🔄</div>
+      <div class="info">
+        <div class="title">تحديث البيانات فقط</div>
+        <div class="desc">يعيد جلب البيانات من السحابة بدون إعادة تحميل الصفحة. استخدميه إذا كان جهاز آخر قد أضاف تعديلات.</div>
+      </div>
+    </button>
+    <button type="button" class="refresh-option primary" id="refreshPageBtn">
+      <div class="icon">♻️</div>
+      <div class="info">
+        <div class="title">إعادة تحميل الصفحة بالكامل</div>
+        <div class="desc">يمسح الكاش ويعيد تحميل آخر نسخة من الكود. استخدميه بعد رفع تعديلات جديدة على GitHub.</div>
+      </div>
+    </button>
+    <button type="button" class="btn-ghost" id="refreshCancel">إلغاء</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ═══════════════════════════════════════════════════════════════
+     🔥🔥🔥  هنا المكان الوحيد الذي تحتاجين تعديله  🔥🔥🔥
+     ═══════════════════════════════════════════════════════════════ */
+  const firebaseConfig = {
+  apiKey: "AIzaSyAfJAirfIorI6HvT8zUEmWYQYzH1et1i4c",
+  authDomain: "babycare-132a9.firebaseapp.com",
+  projectId: "babycare-132a9",
+  storageBucket: "babycare-132a9.firebasestorage.app",
+  messagingSenderId: "665179210280",
+  appId: "1:665179210280:web:c834e420d7ec43d9796b1d",
+  measurementId: "G-HWRVRWPNDP",
+    databaseURL: "https://babycare-132a9-default-rtdb.firebaseio.com/"
+  };
+  /* ═══════════════════════════════════════════════════════════════
+     ⬆️⬆️⬆️  لا تعدلي أي شيء بعد هذا السطر  ⬆️⬆️⬆️
+     ═══════════════════════════════════════════════════════════════ */
+
+  const CURRENCY    = 'ر.س';
+  const STORAGE_KEY = 'nursery_children_v2';
+  const FONT_KEY    = 'nursery_font_level';
+  const RTDB_PATH   = 'nursery/data';
+  const MAX_LOG     = 10;
+  const MAX_DELETED_NOTES = 10;
+
+  /* ========= حجم الخط ========= */
+  const FONT_SIZES  = [15, 16, 17, 18, 19, 20, 22];
+  const FONT_LABELS = ['صغير جداً','صغير','متوسط','كبير','كبير جداً','أكبر','الأكبر'];
+  const FONT_DEFAULT_INDEX = 2;
+  let fontLevel = FONT_DEFAULT_INDEX;
+
+  function applyFontLevel(){ document.documentElement.style.fontSize = FONT_SIZES[fontLevel] + 'px'; }
+  function saveFontLevel(){ try { localStorage.setItem(FONT_KEY, String(fontLevel)); } catch(e){} }
+  function loadFontLevel(){
+    try {
+      const v = localStorage.getItem(FONT_KEY);
+      if(v !== null){
+        const n = parseInt(v, 10);
+        if(!isNaN(n) && n >= 0 && n < FONT_SIZES.length) fontLevel = n;
+      }
+    } catch(e){}
+  }
+
+  /* ========= أدوات التاريخ ========= */
+  const AR_DAYS_SHORT = ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+  function todayMidnight(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
+  function toISO(d){
+    return d.getFullYear() + '-' +
+           String(d.getMonth()+1).padStart(2,'0') + '-' +
+           String(d.getDate()).padStart(2,'0');
+  }
+  function fromISO(s){ const p = s.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); }
+  function formatShort(d){ return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear(); }
+  function formatDayName(d){ return AR_DAYS_SHORT[d.getDay()]; }
+  function formatShortWithDay(d){ return formatDayName(d) + ' ' + formatShort(d); }
+  function formatMoney(n){ return Number(n).toLocaleString('en-US') + ' ' + CURRENCY; }
+  function daysWord(n){
+    if(n === 1) return 'يوم واحد';
+    if(n === 2) return 'يومان';
+    if(n >= 3 && n <= 10) return n + ' أيام';
+    return n + ' يوم';
+  }
+  function addPeriod(date, cycle){
+    const d = new Date(date);
+    if(cycle === 'weekly'){ d.setDate(d.getDate() + 7); return d; }
+    const day = d.getDate();
+    d.setDate(1);
+    d.setMonth(d.getMonth() + 1);
+    const lastDay = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+    d.setDate(Math.min(day, lastDay));
+    return d;
+  }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
+  }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  /* ========= تحويل الأرقام العربية إلى إنجليزية ========= */
+  const ARABIC_DIGITS_MAP = {
+    '٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9',
+    '۰':'0','۱':'1','۲':'2','۳':'3','۴':'4','۵':'5','۶':'6','۷':'7','۸':'8','۹':'9'
+  };
+  function normalizeDigits(str){
+    return String(str).replace(/[٠-٩۰-۹]/g, function(ch){
+      return ARABIC_DIGITS_MAP[ch] || ch;
+    });
+  }
+
+  /* ========= الحالة ========= */
+  let children = [];
+  let notes = [];
+  let activityLog = [];
+  let deletedNotes = [];
+
+  let editingId = null;
+  let selectedCycle = 'monthly';
+  let selectedDueDate = null;
+  let pendingPayChildId = null;
+  let pendingDeleteId = null;
+  let currentChildModalId = null;
+  let pickerYear, pickerMonth, pickerDay;
+
+  /* ========= Firebase / RTDB ========= */
+  let rtdb = null;
+  let rtdbRef = null;
+  let firebaseReady = false;
+  let lastSavedJSON = '';
+
+  try {
+    const hasConfig = firebaseConfig.apiKey && firebaseConfig.apiKey.indexOf('ضع_هنا') === -1;
+    const hasDbUrl  = firebaseConfig.databaseURL && firebaseConfig.databaseURL.indexOf('ضع_هنا') === -1;
+    if(hasConfig && hasDbUrl){
+      firebase.initializeApp(firebaseConfig);
+      rtdb = firebase.database();
+      rtdbRef = rtdb.ref(RTDB_PATH);
+      firebaseReady = true;
+    } else {
+      console.warn('⚠️ لم يتم إعداد firebaseConfig (أو databaseURL) بعد.');
+    }
+  } catch(e){
+    console.error('Firebase init error:', e);
+    firebaseReady = false;
+  }
+
+  /* ========= عناصر الصفحة ========= */
+  const tableContainer = document.getElementById('tableContainer');
+  const addBtn         = document.getElementById('addBtn');
+  const toastEl        = document.getElementById('toast');
+  const statChildren   = document.getElementById('statChildren');
+  const statTotal      = document.getElementById('statTotal');
+  const headerDate     = document.getElementById('headerDate');
+  const syncStatusEl   = document.getElementById('syncStatus');
+  const syncTextEl     = document.getElementById('syncText');
+
+  const notesListEl = document.getElementById('notesList');
+  const addNoteBtn  = document.getElementById('addNoteBtn');
+
+  const fontSizeBtn  = document.getElementById('fontSizeBtn');
+  const fontModal    = document.getElementById('fontModal');
+  const fontPreview  = document.getElementById('fontPreview');
+  const fontLevelEl  = document.getElementById('fontLevel');
+  const fontMinus    = document.getElementById('fontMinus');
+  const fontPlus     = document.getElementById('fontPlus');
+  const fontClose    = document.getElementById('fontClose');
+
+  const refreshBtn     = document.getElementById('refreshBtn');
+  const refreshModal   = document.getElementById('refreshModal');
+  const refreshDataBtn = document.getElementById('refreshDataBtn');
+  const refreshPageBtn = document.getElementById('refreshPageBtn');
+  const refreshCancel  = document.getElementById('refreshCancel');
+
+  const logBtn      = document.getElementById('logBtn');
+  const logModal    = document.getElementById('logModal');
+  const logListEl   = document.getElementById('logList');
+  const deletedListEl = document.getElementById('deletedList');
+  const logCloseBtn = document.getElementById('logCloseBtn');
+
+  const formModal   = document.getElementById('formModal');
+  const formTitle   = document.getElementById('formTitle');
+  const childForm   = document.getElementById('childForm');
+  const nameInput   = document.getElementById('nameInput');
+  const amountInput = document.getElementById('amountInput');
+  const cycleToggle = document.getElementById('cycleToggle');
+  const dateButton  = document.getElementById('dateButton');
+  const dateDisplay = document.getElementById('dateDisplay');
+  const datePreview = document.getElementById('datePreview');
+  const submitBtn   = document.getElementById('submitBtn');
+  const formCancel  = document.getElementById('formCancel');
+
+  const childModal      = document.getElementById('childModal');
+  const childModalName  = document.getElementById('childModalName');
+  const childInfoBox    = document.getElementById('childInfoBox');
+  const childPayBtn     = document.getElementById('childPayBtn');
+  const childEditBtn    = document.getElementById('childEditBtn');
+  const childDelBtn     = document.getElementById('childDelBtn');
+  const childHistHead   = document.getElementById('childHistHead');
+  const childHistList   = document.getElementById('childHistList');
+  const childModalClose = document.getElementById('childModalClose');
+
+  const pickerModal         = document.getElementById('pickerModal');
+  const pickerSelectedValue = document.getElementById('pickerSelectedValue');
+  const yearDisplay         = document.getElementById('yearDisplay');
+  const yearPrev            = document.getElementById('yearPrev');
+  const yearNext            = document.getElementById('yearNext');
+  const monthGrid           = document.getElementById('monthGrid');
+  const dayGrid             = document.getElementById('dayGrid');
+  const pickerInfoDays      = document.getElementById('pickerInfoDays');
+  const pickerConfirm       = document.getElementById('pickerConfirm');
+  const pickerCancel        = document.getElementById('pickerCancel');
+
+  const confirmModal    = document.getElementById('confirmModal');
+  const confirmChildName= document.getElementById('confirmChildName');
+  const confirmAmount   = document.getElementById('confirmAmount');
+  const confirmNextDate = document.getElementById('confirmNextDate');
+  const confirmNextDays = document.getElementById('confirmNextDays');
+  const confirmYes      = document.getElementById('confirmYes');
+  const confirmNo       = document.getElementById('confirmNo');
+
+  const deleteModal     = document.getElementById('deleteModal');
+  const deleteChildName = document.getElementById('deleteChildName');
+  const deleteHistCount = document.getElementById('deleteHistCount');
+  const deleteConfirm   = document.getElementById('deleteConfirm');
+  const deleteCancel    = document.getElementById('deleteCancel');
+
+  const noteDeleteModal    = document.getElementById('noteDeleteModal');
+  const noteDeletePreview  = document.getElementById('noteDeletePreview');
+  const noteDeleteConfirm  = document.getElementById('noteDeleteConfirm');
+  const noteDeleteCancel   = document.getElementById('noteDeleteCancel');
+
+  let pendingNoteDeleteId = null;
+
+  const noteModal     = document.getElementById('noteModal');
+  const noteModalTitle= document.getElementById('noteModalTitle');
+  const noteText      = document.getElementById('noteText');
+  const noteSaveBtn   = document.getElementById('noteSaveBtn');
+  const noteCancelBtn = document.getElementById('noteCancelBtn');
+
+  /* ========= حالة المزامنة ========= */
+  function setSyncState(state, text){
+    syncStatusEl.classList.remove('saving','error','offline');
+    if(state) syncStatusEl.classList.add(state);
+    syncTextEl.textContent = text;
+  }
+
+  /* ========= التخزين المحلي ========= */
+  function buildStateObject(){
+    return {
+      children: children,
+      notes: notes,
+      activityLog: activityLog,
+      deletedNotes: deletedNotes
+    };
+  }
+  function saveLocal(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(buildStateObject())); } catch(e){}
+  }
+  function loadLocal(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const data = raw ? JSON.parse(raw) : {};
+      children     = Array.isArray(data.children) ? data.children.filter(function(c){ return c && c.id && c.name; }) : [];
+      notes        = Array.isArray(data.notes) ? data.notes : [];
+      activityLog  = Array.isArray(data.activityLog) ? data.activityLog : [];
+      deletedNotes = Array.isArray(data.deletedNotes) ? data.deletedNotes : [];
+    } catch(e){ children = []; notes = []; activityLog = []; deletedNotes = []; }
+  }
+
+  /* ========= الحفظ ========= */
+  async function save(){
+    saveLocal();
+    if(!firebaseReady || !rtdbRef){ setSyncState('offline', 'محلي فقط'); return; }
+    setSyncState('saving', 'جارٍ الحفظ…');
+    const payload = JSON.stringify(buildStateObject());
+    lastSavedJSON = payload;
+    try {
+      await rtdbRef.set(Object.assign(buildStateObject(), { updatedAt: Date.now() }));
+      setSyncState('', 'متزامن');
+    } catch(e){
+      console.error('RTDB save error:', e);
+      setSyncState('error', 'تعذّر الحفظ');
+      toast('⚠️ تعذّر الحفظ في السحابة');
+    }
+  }
+
+  /* ========= التحميل ========= */
+  async function load(){
+    loadLocal();
+    render();
+    if(!firebaseReady || !rtdbRef){ setSyncState('offline', 'غير متصل'); return; }
+    setSyncState('saving', 'جارٍ التحميل…');
+    try {
+      const snap = await rtdbRef.once('value');
+      if(snap.exists()){
+        const val = snap.val() || {};
+        children     = Array.isArray(val.children) ? val.children.filter(function(c){ return c && c.id && c.name; }) : [];
+        notes        = Array.isArray(val.notes) ? val.notes : [];
+        activityLog  = Array.isArray(val.activityLog) ? val.activityLog : [];
+        deletedNotes = Array.isArray(val.deletedNotes) ? val.deletedNotes : [];
+        lastSavedJSON = JSON.stringify(buildStateObject());
+        saveLocal();
+        render();
+        setSyncState('', 'متزامن');
+      } else if(children.length > 0 || notes.length > 0){
+        await save();
+      } else {
+        setSyncState('', 'متزامن');
+      }
+      listenRealtime();
+    } catch(e){
+      console.error('RTDB load error:', e);
+      setSyncState('error', 'تعذّر الاتصال');
+    }
+  }
+
+  /* ========= الاستماع للتغييرات ========= */
+  function listenRealtime(){
+    if(!firebaseReady || !rtdbRef) return;
+    rtdbRef.on('value', function(snap){
+      if(!snap.exists()) return;
+      const val = snap.val() || {};
+      const incoming = {
+        children: Array.isArray(val.children) ? val.children.filter(function(c){ return c && c.id && c.name; }) : [],
+        notes: Array.isArray(val.notes) ? val.notes : [],
+        activityLog: Array.isArray(val.activityLog) ? val.activityLog : [],
+        deletedNotes: Array.isArray(val.deletedNotes) ? val.deletedNotes : []
+      };
+      const incomingJSON = JSON.stringify(incoming);
+      if(incomingJSON === lastSavedJSON) return;
+      children     = incoming.children;
+      notes        = incoming.notes;
+      activityLog  = incoming.activityLog;
+      deletedNotes = incoming.deletedNotes;
+      lastSavedJSON = incomingJSON;
+      saveLocal();
+      render();
+      setSyncState('', 'متزامن');
+      toast('☁️ تم تحديث البيانات من جهاز آخر');
+    }, function(err){
+      console.error('RTDB listen error:', err);
+      setSyncState('error', 'انقطع الاتصال');
+    });
+  }
+
+  /* ========= سجل العمليات ========= */
+  function addLog(type, data){
+    const entry = Object.assign({ id: uid(), type: type, timestamp: Date.now() }, data || {});
+    activityLog.unshift(entry);
+    if(activityLog.length > MAX_LOG) activityLog = activityLog.slice(0, MAX_LOG);
+  }
+
+  function logIcon(type){
+    switch(type){
+      case 'child-add': return '➕';
+      case 'child-edit': return '✏️';
+      case 'child-delete': return '🗑️';
+      case 'payment': return '💰';
+      case 'note-add': return '📝';
+      case 'note-delete': return '🗑️';
+      case 'note-restore': return '♻️';
+      default: return '•';
+    }
+  }
+
+  function logText(entry){
+    switch(entry.type){
+      case 'child-add':
+        return 'تمت إضافة الطفل ' + (entry.name || '—');
+      case 'child-edit': {
+        const fields = (entry.changes && entry.changes.length) ? ' (' + entry.changes.join('، ') + ')' : '';
+        return 'تم تعديل بيانات ' + (entry.name || '—') + fields;
+      }
+      case 'child-delete':
+        return 'تم حذف الطفل ' + (entry.name || '—');
+      case 'payment':
+        return 'تم استلام دفعة لـ ' + (entry.name || '—') + ' — ' + formatMoney(entry.amount || 0);
+      case 'note-add':
+        return 'تمت إضافة ملاحظة: ' + truncate(entry.text || '', 50);
+      case 'note-delete':
+        return 'تم حذف ملاحظة: ' + truncate(entry.text || '', 50);
+      case 'note-restore':
+        return 'تم استرجاع ملاحظة: ' + truncate(entry.text || '', 50);
+      default:
+        return '—';
+    }
+  }
+
+  function truncate(text, max){
+    if(!text) return '';
+    return text.length > max ? text.slice(0, max) + '…' : text;
+  }
+
+function formatLogTime(ts){
+  const d = new Date(ts);
+  let hours = d.getHours();
+  const minutes = String(d.getMinutes()).padStart(2,'0');
+  const period = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  if(hours === 0) hours = 12;
+  const time = hours + ':' + minutes + ' ' + period;
+  return formatShort(d) + ' - ' + time;
+}
+
+  /* ========= حالة الدفعة ========= */
+  function getStatus(child){
+    const due   = fromISO(child.dueDate);
+    const today = todayMidnight();
+    const days  = Math.round((due - today) / 86400000);
+    let level;
+    if(days < 0 || days === 0) level = 'danger';
+    else if(days <= 7)         level = 'warn';
+    else                       level = 'ok';
+    return { days: days, level: level, due: due };
+  }
+  function daysPillText(days){
+    if(days < 0) return 'متأخر ' + Math.abs(days);
+    if(days === 0) return 'اليوم';
+    if(days === 1) return 'يوم واحد';
+    if(days === 2) return 'يومان';
+    if(days <= 10) return days + ' أيام';
+    return days + ' يوم';
+  }
+  function calculateNextDue(child){
+    const today = todayMidnight();
+    let due = fromISO(child.dueDate);
+    let guard = 0;
+    do { due = addPeriod(due, child.cycle); guard++; }
+    while(due <= today && guard < 300);
+    return due;
+  }
+  function paymentAgeText(paymentDateISO){
+    const pd = fromISO(paymentDateISO);
+    const today = todayMidnight();
+    const diff = Math.round((today - pd) / 86400000);
+    if(diff === 0) return { text: 'اليوم', advance: false };
+    if(diff > 0)  return { text: 'منذ ' + daysWord(diff), advance: false };
+    return { text: 'مقدم بـ ' + daysWord(Math.abs(diff)), advance: true };
+  }
+
+  function renderHeader(){ headerDate.textContent = formatShortWithDay(todayMidnight()); }
+  function renderStats(){
+    statChildren.textContent = children.length;
+    let totalSum = 0;
+    for(let i = 0; i < children.length; i++) totalSum += Number(children[i].amount) || 0;
+    statTotal.textContent = totalSum.toLocaleString('en-US');
+  }
+
+  let toastTimer;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2400);
+  }
+
+  /* ========= رسم الواجهة ========= */
+  function render(){
+    renderHeader();
+    renderStats();
+    renderTable();
+    renderNotes();
+  }
+
+  function renderTable(){
+    if(children.length === 0){
+      tableContainer.innerHTML =
+        '<div class="empty">لا يوجد أطفال بعد 🌸<br>اضغطي على زر الإضافة في الأعلى ☝️</div>';
+      return;
+    }
+    const sorted = children.slice().sort(function(a,b){
+      return a.dueDate < b.dueDate ? -1 : (a.dueDate > b.dueDate ? 1 : 0);
+    });
+    let rows = '';
+    for(let i = 0; i < sorted.length; i++) rows += childRowHTML(sorted[i]);
+    tableContainer.innerHTML =
+      '<div class="table-wrap">' +
+        '<table class="children-table">' +
+          '<thead><tr>' +
+            '<th>الاسم</th><th>المبلغ</th><th>التاريخ</th><th>المتبقي</th>' +
+          '</tr></thead>' +
+          '<tbody>' + rows + '</tbody>' +
+        '</table>' +
+      '</div>';
+  }
+
+  function childRowHTML(c){
+    const s = getStatus(c);
+    return '' +
+      '<tr class="child-row" data-id="' + c.id + '">' +
+        '<td class="name-cell">' +
+          '<span class="arrow">◀</span>' +
+          '<span class="name-text">' + esc(c.name) + '</span>' +
+        '</td>' +
+        '<td class="amount-cell">' + formatMoney(c.amount) + '</td>' +
+        '<td class="date-cell">' + formatShort(s.due) + '</td>' +
+        '<td class="days-cell"><span class="pill ' + s.level + '">' + daysPillText(s.days) + '</span></td>' +
+      '</tr>';
+  }
+
+  function renderNotes(){
+    if(notes.length === 0){
+      notesListEl.innerHTML = '<div class="notes-empty">لا توجد ملاحظات حالياً</div>';
+      return;
+    }
+    let html = '';
+    for(let i = 0; i < notes.length; i++){
+      const n = notes[i];
+      html += '<div class="note-item">' +
+        '<div class="note-content">' +
+          '<div class="note-text">' + esc(n.text) + '</div>' +
+          '<div class="note-date">📅 ' + formatLogTime(n.createdAt || Date.now()) + '</div>' +
+        '</div>' +
+        '<button class="note-del-btn" data-note-del="' + n.id + '" title="حذف">×</button>' +
+      '</div>';
+    }
+    notesListEl.innerHTML = html;
+  }
+
+  /* ========= أحداث الجدول ========= */
+  tableContainer.addEventListener('click', function(e){
+    const row = e.target.closest('tr.child-row');
+    if(!row) return;
+    const id = row.dataset.id;
+    if(id) openChildModal(id);
+  });
+
+  /* ========= نافذة تفاصيل الطفل ========= */
+  function openChildModal(id){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c) return;
+    currentChildModalId = id;
+
+    const s = getStatus(c);
+    const cycleTxt = c.cycle === 'weekly' ? 'أسبوعي' : 'شهري';
+
+    childModalName.textContent = c.name;
+    childInfoBox.innerHTML =
+      '<div class="detail-row"><span class="detail-label">💰 المبلغ</span>' +
+        '<span class="detail-value">' + formatMoney(c.amount) + '</span></div>' +
+      '<div class="detail-row"><span class="detail-label">🔁 طريقة الدفع</span>' +
+        '<span class="detail-value">' + cycleTxt + '</span></div>' +
+      '<div class="detail-row"><span class="detail-label">📅 تاريخ الاستحقاق</span>' +
+        '<span class="detail-value">' + formatShort(s.due) + '</span></div>' +
+      '<div class="detail-row"><span class="detail-label">⏳ المتبقي</span>' +
+        '<span class="detail-value">' + daysPillText(s.days) + '</span></div>';
+
+    const hist = Array.isArray(c.history) ? c.history : [];
+    if(hist.length === 0){
+      childHistHead.textContent = '📋 سجل الدفعات';
+      childHistList.innerHTML = '<div class="hist-empty">لا توجد دفعات مسجّلة بعد</div>';
+    } else {
+      childHistHead.textContent = '📋 سجل الدفعات (' + hist.length + ')';
+      let items = '';
+      const reversed = hist.slice().reverse();
+      for(let i = 0; i < reversed.length; i++){
+        const h = reversed[i];
+        const realIdx = hist.indexOf(h);
+        const hd = fromISO(h.date);
+        const age = paymentAgeText(h.date);
+        items += '<li>' +
+          '<div class="hist-info">' +
+            '<div class="hist-greg">📅 ' + formatShortWithDay(hd) + '</div>' +
+            '<div class="hist-age' + (age.advance ? ' advance' : '') + '">' + age.text + '</div>' +
+          '</div>' +
+          '<span class="hist-amount">' + formatMoney(h.amount) + '</span>' +
+          '<button class="hist-del" data-hist-del="' + c.id + '" data-hist-idx="' + realIdx + '" title="حذف الدفعة">×</button>' +
+        '</li>';
+      }
+      childHistList.innerHTML = items;
+    }
+
+    childModal.classList.add('show');
+  }
+
+  function closeChildModal(){
+    childModal.classList.remove('show');
+    currentChildModalId = null;
+  }
+
+  childModalClose.addEventListener('click', closeChildModal);
+  childModal.addEventListener('click', function(e){
+    if(e.target === childModal) closeChildModal();
+  });
+
+  childPayBtn.addEventListener('click', function(){
+    if(!currentChildModalId) return;
+    const id = currentChildModalId;
+    closeChildModal();
+    openConfirmModal(id);
+  });
+  childEditBtn.addEventListener('click', function(){
+    if(!currentChildModalId) return;
+    const id = currentChildModalId;
+    closeChildModal();
+    openFormModal(id);
+  });
+  childDelBtn.addEventListener('click', function(){
+    if(!currentChildModalId) return;
+    const id = currentChildModalId;
+    closeChildModal();
+    openDeleteModal(id);
+  });
+
+  /* حذف دفعة من داخل نافذة الطفل */
+  childHistList.addEventListener('click', function(e){
+    const btn = e.target.closest('[data-hist-del]');
+    if(!btn) return;
+    const childId = btn.dataset.histDel;
+    const idx = parseInt(btn.dataset.histIdx, 10);
+    if(deleteHistory(childId, idx)){
+      // إعادة فتح النافذة بعد الحذف
+      openChildModal(childId);
+    }
+  });
+
+  /* ========= الملاحظات ========= */
+  function openNoteModal(){
+    noteModalTitle.textContent = 'إضافة ملاحظة';
+    noteText.value = '';
+    noteText.classList.remove('input-error');
+    noteModal.classList.add('show');
+    setTimeout(function(){ noteText.focus(); }, 250);
+  }
+  function closeNoteModal(){
+    noteModal.classList.remove('show');
+  }
+  addNoteBtn.addEventListener('click', openNoteModal);
+  noteCancelBtn.addEventListener('click', closeNoteModal);
+  noteModal.addEventListener('click', function(e){
+    if(e.target === noteModal) closeNoteModal();
+  });
+  noteText.addEventListener('input', function(){ noteText.classList.remove('input-error'); });
+
+  noteSaveBtn.addEventListener('click', function(){
+    const text = noteText.value.trim();
+    if(!text){
+      noteText.classList.add('input-error');
+      noteText.focus();
+      return;
+    }
+    const note = { id: uid(), text: text, createdAt: Date.now() };
+    notes.unshift(note);
+    addLog('note-add', { text: text });
+    save();
+    closeNoteModal();
+    renderNotes();
+    toast('📝 تمت إضافة الملاحظة');
+  });
+
+  notesListEl.addEventListener('click', function(e){
+    const btn = e.target.closest('[data-note-del]');
+    if(!btn) return;
+    const id = btn.dataset.noteDel;
+    const note = notes.find(function(n){ return n.id === id; });
+    if(!note) return;
+    pendingNoteDeleteId = id;
+    noteDeletePreview.textContent = '«' + truncate(note.text, 100) + '»';
+    noteDeleteModal.classList.add('show');
+  });
+
+  noteDeleteCancel.addEventListener('click', function(){
+    noteDeleteModal.classList.remove('show');
+    pendingNoteDeleteId = null;
+  });
+
+  noteDeleteModal.addEventListener('click', function(e){
+    if(e.target === noteDeleteModal){
+      noteDeleteModal.classList.remove('show');
+      pendingNoteDeleteId = null;
+    }
+  });
+
+  noteDeleteConfirm.addEventListener('click', function(){
+    if(!pendingNoteDeleteId) return;
+    const id = pendingNoteDeleteId;
+    const note = notes.find(function(n){ return n.id === id; });
+    if(!note){
+      noteDeleteModal.classList.remove('show');
+      pendingNoteDeleteId = null;
+      return;
+    }
+
+    notes = notes.filter(function(n){ return n.id !== id; });
+    const deleted = Object.assign({}, note, { deletedAt: Date.now() });
+    deletedNotes.unshift(deleted);
+    if(deletedNotes.length > MAX_DELETED_NOTES) deletedNotes = deletedNotes.slice(0, MAX_DELETED_NOTES);
+
+    addLog('note-delete', { text: note.text });
+    save();
+    renderNotes();
+    noteDeleteModal.classList.remove('show');
+    pendingNoteDeleteId = null;
+    toast('🗑️ تم حذف الملاحظة');
+  });
+
+  function restoreNote(id){
+    const note = deletedNotes.find(function(n){ return n.id === id; });
+    if(!note) return;
+    deletedNotes = deletedNotes.filter(function(n){ return n.id !== id; });
+    notes.unshift({ id: note.id, text: note.text, createdAt: note.createdAt });
+    addLog('note-restore', { text: note.text });
+    save();
+    renderNotes();
+    renderLog();
+    toast('♻️ تم استرجاع الملاحظة');
+  }
+
+  /* ========= نافذة السجل ========= */
+  function renderLog(){
+    // سجل العمليات
+    if(activityLog.length === 0){
+      logListEl.innerHTML = '<div class="log-empty">لا توجد عمليات بعد</div>';
+    } else {
+      let html = '';
+      for(let i = 0; i < activityLog.length; i++){
+        const entry = activityLog[i];
+        html += '<li class="log-item">' +
+          '<span class="log-icon">' + logIcon(entry.type) + '</span>' +
+          '<div class="log-body">' +
+            '<div class="log-text">' + esc(logText(entry)) + '</div>' +
+            '<div class="log-time">' + formatLogTime(entry.timestamp) + '</div>' +
+          '</div>' +
+        '</li>';
+      }
+      logListEl.innerHTML = html;
+    }
+
+    // الملاحظات المحذوفة
+    if(deletedNotes.length === 0){
+      deletedListEl.innerHTML = '<div class="log-empty">لا توجد ملاحظات محذوفة</div>';
+    } else {
+      let html = '';
+      for(let i = 0; i < deletedNotes.length; i++){
+        const n = deletedNotes[i];
+        html += '<li class="deleted-item">' +
+          '<div class="deleted-note-text">' + esc(n.text) + '</div>' +
+          '<div class="deleted-note-meta">' +
+            '<span class="deleted-note-time">🗑️ ' + formatLogTime(n.deletedAt || Date.now()) + '</span>' +
+            '<button class="restore-btn" data-restore="' + n.id + '">♻️ استرجاع</button>' +
+          '</div>' +
+        '</li>';
+      }
+      deletedListEl.innerHTML = html;
+    }
+  }
+
+  logBtn.addEventListener('click', function(){
+    renderLog();
+    logModal.classList.add('show');
+  });
+  logCloseBtn.addEventListener('click', function(){ logModal.classList.remove('show'); });
+  logModal.addEventListener('click', function(e){ if(e.target === logModal) logModal.classList.remove('show'); });
+  deletedListEl.addEventListener('click', function(e){
+    const btn = e.target.closest('[data-restore]');
+    if(!btn) return;
+    restoreNote(btn.dataset.restore);
+  });
+
+  /* ========= نافذة الإضافة / التعديل ========= */
+  function openFormModal(id){
+    editingId = id || null;
+    nameInput.classList.remove('input-error');
+    amountInput.classList.remove('input-error');
+
+    if(id){
+      const c = children.find(function(x){ return x.id === id; });
+      if(!c) return;
+      formTitle.textContent = 'تعديل بيانات الطفل';
+      nameInput.value = c.name;
+      amountInput.value = c.amount;
+      setCycle(c.cycle === 'weekly' ? 'weekly' : 'monthly');
+      selectedDueDate = c.dueDate;
+      submitBtn.textContent = '💾 حفظ التعديل';
+    } else {
+      formTitle.textContent = 'إضافة طفل جديد';
+      nameInput.value = '';
+      amountInput.value = '';
+      setCycle('monthly');
+      selectedDueDate = toISO(todayMidnight());
+      submitBtn.textContent = '➕ إضافة الطفل';
+    }
+    updateDateUI();
+    formModal.classList.add('show');
+  }
+  function closeFormModal(){ formModal.classList.remove('show'); editingId = null; }
+
+  addBtn.addEventListener('click', function(){ openFormModal(null); });
+  formCancel.addEventListener('click', closeFormModal);
+  formModal.addEventListener('click', function(e){ if(e.target === formModal) closeFormModal(); });
+
+  function setCycle(cycle){
+    selectedCycle = cycle;
+    Array.prototype.forEach.call(cycleToggle.children, function(b){
+      b.classList.toggle('active', b.dataset.cycle === cycle);
+    });
+  }
+  cycleToggle.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-cycle]');
+    if(!b) return;
+    setCycle(b.dataset.cycle);
+  });
+
+  /* ========= تحويل الأرقام العربية في حقل المبلغ ========= */
+  amountInput.addEventListener('input', function(){
+    const v = amountInput.value;
+    const converted = normalizeDigits(v);
+    if(converted !== v) amountInput.value = converted;
+    amountInput.classList.remove('input-error');
+  });
+  nameInput.addEventListener('input', function(){ nameInput.classList.remove('input-error'); });
+  noteText.addEventListener('input', function(){ noteText.classList.remove('input-error'); });
+
+  function updateDateUI(){
+    if(!selectedDueDate){ dateDisplay.textContent = 'اختر التاريخ'; datePreview.innerHTML = ''; return; }
+    const d = fromISO(selectedDueDate);
+    dateDisplay.textContent = formatShort(d);
+    const today = todayMidnight();
+    const days = Math.round((d - today) / 86400000);
+    let daysMsg, daysClass;
+    if(days < 0){ daysMsg = '⚠️ متأخرة ' + daysWord(Math.abs(days)); daysClass = 'danger'; }
+    else if(days === 0){ daysMsg = '⚠️ مستحقة اليوم'; daysClass = 'danger'; }
+    else if(days === 1){ daysMsg = '⏰ مستحقة غداً'; daysClass = 'warn'; }
+    else if(days <= 7){ daysMsg = '⏰ باقي ' + daysWord(days) + ' على الدفعة القادمة'; daysClass = 'warn'; }
+    else { daysMsg = '✅ باقي ' + daysWord(days) + ' على الدفعة القادمة'; daysClass = 'ok'; }
+    datePreview.innerHTML =
+      '<div class="preview-row">📅 ' + formatShortWithDay(d) + '</div>' +
+      '<div class="preview-days ' + daysClass + '">' + daysMsg + '</div>';
+  }
+
+  /* ========= منتقي التاريخ ========= */
+  function openPicker(){
+    const base = selectedDueDate ? fromISO(selectedDueDate) : todayMidnight();
+    pickerYear  = base.getFullYear();
+    pickerMonth = base.getMonth();
+    pickerDay   = base.getDate();
+    renderPicker();
+    pickerModal.classList.add('show');
+  }
+  function closePicker(){ pickerModal.classList.remove('show'); }
+
+  function renderPicker(){
+    pickerSelectedValue.textContent = pickerDay + '/' + (pickerMonth+1) + '/' + pickerYear;
+    yearDisplay.textContent = pickerYear;
+    let mh = '';
+    for(let m = 0; m < 12; m++){
+      mh += '<button type="button" data-month="' + m + '"' +
+            (m === pickerMonth ? ' class="active"' : '') + '>' + (m+1) + '</button>';
+    }
+    monthGrid.innerHTML = mh;
+    const daysInMonth = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    const firstDayOfWeek = new Date(pickerYear, pickerMonth, 1).getDay();
+    const today = todayMidnight();
+    let dh = '';
+    for(let i = 0; i < firstDayOfWeek; i++) dh += '<span class="day-empty"></span>';
+    for(let d = 1; d <= daysInMonth; d++){
+      const isSel = d === pickerDay;
+      const isToday = (pickerYear === today.getFullYear() && pickerMonth === today.getMonth() && d === today.getDate());
+      let cls = [];
+      if(isSel) cls.push('selected');
+      if(isToday) cls.push('today');
+      dh += '<button type="button" data-day="' + d + '"' +
+            (cls.length ? ' class="' + cls.join(' ') + '"' : '') + '>' + d + '</button>';
+    }
+    dayGrid.innerHTML = dh;
+    const d = new Date(pickerYear, pickerMonth, pickerDay);
+    const days = Math.round((d - today) / 86400000);
+    let daysMsg, daysClass;
+    if(days < 0){ daysMsg = '⚠️ متأخر ' + daysWord(Math.abs(days)); daysClass = 'danger'; }
+    else if(days === 0){ daysMsg = '⚠️ هذا هو اليوم'; daysClass = 'danger'; }
+    else if(days === 1){ daysMsg = '⏰ غداً (باقي يوم واحد)'; daysClass = 'warn'; }
+    else if(days <= 7){ daysMsg = '⏰ باقي ' + daysWord(days); daysClass = 'warn'; }
+    else { daysMsg = '✅ باقي ' + daysWord(days); daysClass = 'ok'; }
+    pickerInfoDays.textContent = daysMsg;
+    pickerInfoDays.className = 'picker-info-days ' + daysClass;
+  }
+
+  dateButton.addEventListener('click', openPicker);
+  pickerCancel.addEventListener('click', closePicker);
+  pickerModal.addEventListener('click', function(e){ if(e.target === pickerModal) closePicker(); });
+
+  yearPrev.addEventListener('click', function(){
+    pickerYear--;
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+  yearNext.addEventListener('click', function(){
+    pickerYear++;
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+  monthGrid.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-month]');
+    if(!b) return;
+    pickerMonth = parseInt(b.dataset.month, 10);
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+  dayGrid.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-day]');
+    if(!b) return;
+    pickerDay = parseInt(b.dataset.day, 10);
+    renderPicker();
+  });
+  pickerConfirm.addEventListener('click', function(){
+    const d = new Date(pickerYear, pickerMonth, pickerDay);
+    selectedDueDate = toISO(d);
+    updateDateUI();
+    closePicker();
+  });
+
+  /* ========= إرسال النموذج مع التحقق ========= */
+  childForm.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    // إزالة التمييز السابق
+    nameInput.classList.remove('input-error');
+    amountInput.classList.remove('input-error');
+
+    // تحويل الأرقام العربية في المبلغ
+    amountInput.value = normalizeDigits(amountInput.value);
+
+    const name = nameInput.value.trim();
+    const amountRaw = amountInput.value.trim();
+    const amount = Number(amountRaw);
+
+    // ===== التحقق =====
+    let firstInvalid = null;
+    if(!name){
+      nameInput.classList.add('input-error');
+      if(!firstInvalid) firstInvalid = nameInput;
+    }
+    if(!amountRaw || isNaN(amount) || amount <= 0){
+      amountInput.classList.add('input-error');
+      if(!firstInvalid) firstInvalid = amountInput;
+    }
+    if(firstInvalid){
+      firstInvalid.focus();
+      toast('⚠️ الرجاء إكمال الحقول المميّزة بالأحمر');
+      return;
+    }
+    if(!selectedDueDate){ toast('الرجاء اختيار التاريخ'); return; }
+
+    // ===== الحفظ =====
+    if(editingId){
+      const c = children.find(function(x){ return x.id === editingId; });
+      if(c){
+        const changes = [];
+        if(c.name !== name) changes.push('الاسم');
+        if(Number(c.amount) !== amount) changes.push('المبلغ');
+        if(c.cycle !== selectedCycle) changes.push('طريقة الدفع');
+        if(c.dueDate !== selectedDueDate) changes.push('تاريخ الاستحقاق');
+
+        c.name = name;
+        c.amount = amount;
+        c.cycle = selectedCycle;
+        c.dueDate = selectedDueDate;
+
+        addLog('child-edit', { name: name, changes: changes });
+      }
+      toast('✅ تم حفظ التعديل');
+    } else {
+      children.push({
+        id: uid(),
+        name: name,
+        amount: amount,
+        cycle: selectedCycle,
+        dueDate: selectedDueDate,
+        history: []
+      });
+      addLog('child-add', { name: name });
+      toast('✅ تمت إضافة ' + name);
+    }
+
+    save();
+    closeFormModal();
+    render();
+  });
+
+  /* ========= تأكيد الحذف ========= */
+  function openDeleteModal(id){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c) return;
+    pendingDeleteId = id;
+    deleteChildName.textContent = c.name;
+    deleteHistCount.textContent = Array.isArray(c.history) ? c.history.length : 0;
+    deleteModal.classList.add('show');
+  }
+  function closeDeleteModal(){ deleteModal.classList.remove('show'); pendingDeleteId = null; }
+  deleteCancel.addEventListener('click', closeDeleteModal);
+  deleteModal.addEventListener('click', function(e){ if(e.target === deleteModal) closeDeleteModal(); });
+  deleteConfirm.addEventListener('click', function(){
+    if(!pendingDeleteId) return;
+    const id = pendingDeleteId;
+    const c = children.find(function(x){ return x.id === id; });
+    const name = c ? c.name : '';
+    children = children.filter(function(x){ return x.id !== id; });
+    addLog('child-delete', { name: name });
+    save();
+    closeDeleteModal();
+    render();
+    toast('🗑️ تم الحذف');
+  });
+
+  /* ========= تأكيد الدفعة ========= */
+  function openConfirmModal(id){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c) return;
+    pendingPayChildId = id;
+    const nextDue = calculateNextDue(c);
+    const today = todayMidnight();
+    const days = Math.round((nextDue - today) / 86400000);
+    confirmChildName.textContent = c.name;
+    confirmAmount.textContent = formatMoney(c.amount);
+    confirmNextDate.textContent = formatShortWithDay(nextDue);
+    let daysMsg, daysClass;
+    if(days <= 7) { daysMsg = 'باقي ' + daysWord(days); daysClass = 'warn'; }
+    else { daysMsg = 'باقي ' + daysWord(days); daysClass = 'ok'; }
+    confirmNextDays.textContent = daysMsg;
+    confirmNextDays.className = 'confirm-next-days ' + daysClass;
+    confirmModal.classList.add('show');
+  }
+  function closeConfirmModal(){ confirmModal.classList.remove('show'); pendingPayChildId = null; }
+  confirmNo.addEventListener('click', closeConfirmModal);
+  confirmModal.addEventListener('click', function(e){ if(e.target === confirmModal) closeConfirmModal(); });
+  confirmYes.addEventListener('click', function(){
+    if(!pendingPayChildId) return;
+    confirmPayment(pendingPayChildId);
+    closeConfirmModal();
+  });
+
+  function confirmPayment(id){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c) return;
+    const today = todayMidnight();
+    const nextDue = calculateNextDue(c);
+    if(!Array.isArray(c.history)) c.history = [];
+    c.history.push({ date: toISO(today), amount: c.amount, prevDue: c.dueDate });
+    c.dueDate = toISO(nextDue);
+    addLog('payment', { name: c.name, amount: c.amount });
+    save();
+    render();
+    toast('✅ تم تسجيل دفعة ' + c.name);
+  }
+
+  /* ========= حذف دفعة ========= */
+  function deleteHistory(id, idx){
+    const c = children.find(function(x){ return x.id === id; });
+    if(!c || !Array.isArray(c.history)) return false;
+    if(idx < 0 || idx >= c.history.length) return false;
+    const entry = c.history[idx];
+    const entryDate = fromISO(entry.date);
+    if(!confirm('حذف دفعة ' + formatMoney(entry.amount) + '\nبتاريخ ' + formatShortWithDay(entryDate) + ' ؟')) return false;
+    c.history.splice(idx, 1);
+    if(entry.prevDue && idx === c.history.length){ c.dueDate = entry.prevDue; }
+    save();
+    render();
+    toast('🗑️ تم حذف الدفعة');
+    return true;
+  }
+
+  /* ========= حجم الخط ========= */
+  function openFontModal(){ updateFontUI(); fontModal.classList.add('show'); }
+  function closeFontModal(){ fontModal.classList.remove('show'); }
+  function updateFontUI(){
+    fontLevelEl.textContent = FONT_LABELS[fontLevel];
+    fontMinus.disabled = (fontLevel === 0);
+    fontPlus.disabled  = (fontLevel === FONT_SIZES.length - 1);
+    fontPreview.textContent = 'نموذج للنص — ' + FONT_LABELS[fontLevel];
+  }
+  fontSizeBtn.addEventListener('click', openFontModal);
+  fontClose.addEventListener('click', closeFontModal);
+  fontModal.addEventListener('click', function(e){ if(e.target === fontModal) closeFontModal(); });
+  fontMinus.addEventListener('click', function(){
+    if(fontLevel > 0){ fontLevel--; applyFontLevel(); saveFontLevel(); updateFontUI(); }
+  });
+  fontPlus.addEventListener('click', function(){
+    if(fontLevel < FONT_SIZES.length - 1){ fontLevel++; applyFontLevel(); saveFontLevel(); updateFontUI(); }
+  });
+
+  /* ========= التحديث ========= */
+  async function refreshData(){
+    closeRefresh();
+    if(!firebaseReady || !rtdbRef){ toast('⚠️ Firebase غير متصل'); return; }
+    setSyncState('saving', 'جارٍ التحديث…');
+    toast('🔄 جارٍ تحديث البيانات…');
+    try {
+      const snap = await rtdbRef.once('value');
+      if(snap.exists()){
+        const val = snap.val() || {};
+        children     = Array.isArray(val.children) ? val.children.filter(function(c){ return c && c.id && c.name; }) : [];
+        notes        = Array.isArray(val.notes) ? val.notes : [];
+        activityLog  = Array.isArray(val.activityLog) ? val.activityLog : [];
+        deletedNotes = Array.isArray(val.deletedNotes) ? val.deletedNotes : [];
+        lastSavedJSON = JSON.stringify(buildStateObject());
+        saveLocal();
+        render();
+        setSyncState('', 'متزامن');
+        toast('✅ تم تحديث البيانات');
+      } else {
+        setSyncState('', 'متزامن');
+        toast('ℹ️ لا توجد بيانات في السحابة بعد');
+      }
+    } catch(e){
+      console.error('Refresh error:', e);
+      setSyncState('error', 'تعذّر التحديث');
+      toast('⚠️ تعذّر تحديث البيانات');
+    }
+  }
+
+  async function fullReload(){
+    closeRefresh();
+    toast('♻️ جارٍ إعادة التحميل…');
+    try {
+      if('caches' in window){
+        const names = await caches.keys();
+        await Promise.all(names.map(function(n){ return caches.delete(n); }));
+      }
+    } catch(e){ console.warn('Cache clear failed:', e); }
+    try {
+      if('serviceWorker' in navigator){
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(function(r){ return r.update(); }));
+      }
+    } catch(e){ console.warn('SW update failed:', e); }
+    try {
+      const url = new URL(location.href);
+      url.searchParams.set('_t', Date.now().toString());
+      setTimeout(function(){ location.replace(url.toString()); }, 350);
+    } catch(e){ location.reload(); }
+  }
+
+  function openRefresh(){ refreshModal.classList.add('show'); }
+  function closeRefresh(){ refreshModal.classList.remove('show'); }
+  refreshBtn.addEventListener('click', openRefresh);
+  refreshCancel.addEventListener('click', closeRefresh);
+  refreshModal.addEventListener('click', function(e){ if(e.target === refreshModal) closeRefresh(); });
+  refreshDataBtn.addEventListener('click', refreshData);
+  refreshPageBtn.addEventListener('click', fullReload);
+
+  /* ========= بدء التشغيل ========= */
+  loadFontLevel();
+  applyFontLevel();
+  load();
+
+})();
+</script>
+</body>
+</html>

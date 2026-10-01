@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1e6091">
+<title>إدارة الإيجارات - العمارة</title>
+<style>
+  :root{
+    --primary:#1e6091;--primary-light:#2d8fbf;--primary-soft:#e0f0f9;
+    --success:#059669;--success-soft:#ecfdf5;
+    --danger:#dc2626;--danger-soft:#fef2f2;
+    --warning:#d97706;--warning-soft:#fffbeb;
+    --bg:#f1f5f9;--card:#ffffff;
+    --text:#0f172a;--text-muted:#64748b;--text-soft:#94a3b8;
+    --border:#e2e8f0;--radius:14px;
+    --shadow-sm:0 1px 3px rgba(15,23,42,.06);
+    --shadow:0 2px 12px rgba(15,23,42,.08);
+    --shadow-lg:0 20px 60px rgba(15,23,42,.28);
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html{font-size:17px;-webkit-text-size-adjust:100%;}
+  body{margin:0;font-family:"Segoe UI",Tahoma,"Noto Kufi Arabic",Arial,sans-serif;background:var(--bg);color:var(--text);font-size:1rem;line-height:1.6;padding-bottom:40px;}
+
+  header{position:relative;background:linear-gradient(135deg,#1e6091,#2d8fbf);color:#fff;padding:14px 16px 18px;text-align:center;border-radius:0 0 22px 22px;box-shadow:0 5px 16px rgba(30,96,145,.28);}
+  header h1{margin:0;font-size:1.22rem;font-weight:800;letter-spacing:.2px;}
+  .header-date{margin-top:5px;font-size:.88rem;font-weight:700;opacity:.95;}
+
+  .header-btn{position:absolute;top:10px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.22);border:1.5px solid rgba(255,255,255,.45);color:#fff;font-family:inherit;font-size:.92rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;z-index:3;}
+  .header-btn:active{transform:scale(.94);background:rgba(255,255,255,.32);}
+  #fontSizeBtn{left:10px;}
+  #refreshBtn{left:56px;font-size:1.15rem;}
+
+  .header-right-tools{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:5px;align-items:stretch;z-index:3;}
+  .header-tool-btn{padding:6px 12px;border-radius:999px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);color:#fff;font-family:inherit;font-size:.72rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;line-height:1;min-width:92px;}
+  .header-tool-btn:active{transform:scale(.95);background:rgba(255,255,255,.32);}
+
+  .sync-status{display:flex;align-items:center;gap:5px;font-size:.66rem;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;white-space:nowrap;}
+  .sync-status .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;}
+  .sync-status.saving .dot{background:#fbbf24;}
+  .sync-status.error .dot{background:#ef4444;}
+  .sync-status.offline .dot{background:#9ca3af;}
+
+  main{max-width:720px;margin:0 auto;padding:0 12px;}
+
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 12px;}
+  .stat-box{background:var(--card);border-radius:var(--radius);padding:11px 10px;text-align:center;box-shadow:var(--shadow);border-top:3px solid var(--primary);}
+  .stat-box.next{border-top-color:var(--success);}
+  .stat-year{font-size:.76rem;font-weight:800;color:var(--text-muted);letter-spacing:.4px;margin-bottom:2px;}
+  .stat-num{font-size:1.3rem;font-weight:800;color:var(--primary);line-height:1.2;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .stat-box.next .stat-num{color:var(--success);}
+  .stat-lbl{font-size:.7rem;color:var(--text-soft);font-weight:700;margin-top:2px;line-height:1.3;}
+
+  .view-toggle{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:#e2e8f0;padding:5px;border-radius:14px;margin-bottom:14px;}
+  .view-toggle button{padding:10px 8px;border:none;border-radius:10px;background:transparent;color:var(--text-muted);font-family:inherit;font-size:.9rem;font-weight:800;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+  .view-toggle button.active{background:var(--card);color:var(--primary);box-shadow:0 2px 6px rgba(15,23,42,.1);}
+  .view-toggle button:active{transform:scale(.98);}
+
+  .payments-view{padding-bottom:6px;}
+  .payments-head{display:grid;grid-template-columns:1.4fr 1fr 0.9fr 1.4fr 32px;gap:6px;align-items:center;padding:10px 12px;background:var(--card);border-radius:12px;box-shadow:var(--shadow-sm);margin-bottom:14px;font-size:.7rem;font-weight:800;color:var(--text-muted);text-align:center;letter-spacing:.2px;}
+  .payments-head > div:first-child{text-align:right;}
+
+  .month-wrap{margin-bottom:24px;}
+  .month-wrap:last-child{margin-bottom:0;}
+  .month-block{border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);background:var(--card);}
+  .month-title{background:#eff6ff;color:#1e6091;padding:7px 14px;font-size:.74rem;font-weight:800;border-bottom:1px solid #dbeafe;letter-spacing:.2px;}
+
+  .payment-row{display:grid;grid-template-columns:1.4fr 1fr 0.9fr 1.4fr 32px;gap:6px;align-items:center;padding:10px 12px;background:var(--card);border-bottom:1px solid #f1f5f9;cursor:pointer;transition:background .12s;}
+  .payment-row:last-child{border-bottom:none;}
+  .payment-row:active{background:#f8fafc;}
+  .payment-row.paid{background:#f0fdf4;}
+  .payment-row.paid .pr-unit{text-decoration:line-through;color:#94a3b8;}
+  .pr-unit{font-size:.9rem;font-weight:800;color:var(--text);overflow-wrap:break-word;word-break:normal;line-height:1.25;text-align:right;}
+  .pr-due{font-size:.72rem;font-weight:700;color:#334155;direction:ltr;text-align:center;white-space:nowrap;}
+  .pr-days{text-align:center;white-space:nowrap;}
+  .days-pill{display:inline-block;padding:3px 7px;border-radius:999px;font-size:.66rem;font-weight:800;white-space:nowrap;line-height:1.4;}
+  .days-pill.ok{background:var(--success-soft);color:var(--success);}
+  .days-pill.warn{background:var(--warning-soft);color:var(--warning);}
+  .days-pill.danger{background:var(--danger-soft);color:var(--danger);}
+  .days-pill.paid{background:#d1fae5;color:#047857;}
+  .pr-amount{text-align:center;line-height:1.15;min-width:0;}
+  .pr-method{font-size:.56rem;font-weight:700;color:var(--text-soft);letter-spacing:-.1px;margin-bottom:1px;white-space:nowrap;}
+  .pr-money{font-size:.78rem;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums;white-space:nowrap;}
+  .payment-row.paid .pr-money{color:var(--success);}
+  .pr-action{display:flex;justify-content:center;align-items:center;}
+
+  .pay-btn{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;font-size:.9rem;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;box-shadow:0 2px 5px rgba(16,185,129,.35);}
+  .pay-btn:active{transform:scale(.9);}
+
+  .month-total{display:flex;justify-content:flex-end;padding:8px 14px 0;font-size:.74rem;font-weight:700;color:var(--text-muted);background:transparent;font-variant-numeric:tabular-nums;}
+
+  .details-filter-wrap{background:var(--card);border-radius:12px;padding:10px 12px;margin-bottom:12px;box-shadow:var(--shadow-sm);display:flex;align-items:center;gap:8px;}
+  .filter-label{font-size:.82rem;font-weight:800;color:#334155;white-space:nowrap;flex-shrink:0;}
+  .filter-select{flex:1;min-width:0;padding:8px 32px 8px 12px;border:2px solid var(--border);border-radius:10px;font-family:inherit;font-size:.88rem;font-weight:700;background:#f8fafc;color:#0f172a;-webkit-appearance:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%2364748b' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left 12px center;}
+  .filter-select:focus{outline:none;border-color:var(--primary-light);}
+
+  .empty-state{text-align:center;color:var(--text-muted);padding:50px 20px;font-size:1rem;line-height:2;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);}
+  .empty-state .icon{font-size:2.6rem;margin-bottom:10px;}
+  .empty-state .title{font-weight:800;color:var(--text);font-size:1.05rem;}
+  .empty-state .desc{font-size:.88rem;margin-top:6px;}
+  .empty-state .empty-btn{margin-top:16px;padding:11px 20px;border:none;border-radius:12px;background:linear-gradient(135deg,#1e6091,#2d8fbf);color:#fff;font-family:inherit;font-size:.92rem;font-weight:800;cursor:pointer;box-shadow:0 3px 9px rgba(30,96,145,.28);}
+
+  .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.6);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:14px;z-index:1500;opacity:0;pointer-events:none;transition:opacity .22s;}
+  .modal-overlay.show{opacity:1;pointer-events:auto;}
+  .modal-card{background:var(--card);border-radius:22px;padding:22px 18px 18px;max-width:440px;width:100%;box-shadow:var(--shadow-lg);transform:scale(.9);transition:transform .22s;max-height:92vh;overflow-y:auto;}
+  .modal-overlay.show .modal-card{transform:scale(1);}
+  .modal-title{margin:0 0 18px;font-size:1.12rem;font-weight:800;color:var(--text);text-align:center;}
+
+  .form-field{margin-bottom:14px;}
+  .form-field label{display:block;font-weight:700;margin-bottom:6px;font-size:.9rem;color:#334155;}
+  .form-field input[type=text]{width:100%;padding:12px 14px;font-size:1rem;font-family:inherit;border:2px solid var(--border);border-radius:12px;background:#f8fafc;color:var(--text);transition:border-color .15s, background .15s, box-shadow .15s;}
+  .form-field input:focus{outline:none;border-color:var(--primary-light);background:#fff;box-shadow:0 0 0 3px rgba(45,143,191,.15);}
+  .form-field input.input-error{border-color:var(--danger) !important;background:#fff5f5 !important;box-shadow:0 0 0 3px rgba(220,38,38,.15);animation:shake .35s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
+
+  .method-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .method-grid button{padding:11px 6px;border:2px solid var(--border);background:#f8fafc;color:var(--text-muted);border-radius:12px;font-family:inherit;font-size:.86rem;font-weight:800;cursor:pointer;transition:.15s;}
+  .method-grid button.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 3px 8px rgba(30,96,145,.28);}
+
+  .date-button{width:100%;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px;background:#f8fafc;border:2px solid var(--border);border-radius:12px;font-family:inherit;font-size:1rem;font-weight:800;color:var(--text);cursor:pointer;text-align:right;}
+
+  .modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+  .btn-primary{width:100%;padding:13px;font-size:1rem;font-weight:800;font-family:inherit;background:linear-gradient(135deg,#1e6091,#2d8fbf);color:#fff;border:none;border-radius:13px;cursor:pointer;box-shadow:0 4px 12px rgba(30,96,145,.28);}
+  .btn-success{width:100%;padding:13px;font-size:1rem;font-weight:800;font-family:inherit;background:linear-gradient(135deg,#10b981,#059669);color:#fff;border:none;border-radius:13px;cursor:pointer;box-shadow:0 4px 12px rgba(16,185,129,.3);}
+  .btn-ghost{width:100%;padding:11px;font-size:.92rem;font-weight:700;font-family:inherit;background:#f1f5f9;color:var(--text-muted);border:none;border-radius:12px;cursor:pointer;}
+  .btn-danger{width:100%;padding:13px;font-size:1rem;font-weight:800;font-family:inherit;background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff;border:none;border-radius:13px;cursor:pointer;box-shadow:0 4px 12px rgba(220,38,38,.28);}
+
+  .units-list{list-style:none;margin:0 0 14px;padding:0;}
+  .unit-card{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .unit-card-info{flex:1;min-width:0;}
+  .unit-card-name{font-size:.98rem;font-weight:800;color:var(--text);line-height:1.3;overflow-wrap:break-word;}
+  .unit-card-meta{font-size:.78rem;color:var(--text-muted);margin-top:3px;font-weight:700;line-height:1.5;}
+  .unit-card-meta .rent-amount{color:var(--primary);font-weight:800;font-variant-numeric:tabular-nums;}
+  .unit-card-meta .method-tag{display:inline-block;background:var(--primary-soft);color:var(--primary);padding:1px 8px;border-radius:999px;font-size:.7rem;font-weight:800;}
+  .unit-card-actions{display:flex;gap:6px;flex-shrink:0;}
+  .unit-card-actions button{width:34px;height:34px;border-radius:10px;border:none;font-family:inherit;font-size:1rem;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;}
+  .unit-card-actions .edit-btn{background:#eff6ff;color:#1e6091;}
+  .unit-card-actions .del-btn{background:#fef2f2;color:#dc2626;}
+  .units-empty{text-align:center;color:var(--text-soft);padding:24px 16px;font-size:.9rem;font-weight:700;background:#f8fafc;border-radius:12px;margin-bottom:14px;}
+
+  .detail-unit-name{margin:0;text-align:center;font-size:1.25rem;font-weight:800;color:var(--text);letter-spacing:.2px;}
+  .detail-unit-type{text-align:center;font-size:.8rem;font-weight:700;color:var(--text-soft);margin:2px 0 16px;}
+  .detail-grid{background:#f8fafc;border:1px solid var(--border);border-radius:14px;padding:4px 14px;margin-bottom:14px;}
+  .detail-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;font-size:.88rem;border-bottom:1px dashed #e2e8f0;align-items:center;}
+  .detail-row:last-child{border-bottom:none;}
+  .detail-label{color:var(--text-muted);font-weight:700;flex-shrink:0;font-size:.85rem;}
+  .detail-value{color:var(--text);font-weight:800;text-align:left;direction:ltr;font-size:.88rem;}
+  .detail-value.rtl{direction:rtl;text-align:right;}
+  .detail-actions{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:7px;margin-bottom:16px;}
+  .detail-actions button{padding:11px 4px;border:none;border-radius:11px;font-family:inherit;font-size:.85rem;font-weight:800;cursor:pointer;line-height:1.3;}
+  .detail-actions .btn-pay{background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 2px 8px rgba(16,185,129,.3);}
+  .detail-actions .btn-edit{background:#eff6ff;color:#1e6091;}
+  .detail-actions .btn-del{background:#fef2f2;color:#dc2626;}
+
+  .history-head{margin:0 0 8px;font-size:.9rem;font-weight:800;color:#334155;display:flex;justify-content:space-between;align-items:center;}
+  .history-head span.count{font-size:.74rem;font-weight:800;color:var(--primary);background:var(--primary-soft);padding:2px 9px;border-radius:999px;}
+  .history-list{list-style:none;margin:0;padding:0;}
+  .history-item{display:flex;align-items:center;gap:9px;padding:9px 4px;border-bottom:1px solid #f1f5f9;}
+  .history-item:last-child{border-bottom:none;}
+  .hist-info{flex:1;min-width:0;}
+  .hist-date{font-size:.84rem;font-weight:800;color:#334155;direction:ltr;text-align:right;}
+  .hist-meta{font-size:.7rem;color:var(--text-soft);margin-top:2px;font-weight:700;direction:ltr;text-align:right;}
+  .hist-amount{font-size:.86rem;font-weight:800;color:var(--success);white-space:nowrap;}
+  .hist-del-btn{width:28px;height:28px;border-radius:50%;border:none;background:#fef2f2;color:#dc2626;font-size:1rem;font-weight:900;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1;padding:0;}
+  .hist-empty{text-align:center;color:var(--text-soft);padding:18px;font-size:.85rem;font-weight:700;background:#f8fafc;border-radius:12px;}
+
+  .pay-icon,.delete-icon{width:62px;height:62px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 14px;}
+  .pay-icon{background:linear-gradient(135deg,#d1fae5,#a7f3d0);box-shadow:0 6px 18px rgba(16,185,129,.22);}
+  .delete-icon{background:linear-gradient(135deg,#fee2e2,#fecaca);box-shadow:0 6px 18px rgba(220,38,38,.18);}
+
+  .confirm-child{margin:0 0 14px;font-size:.95rem;color:var(--text-muted);font-weight:700;text-align:center;line-height:1.6;}
+  .confirm-child strong{color:var(--primary);font-size:1.08rem;font-weight:800;}
+  .confirm-amount{background:linear-gradient(135deg,#10b981,#059669);border-radius:14px;padding:14px;color:#fff;margin-bottom:14px;box-shadow:0 6px 18px rgba(16,185,129,.25);text-align:center;}
+  .confirm-amount-label{display:block;font-size:.76rem;opacity:.9;margin-bottom:3px;font-weight:700;}
+  .confirm-amount-value{display:block;font-size:1.7rem;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums;}
+  .confirm-next{background:#f8fafc;border:1.5px dashed #cbd5e1;border-radius:12px;padding:13px;margin-bottom:12px;text-align:center;}
+  .confirm-next-label{font-size:.76rem;font-weight:700;color:var(--text-muted);margin-bottom:6px;}
+  .confirm-next-date{font-size:1rem;font-weight:800;color:var(--text);direction:ltr;}
+  .confirm-next-days{display:inline-block;margin-top:8px;padding:4px 11px;border-radius:999px;font-size:.8rem;font-weight:800;background:var(--success-soft);color:var(--success);}
+  .confirm-next-days.warn{background:var(--warning-soft);color:var(--warning);}
+  .confirm-next-days.danger{background:var(--danger-soft);color:var(--danger);}
+
+  .delete-text{text-align:center;font-size:.95rem;color:#334155;margin:0 0 12px;font-weight:700;line-height:1.6;}
+  .delete-text strong{color:var(--danger);font-size:1.02rem;}
+  .delete-warning{background:#fef5f5;border:1px solid #fecaca;border-radius:12px;padding:12px;margin-bottom:16px;font-size:.84rem;font-weight:700;color:#b91c1c;text-align:center;line-height:1.6;}
+
+  .log-list{list-style:none;margin:0 0 16px;padding:0;background:#f8fafc;border-radius:12px;overflow:hidden;}
+  .log-item{display:flex;gap:10px;padding:11px 12px;border-bottom:1px solid #eaf2ef;align-items:flex-start;}
+  .log-item:last-child{border-bottom:none;}
+  .log-icon{font-size:1.05rem;line-height:1.3;flex-shrink:0;}
+  .log-body{flex:1;min-width:0;}
+  .log-text{font-size:.84rem;font-weight:700;color:#334155;line-height:1.5;word-break:break-word;}
+  .log-time{font-size:.68rem;color:var(--text-soft);margin-top:3px;font-weight:600;direction:ltr;text-align:right;}
+  .log-empty{text-align:center;color:var(--text-soft);padding:16px;font-size:.82rem;font-weight:600;background:#f8fafc;border-radius:12px;margin-bottom:16px;}
+
+  .picker-card{background:#fff;border-radius:22px;padding:16px 14px;max-width:390px;width:100%;box-shadow:var(--shadow-lg);transform:scale(.9);transition:transform .22s;max-height:94vh;overflow-y:auto;}
+  .modal-overlay.show .picker-card{transform:scale(1);}
+  .picker-title{margin:0 0 12px;text-align:center;font-size:1.02rem;font-weight:800;color:var(--text);}
+  .picker-selected{text-align:center;background:#eff6ff;border-radius:12px;padding:10px;margin-bottom:12px;}
+  .picker-selected-value{font-size:1.5rem;font-weight:800;color:var(--primary);letter-spacing:1px;direction:ltr;}
+  .picker-selected-label{font-size:.72rem;font-weight:700;color:var(--text-muted);margin-top:2px;}
+  .year-nav{display:flex;align-items:center;justify-content:space-between;background:#eff6ff;border-radius:12px;padding:5px;margin-bottom:12px;}
+  .year-nav button{width:38px;height:38px;border-radius:9px;border:none;background:#fff;font-size:1rem;font-weight:800;color:var(--primary);cursor:pointer;font-family:inherit;box-shadow:0 1px 3px rgba(0,0,0,.08);}
+  .year-nav .year-display{font-size:1.12rem;font-weight:800;color:var(--text);letter-spacing:.5px;direction:ltr;}
+  .section-mini-label{font-size:.72rem;font-weight:800;color:var(--text-muted);margin:3px 0 6px;}
+  .month-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:12px;}
+  .month-grid button{padding:9px 2px;font-size:.88rem;font-weight:800;font-family:inherit;background:#f8fafc;border:2px solid var(--border);border-radius:10px;color:#475569;cursor:pointer;transition:.15s;}
+  .month-grid button.active{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 7px rgba(30,96,145,.28);}
+  .weekday-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
+  .weekday-header span{text-align:center;font-size:.68rem;font-weight:800;color:var(--text-soft);padding:4px 0;}
+  .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:12px;}
+  .day-grid button,.day-empty{aspect-ratio:1/1;padding:2px;font-size:.88rem;font-weight:700;font-family:inherit;background:#f8fafc;border:2px solid var(--border);border-radius:9px;color:#475569;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;}
+  .day-empty{background:transparent;border-color:transparent;cursor:default;pointer-events:none;}
+  .day-grid button.today{border-color:#dc2626;color:#dc2626;font-weight:900;background:#fff5f5;}
+  .day-grid button.selected{background:var(--primary);color:#fff;border-color:var(--primary);box-shadow:0 2px 7px rgba(30,96,145,.28);}
+  .day-grid button.today.selected{background:var(--primary);color:#fff;border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.35);}
+
+  .font-modal{max-width:340px;}
+  .font-preview{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;font-size:1rem;color:#334155;font-weight:700;margin-bottom:16px;min-height:64px;display:flex;align-items:center;justify-content:center;line-height:1.5;}
+  .font-controls{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .font-step{flex:0 0 58px;height:58px;border-radius:14px;border:2px solid var(--border);background:#f8fafc;color:var(--primary);font-size:1.7rem;font-weight:800;font-family:inherit;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;}
+  .font-step:disabled{opacity:.3;cursor:not-allowed;transform:none;}
+  .font-level{flex:1;text-align:center;font-weight:800;color:var(--text);font-size:1.02rem;}
+
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(30px);background:#0f172a;color:#fff;padding:12px 20px;border-radius:13px;font-size:.9rem;font-weight:700;opacity:0;pointer-events:none;transition:.28s;z-index:3000;max-width:90vw;text-align:center;box-shadow:0 8px 24px rgba(15,23,42,.4);}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  @media (max-width: 380px){
+    .payments-head,.payment-row{grid-template-columns:1.3fr 0.95fr 0.85fr 1.3fr 30px;gap:4px;padding:9px 8px;}
+    .pr-unit{font-size:.84rem;}
+    .pr-due{font-size:.66rem;}
+    .pr-money{font-size:.72rem;}
+    .pr-method{font-size:.52rem;}
+    .days-pill{font-size:.6rem;padding:2px 5px;}
+    .pay-btn{width:26px;height:26px;font-size:.8rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <button class="header-btn" id="fontSizeBtn" title="حجم الخط">Aa</button>
+  <button class="header-btn" id="refreshBtn" title="تحديث">🔄</button>
+
+  <div class="header-right-tools">
+    <button class="header-tool-btn" onclick="location.href='babycare.html'" title="الذهاب إلى الحضانة">👼 الحضانة</button>
+    <button class="header-tool-btn" id="unitsBtn" title="الوحدات">🏠 الوحدات</button>
+    <button class="header-tool-btn" id="logBtn" title="السجل">📋 السجل</button>
+    <div class="sync-status" id="syncStatus">
+      <span class="dot"></span>
+      <span id="syncText">جارٍ الاتصال…</span>
+    </div>
+  </div>
+
+  <h1>🏢 إدارة الإيجارات</h1>
+  <div class="header-date" id="headerDate">—</div>
+</header>
+
+<main>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-year" id="statYearCurrent">—</div>
+      <div class="stat-num" id="statCurrent">0</div>
+      <div class="stat-lbl">إجمالي دفعات السنة</div>
+    </div>
+    <div class="stat-box next">
+      <div class="stat-year" id="statYearNext">—</div>
+      <div class="stat-num" id="statNext">0</div>
+      <div class="stat-lbl">إجمالي دفعات السنة القادمة</div>
+    </div>
+  </div>
+
+  <div class="view-toggle" id="viewToggle">
+    <button type="button" data-view="table" class="active">📋 عرض الجدول</button>
+    <button type="button" data-view="details">📅 تفاصيل الدفعات</button>
+  </div>
+
+  <div id="contentArea"></div>
+</main>
+
+<!-- نافذة الوحدات -->
+<div class="modal-overlay" id="unitsModal">
+  <div class="modal-card">
+    <h3 class="modal-title">🏠 الوحدات</h3>
+    <ul class="units-list" id="unitsList"></ul>
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" id="addUnitBtn">➕ إضافة وحدة جديدة</button>
+      <button type="button" class="btn-ghost" id="unitsCloseBtn">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- نموذج الإضافة -->
+<div class="modal-overlay" id="formModal">
+  <div class="modal-card">
+    <h3 class="modal-title" id="formTitle">إضافة وحدة جديدة</h3>
+    <form id="unitForm" autocomplete="off" novalidate>
+      <div class="form-field">
+        <label for="unitName">اسم الوحدة</label>
+        <input type="text" id="unitName" placeholder="مثال: شقة 1" autocomplete="off">
+      </div>
+      <div class="form-field">
+        <label for="unitRent">الإيجار السنوي (ريال)</label>
+        <input type="text" id="unitRent" placeholder="مثال: 15000" inputmode="decimal" autocomplete="off">
+      </div>
+      <div class="form-field">
+        <label>طريقة الدفع</label>
+        <div class="method-grid" id="methodGrid">
+          <button type="button" data-method="monthly">شهري</button>
+          <button type="button" data-method="quarterly" class="active">ربع سنوي</button>
+          <button type="button" data-method="semi">نصف سنوي</button>
+          <button type="button" data-method="annual">سنوي</button>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>تاريخ أول استحقاق</label>
+        <button type="button" class="date-button" id="dateButton">
+          <span id="dateDisplay">اختر التاريخ</span>
+          <span>📅</span>
+        </button>
+      </div>
+      <div class="modal-actions">
+        <button type="submit" class="btn-primary" id="submitBtn">➕ إضافة الوحدة</button>
+        <button type="button" class="btn-ghost" id="formCancel">إلغاء</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- تفاصيل الوحدة -->
+<div class="modal-overlay" id="detailModal">
+  <div class="modal-card">
+    <h3 class="detail-unit-name" id="detailName">—</h3>
+    <p class="detail-unit-type" id="detailType">—</p>
+    <div class="detail-grid" id="detailGrid"></div>
+    <div class="detail-actions">
+      <button type="button" class="btn-pay" id="detailPayBtn">✓ تسجيل دفعة</button>
+      <button type="button" class="btn-edit" id="detailEditBtn">تعديل</button>
+      <button type="button" class="btn-del" id="detailDelBtn">حذف</button>
+    </div>
+    <div class="history-head">
+      <span>📋 سجل الدفعات</span>
+      <span class="count" id="historyCount">0</span>
+    </div>
+    <ul class="history-list" id="historyList"></ul>
+    <div class="modal-actions" style="margin-top:16px;">
+      <button type="button" class="btn-ghost" id="detailCloseBtn">إغلاق</button>
+    </div>
+  </div>
+</div>
+
+<!-- تأكيد الدفعة -->
+<div class="modal-overlay" id="payModal">
+  <div class="modal-card">
+    <div class="pay-icon">💰</div>
+    <h3 class="modal-title">تأكيد استلام الدفعة</h3>
+    <p class="confirm-child">سيتم تسجيل دفعة على <strong id="payUnitName">—</strong></p>
+    <div class="confirm-amount">
+      <span class="confirm-amount-label">المبلغ المستلم</span>
+      <span class="confirm-amount-value" id="payAmount">—</span>
+    </div>
+    <div class="confirm-next">
+      <div class="confirm-next-label">تاريخ الاستحقاق</div>
+      <div class="confirm-next-date" id="payDueDate">—</div>
+    </div>
+    <div class="confirm-next">
+      <div class="confirm-next-label">الدفعة القادمة ستكون في</div>
+      <div class="confirm-next-date" id="payNextDate">—</div>
+      <div class="confirm-next-days" id="payNextDays">—</div>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-success" id="payConfirmBtn">✓ نعم، استلمت المبلغ</button>
+      <button type="button" class="btn-ghost" id="payCancelBtn">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- تأكيد الحذف -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal-card">
+    <div class="delete-icon">🗑️</div>
+    <h3 class="modal-title">تأكيد حذف الوحدة</h3>
+    <p class="delete-text">سيتم حذف <strong id="deleteUnitName">—</strong></p>
+    <div class="delete-warning">
+      ⚠️ سيتم حذف جميع سجل دفعاته (<span id="deleteHistCount">0</span> دفعة) نهائياً.<br>
+      لا يمكن التراجع عن هذه العملية.
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-danger" id="deleteConfirmBtn">🗑️ نعم، احذف نهائياً</button>
+      <button type="button" class="btn-ghost" id="deleteCancelBtn">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- السجل -->
+<div class="modal-overlay" id="logModal">
+  <div class="modal-card">
+    <h3 class="modal-title">📋 سجل العمليات</h3>
+    <ul class="log-list" id="logList"></ul>
+    <button type="button" class="btn-ghost" id="logCloseBtn">إغلاق</button>
+  </div>
+</div>
+
+<!-- منتقي التاريخ -->
+<div class="modal-overlay" id="pickerModal">
+  <div class="picker-card">
+    <h3 class="picker-title">اختر التاريخ</h3>
+    <div class="picker-selected">
+      <div class="picker-selected-value" id="pickerSelectedValue">—</div>
+      <div class="picker-selected-label">يوم / شهر / سنة</div>
+    </div>
+    <div class="year-nav">
+      <button type="button" id="yearPrev">◀</button>
+      <span class="year-display" id="yearDisplay">2026</span>
+      <button type="button" id="yearNext">▶</button>
+    </div>
+    <div class="section-mini-label">الشهر</div>
+    <div class="month-grid" id="monthGrid"></div>
+    <div class="section-mini-label">اليوم</div>
+    <div class="weekday-header">
+      <span>أحد</span><span>اثنين</span><span>ثلاثاء</span><span>أربعاء</span>
+      <span>خميس</span><span>جمعة</span><span>سبت</span>
+    </div>
+    <div class="day-grid" id="dayGrid"></div>
+    <div class="modal-actions">
+      <button type="button" class="btn-primary" id="pickerConfirmBtn">✔ تأكيد</button>
+      <button type="button" class="btn-ghost" id="pickerCancelBtn">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<!-- حجم الخط -->
+<div class="modal-overlay" id="fontModal">
+  <div class="modal-card font-modal">
+    <h3 class="modal-title">حجم الخط</h3>
+    <div class="font-preview" id="fontPreview">نموذج للنص</div>
+    <div class="font-controls">
+      <button type="button" class="font-step" id="fontMinus">−</button>
+      <div class="font-level" id="fontLevel">متوسط</div>
+      <button type="button" class="font-step" id="fontPlus">+</button>
+    </div>
+    <button type="button" class="btn-ghost" id="fontCloseBtn">إغلاق</button>
+  </div>
+</div>
+
+<!-- التحديث -->
+<div class="modal-overlay" id="refreshModal">
+  <div class="modal-card">
+    <h3 class="modal-title">التحديث</h3>
+    <button type="button" class="btn-primary" id="refreshDataBtn" style="margin-bottom:10px;">🔄 تحديث البيانات فقط</button>
+    <button type="button" class="btn-primary" id="refreshPageBtn" style="margin-bottom:10px;">♻️ إعادة تحميل الصفحة</button>
+    <button type="button" class="btn-ghost" id="refreshCancel">إلغاء</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ═══════════════════════════════════════════════════════════════
+     🔥🔥🔥  ضعي هنا نفس إعدادات Firebase المستخدمة في babycare.html
+     ═══════════════════════════════════════════════════════════════ */
+  const firebaseConfig = {
+  apiKey: "AIzaSyAfJAirfIorI6HvT8zUEmWYQYzH1et1i4c",
+  authDomain: "babycare-132a9.firebaseapp.com",
+  projectId: "babycare-132a9",
+  storageBucket: "babycare-132a9.firebasestorage.app",
+  messagingSenderId: "665179210280",
+  appId: "1:665179210280:web:c834e420d7ec43d9796b1d",
+  measurementId: "G-HWRVRWPNDP",
+    databaseURL: "https://babycare-132a9-default-rtdb.firebaseio.com/"
+  };
+  /* ═══════════════════════════════════════════════════════════════ */
+
+  const CURRENCY     = 'ريال';
+  const STORAGE_KEY  = 'rental_units_v2';
+  const FONT_KEY     = 'rental_font_level_v2';
+  const RTDB_PATH    = 'rental/data';
+  const MAX_LOG      = 10;
+
+  const NOW          = new Date();
+  const CURRENT_YEAR = NOW.getFullYear();
+  const NEXT_YEAR    = CURRENT_YEAR + 1;
+
+  const AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
+                     'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const AR_DAYS_SHORT = ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
+
+  const PAYMENT_METHODS = {
+    monthly:   { label: 'شهري',     short: 'شهري',  months: 1  },
+    quarterly: { label: 'ربع سنوي', short: 'ربعي',  months: 3  },
+    semi:      { label: 'نصف سنوي', short: 'نصفي',  months: 6  },
+    annual:    { label: 'سنوي',     short: 'سنوي',  months: 12 }
+  };
+
+  /* ========= حجم الخط ========= */
+  const FONT_SIZES  = [15, 16, 17, 18, 19, 20, 22];
+  const FONT_LABELS = ['صغير جداً','صغير','متوسط','كبير','كبير جداً','أكبر','الأكبر'];
+  const FONT_DEFAULT_INDEX = 2;
+  let fontLevel = FONT_DEFAULT_INDEX;
+
+  function applyFontLevel(){ document.documentElement.style.fontSize = FONT_SIZES[fontLevel] + 'px'; }
+  function saveFontLevel(){ try { localStorage.setItem(FONT_KEY, String(fontLevel)); } catch(e){} }
+  function loadFontLevel(){
+    try {
+      const v = localStorage.getItem(FONT_KEY);
+      if(v !== null){
+        const n = parseInt(v, 10);
+        if(!isNaN(n) && n >= 0 && n < FONT_SIZES.length) fontLevel = n;
+      }
+    } catch(e){}
+  }
+
+  /* ========= أدوات ========= */
+  function todayMidnight(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
+  function toISO(d){
+    return d.getFullYear() + '-' +
+           String(d.getMonth()+1).padStart(2,'0') + '-' +
+           String(d.getDate()).padStart(2,'0');
+  }
+  function fromISO(s){ const p = s.split('-').map(Number); return new Date(p[0], p[1]-1, p[2]); }
+  function formatDate(d){
+    if(typeof d === 'string') d = fromISO(d);
+    return d.getDate() + '/' + (d.getMonth()+1) + '/' + d.getFullYear();
+  }
+  function formatDateWithDay(d){
+    if(typeof d === 'string') d = fromISO(d);
+    return AR_DAYS_SHORT[d.getDay()] + ' ' + formatDate(d);
+  }
+  /* ✅ إصلاح: تقريب الأرقام وإزالة الكسور */
+  function formatMoney(n){
+    const v = Number(n);
+    if(isNaN(v)) return '0';
+    return Math.round(v).toLocaleString('en-US');
+  }
+  function formatMoneyFull(n){
+    return formatMoney(n) + ' ' + CURRENCY;
+  }
+  function daysWord(n){
+    if(n === 1) return 'يوم واحد';
+    if(n === 2) return 'يومان';
+    if(n >= 3 && n <= 10) return n + ' أيام';
+    return n + ' يوم';
+  }
+  function daysAgoText(isoDate){
+    const d = fromISO(isoDate);
+    const today = todayMidnight();
+    const diff = Math.round((today - d) / 86400000);
+    if(diff <= 0) return 'اليوم';
+    if(diff === 1) return 'منذ يوم';
+    if(diff === 2) return 'منذ يومين';
+    if(diff >= 3 && diff <= 10) return 'منذ ' + diff + ' أيام';
+    return 'منذ ' + diff + ' يوم';
+  }
+  function addMonths(date, months){
+    const d = new Date(date);
+    const day = d.getDate();
+    d.setDate(1);
+    d.setMonth(d.getMonth() + months);
+    const lastDay = new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+    d.setDate(Math.min(day, lastDay));
+    return d;
+  }
+  function esc(s){
+    return String(s).replace(/[&<>"']/g, function(m){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+    });
+  }
+  function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+
+  const ARABIC_DIGITS_MAP = {
+    '٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9',
+    '۰':'0','۱':'1','۲':'2','۳':'3','۴':'4','۵':'5','۶':'6','۷':'7','۸':'8','۹':'9'
+  };
+  function normalizeDigits(str){
+    return String(str).replace(/[٠-٩۰-۹]/g, function(ch){ return ARABIC_DIGITS_MAP[ch] || ch; });
+  }
+
+  /* ========= الحالة ========= */
+  let units = [];
+  let activityLog = [];
+  let currentView = 'table';
+  let editingUnitId = null;
+  let pendingPayUnitId = null;
+  let pendingDeleteUnitId = null;
+  let currentDetailUnitId = null;
+  let selectedMethod = 'quarterly';
+  let selectedStartDate = null;
+  let pickerYear, pickerMonth, pickerDay;
+  let detailsFilterUnitId = null;
+
+  /* ========= Firebase ========= */
+  let rtdb = null;
+  let rtdbRef = null;
+  let firebaseReady = false;
+  let lastSavedJSON = '';
+
+  try {
+    const hasConfig = firebaseConfig.apiKey && firebaseConfig.apiKey.indexOf('ضع_هنا') === -1;
+    const hasDbUrl  = firebaseConfig.databaseURL && firebaseConfig.databaseURL.indexOf('ضع_هنا') === -1;
+    if(hasConfig && hasDbUrl){
+      firebase.initializeApp(firebaseConfig);
+      rtdb = firebase.database();
+      rtdbRef = rtdb.ref(RTDB_PATH);
+      firebaseReady = true;
+    } else {
+      console.warn('⚠️ لم يتم إعداد firebaseConfig بعد.');
+    }
+  } catch(e){
+    console.error('Firebase init error:', e);
+    firebaseReady = false;
+  }
+
+  /* ========= عناصر الصفحة ========= */
+  const headerDate = document.getElementById('headerDate');
+  const statYearCurrent = document.getElementById('statYearCurrent');
+  const statYearNext = document.getElementById('statYearNext');
+  const statCurrent = document.getElementById('statCurrent');
+  const statNext = document.getElementById('statNext');
+  const viewToggle = document.getElementById('viewToggle');
+  const contentArea = document.getElementById('contentArea');
+  const toastEl = document.getElementById('toast');
+  const syncStatusEl = document.getElementById('syncStatus');
+  const syncTextEl = document.getElementById('syncText');
+
+  const fontSizeBtn = document.getElementById('fontSizeBtn');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const unitsBtn = document.getElementById('unitsBtn');
+  const logBtn = document.getElementById('logBtn');
+
+  const unitsModal = document.getElementById('unitsModal');
+  const unitsList = document.getElementById('unitsList');
+  const addUnitBtn = document.getElementById('addUnitBtn');
+  const unitsCloseBtn = document.getElementById('unitsCloseBtn');
+
+  const formModal = document.getElementById('formModal');
+  const formTitle = document.getElementById('formTitle');
+  const unitForm = document.getElementById('unitForm');
+  const unitNameInput = document.getElementById('unitName');
+  const unitRentInput = document.getElementById('unitRent');
+  const methodGrid = document.getElementById('methodGrid');
+  const dateButton = document.getElementById('dateButton');
+  const dateDisplay = document.getElementById('dateDisplay');
+  const submitBtn = document.getElementById('submitBtn');
+  const formCancel = document.getElementById('formCancel');
+
+  const detailModal = document.getElementById('detailModal');
+  const detailName = document.getElementById('detailName');
+  const detailType = document.getElementById('detailType');
+  const detailGrid = document.getElementById('detailGrid');
+  const detailPayBtn = document.getElementById('detailPayBtn');
+  const detailEditBtn = document.getElementById('detailEditBtn');
+  const detailDelBtn = document.getElementById('detailDelBtn');
+  const historyCount = document.getElementById('historyCount');
+  const historyList = document.getElementById('historyList');
+  const detailCloseBtn = document.getElementById('detailCloseBtn');
+
+  const payModal = document.getElementById('payModal');
+  const payUnitName = document.getElementById('payUnitName');
+  const payAmount = document.getElementById('payAmount');
+  const payDueDate = document.getElementById('payDueDate');
+  const payNextDate = document.getElementById('payNextDate');
+  const payNextDays = document.getElementById('payNextDays');
+  const payConfirmBtn = document.getElementById('payConfirmBtn');
+  const payCancelBtn = document.getElementById('payCancelBtn');
+
+  const deleteModal = document.getElementById('deleteModal');
+  const deleteUnitName = document.getElementById('deleteUnitName');
+  const deleteHistCount = document.getElementById('deleteHistCount');
+  const deleteConfirmBtn = document.getElementById('deleteConfirmBtn');
+  const deleteCancelBtn = document.getElementById('deleteCancelBtn');
+
+  const logModal = document.getElementById('logModal');
+  const logList = document.getElementById('logList');
+  const logCloseBtn = document.getElementById('logCloseBtn');
+
+  const pickerModal = document.getElementById('pickerModal');
+  const pickerSelectedValue = document.getElementById('pickerSelectedValue');
+  const yearDisplay = document.getElementById('yearDisplay');
+  const yearPrev = document.getElementById('yearPrev');
+  const yearNext = document.getElementById('yearNext');
+  const monthGrid = document.getElementById('monthGrid');
+  const dayGrid = document.getElementById('dayGrid');
+  const pickerConfirmBtn = document.getElementById('pickerConfirmBtn');
+  const pickerCancelBtn = document.getElementById('pickerCancelBtn');
+
+  const fontModal = document.getElementById('fontModal');
+  const fontPreview = document.getElementById('fontPreview');
+  const fontLevelEl = document.getElementById('fontLevel');
+  const fontMinus = document.getElementById('fontMinus');
+  const fontPlus = document.getElementById('fontPlus');
+  const fontCloseBtn = document.getElementById('fontCloseBtn');
+
+  const refreshModal = document.getElementById('refreshModal');
+  const refreshDataBtn = document.getElementById('refreshDataBtn');
+  const refreshPageBtn = document.getElementById('refreshPageBtn');
+  const refreshCancel = document.getElementById('refreshCancel');
+
+  /* ========= حالة المزامنة ========= */
+  function setSyncState(state, text){
+    syncStatusEl.classList.remove('saving','error','offline');
+    if(state) syncStatusEl.classList.add(state);
+    syncTextEl.textContent = text;
+  }
+
+  /* ========= التخزين ========= */
+  function buildState(){ return { units: units, activityLog: activityLog }; }
+  function saveLocal(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(buildState())); } catch(e){}
+  }
+  function loadLocal(){
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const data = raw ? JSON.parse(raw) : {};
+      units = Array.isArray(data.units) ? data.units.filter(function(u){ return u && u.id && u.name; }) : [];
+      activityLog = Array.isArray(data.activityLog) ? data.activityLog : [];
+    } catch(e){ units = []; activityLog = []; }
+  }
+
+  async function save(){
+    saveLocal();
+    if(!firebaseReady || !rtdbRef){ setSyncState('offline', 'محلي فقط'); return; }
+    setSyncState('saving', 'جارٍ الحفظ…');
+    const payload = JSON.stringify(buildState());
+    lastSavedJSON = payload;
+    try {
+      await rtdbRef.set(Object.assign(buildState(), { updatedAt: Date.now() }));
+      setSyncState('', 'متزامن');
+    } catch(e){
+      console.error('RTDB save error:', e);
+      setSyncState('error', 'تعذّر الحفظ');
+      toast('⚠️ تعذّر الحفظ في السحابة');
+    }
+  }
+
+  async function load(){
+    loadLocal();
+    render();
+    if(!firebaseReady || !rtdbRef){ setSyncState('offline', 'غير متصل'); return; }
+    setSyncState('saving', 'جارٍ التحميل…');
+    try {
+      const snap = await rtdbRef.once('value');
+      if(snap.exists()){
+        const val = snap.val() || {};
+        units = Array.isArray(val.units) ? val.units.filter(function(u){ return u && u.id && u.name; }) : [];
+        activityLog = Array.isArray(val.activityLog) ? val.activityLog : [];
+        lastSavedJSON = JSON.stringify(buildState());
+        saveLocal();
+        render();
+        setSyncState('', 'متزامن');
+      } else if(units.length > 0){
+        await save();
+      } else {
+        setSyncState('', 'متزامن');
+      }
+      listenRealtime();
+    } catch(e){
+      console.error('RTDB load error:', e);
+      setSyncState('error', 'تعذّر الاتصال');
+    }
+  }
+
+  function listenRealtime(){
+    if(!firebaseReady || !rtdbRef) return;
+    rtdbRef.on('value', function(snap){
+      if(!snap.exists()) return;
+      const val = snap.val() || {};
+      const incoming = {
+        units: Array.isArray(val.units) ? val.units.filter(function(u){ return u && u.id && u.name; }) : [],
+        activityLog: Array.isArray(val.activityLog) ? val.activityLog : []
+      };
+      const incomingJSON = JSON.stringify(incoming);
+      if(incomingJSON === lastSavedJSON) return;
+      units = incoming.units;
+      activityLog = incoming.activityLog;
+      lastSavedJSON = incomingJSON;
+      saveLocal();
+      render();
+      setSyncState('', 'متزامن');
+      toast('☁️ تم تحديث البيانات من جهاز آخر');
+    }, function(err){
+      console.error('RTDB listen error:', err);
+      setSyncState('error', 'انقطع الاتصال');
+    });
+  }
+
+  /* ========= السجل ========= */
+  function addLog(type, data){
+    const entry = Object.assign({ id: uid(), type: type, timestamp: Date.now() }, data || {});
+    activityLog.unshift(entry);
+    if(activityLog.length > MAX_LOG) activityLog = activityLog.slice(0, MAX_LOG);
+  }
+  function logIcon(type){
+    switch(type){
+      case 'unit-add': return '➕';
+      case 'unit-edit': return '✏️';
+      case 'unit-delete': return '🗑️';
+      case 'payment': return '💰';
+      case 'payment-undo': return '↩️';
+      default: return '•';
+    }
+  }
+  function logText(entry){
+    switch(entry.type){
+      case 'unit-add': return 'تمت إضافة وحدة: ' + (entry.name || '—');
+      case 'unit-edit': {
+        const f = (entry.changes && entry.changes.length) ? ' (' + entry.changes.join('، ') + ')' : '';
+        return 'تم تعديل ' + (entry.name || '—') + f;
+      }
+      case 'unit-delete': return 'تم حذف الوحدة: ' + (entry.name || '—');
+      case 'payment': return 'تم استلام دفعة من ' + (entry.name || '—') + ' — ' + formatMoneyFull(entry.amount || 0);
+      case 'payment-undo': return 'تم إلغاء دفعة من ' + (entry.name || '—') + ' — ' + formatMoneyFull(entry.amount || 0);
+      default: return '—';
+    }
+  }
+  function formatLogTime(ts){
+    const d = new Date(ts);
+    let h = d.getHours();
+    const m = String(d.getMinutes()).padStart(2,'0');
+    const p = h >= 12 ? 'PM' : 'AM';
+    h = h % 12; if(h === 0) h = 12;
+    return formatDate(d) + ' - ' + h + ':' + m + ' ' + p;
+  }
+
+  /* ========= حسابات الإيجار ========= */
+  function getPaymentAmount(unit){
+    const months = PAYMENT_METHODS[unit.paymentMethod].months;
+    return Number(unit.annualRent) * months / 12;
+  }
+  function getHistoryMap(unit){
+    const map = {};
+    (unit.history || []).forEach(function(h){ map[h.dueDate] = h; });
+    return map;
+  }
+  function getNextDue(unit){
+    if(!unit.startDate) return null;
+    const start = fromISO(unit.startDate);
+    const months = PAYMENT_METHODS[unit.paymentMethod].months;
+    const historyMap = getHistoryMap(unit);
+    let due = new Date(start);
+    for(let i = 0; i < 500; i++){
+      const iso = toISO(due);
+      if(!historyMap[iso]){
+        return { iso: iso, date: new Date(due), amount: getPaymentAmount(unit) };
+      }
+      due = addMonths(due, months);
+    }
+    return null;
+  }
+  function getSchedule(unit){
+    const schedule = [];
+    if(!unit.startDate) return schedule;
+    const start = fromISO(unit.startDate);
+    const months = PAYMENT_METHODS[unit.paymentMethod].months;
+    const minDate = new Date(CURRENT_YEAR, 0, 1);
+    const maxDate = new Date(NEXT_YEAR + 1, 0, 1);
+    const historyMap = getHistoryMap(unit);
+    let due = new Date(start);
+    for(let i = 0; i < 1000; i++){
+      if(due >= maxDate) break;
+      if(due >= minDate){
+        const iso = toISO(due);
+        const h = historyMap[iso];
+        schedule.push({
+          dueDate: iso,
+          amount: h ? Number(h.amount) : getPaymentAmount(unit),
+          paid: !!h,
+          paidDate: h ? h.paidDate : null
+        });
+      }
+      due = addMonths(due, months);
+    }
+    return schedule;
+  }
+  function computeStats(){
+    let totalCurrent = 0, totalNext = 0;
+    units.forEach(function(u){
+      getSchedule(u).forEach(function(p){
+        if(p.paid) return;
+        const y = fromISO(p.dueDate).getFullYear();
+        if(y === CURRENT_YEAR) totalCurrent += p.amount;
+        else if(y === NEXT_YEAR) totalNext += p.amount;
+      });
+    });
+    return { totalCurrent: totalCurrent, totalNext: totalNext };
+  }
+
+  function groupByMonth(payments){
+    const groups = {};
+    payments.forEach(function(p){
+      const d = fromISO(p.dueDate);
+      const key = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0');
+      if(!groups[key]) groups[key] = [];
+      groups[key].push(p);
+    });
+    return Object.keys(groups).sort().map(function(key){
+      const arr = groups[key].sort(function(a, b){
+        return a.dueDate < b.dueDate ? -1 : (a.dueDate > b.dueDate ? 1 : 0);
+      });
+      const d = fromISO(arr[0].dueDate);
+      return {
+        year: d.getFullYear(),
+        month: d.getMonth(),
+        label: AR_MONTHS[d.getMonth()] + ' - ' + (d.getMonth()+1) + '/' + d.getFullYear(),
+        total: arr.reduce(function(s, p){ return s + p.amount; }, 0),
+        payments: arr
+      };
+    });
+  }
+
+  function buildPaymentsHTML(months, options){
+    options = options || {};
+    const showButton = options.showButton !== false;
+    const today = todayMidnight();
+
+    let html = '<div class="payments-view">';
+    html += '<div class="payments-head">' +
+      '<div>الوحدة</div>' +
+      '<div>الاستحقاق</div>' +
+      '<div>المتبقي</div>' +
+      '<div>المبلغ</div>' +
+      '<div></div>' +
+    '</div>';
+    html += '<div class="months-list">';
+
+    months.forEach(function(m){
+      html += '<div class="month-wrap">';
+      html += '<div class="month-block">';
+      html += '<div class="month-title">📅 ' + m.label + '</div>';
+
+      m.payments.forEach(function(p){
+        const d = fromISO(p.dueDate);
+        let daysCell = '';
+        if(p.paid){
+          const agoTxt = p.paidDate ? daysAgoText(p.paidDate) : 'اليوم';
+          daysCell = '<span class="days-pill paid">' + agoTxt + '</span>';
+        } else {
+          const days = Math.round((d - today) / 86400000);
+          let level, text;
+          if(days < 0){ level = 'danger'; text = 'متأخر ' + Math.abs(days); }
+          else if(days === 0){ level = 'danger'; text = 'اليوم'; }
+          else if(days <= 7){ level = 'warn'; text = days === 1 ? 'يوم' : days + ' أيام'; }
+          else { level = 'ok'; text = days + ' يوم'; }
+          daysCell = '<span class="days-pill ' + level + '">' + text + '</span>';
+        }
+        const method = PAYMENT_METHODS[p.method] || PAYMENT_METHODS.monthly;
+        let actionCell = '';
+        if(showButton && !p.paid){
+          actionCell = '<button type="button" class="pay-btn" data-pay-unit="' + p.unitId + '" data-pay-due="' + p.dueDate + '" aria-label="تسجيل دفعة">✓</button>';
+        }
+        html += '<div class="payment-row' + (p.paid ? ' paid' : '') + '" data-unit-id="' + p.unitId + '">' +
+          '<div class="pr-unit">' + esc(p.unitName) + '</div>' +
+          '<div class="pr-due">' + formatDate(d) + '</div>' +
+          '<div class="pr-days">' + daysCell + '</div>' +
+          '<div class="pr-amount">' +
+            '<div class="pr-method">' + method.label + '</div>' +
+            '<div class="pr-money">' + formatMoney(p.amount) + ' ' + CURRENCY + '</div>' +
+          '</div>' +
+          '<div class="pr-action">' + actionCell + '</div>' +
+        '</div>';
+      });
+
+      html += '</div>';
+      html += '<div class="month-total">مجموع الدفعات: ' + formatMoney(m.total) + ' ' + CURRENCY + '</div>';
+      html += '</div>';
+    });
+
+    html += '</div></div>';
+    return html;
+  }
+
+  /* ========= الرسم ========= */
+  function render(){
+    headerDate.textContent = formatDateWithDay(todayMidnight());
+    renderStats();
+    renderContent();
+  }
+
+  function renderStats(){
+    statYearCurrent.textContent = CURRENT_YEAR;
+    statYearNext.textContent = NEXT_YEAR;
+    const s = computeStats();
+    statCurrent.textContent = formatMoney(s.totalCurrent);
+    statNext.textContent = formatMoney(s.totalNext);
+  }
+
+  function renderContent(){
+    if(units.length === 0){
+      contentArea.innerHTML =
+        '<div class="empty-state">' +
+          '<div class="icon">🏢</div>' +
+          '<div class="title">لا توجد وحدات بعد</div>' +
+          '<div class="desc">اضغطي على زر "الوحدات" في الأعلى لإضافة أول وحدة</div>' +
+          '<button type="button" class="empty-btn" id="emptyOpenUnits">🏠 فتح الوحدات</button>' +
+        '</div>';
+      const b = document.getElementById('emptyOpenUnits');
+      if(b) b.addEventListener('click', openUnitsModal);
+      return;
+    }
+    if(currentView === 'table') renderTableView();
+    else renderDetailsView();
+  }
+
+  function renderTableView(){
+    const allPayments = [];
+    units.forEach(function(u){
+      getSchedule(u).forEach(function(p){
+        if(!p.paid){
+          allPayments.push({
+            unitId: u.id, unitName: u.name, method: u.paymentMethod,
+            dueDate: p.dueDate, amount: p.amount, paid: false, paidDate: null
+          });
+        }
+      });
+    });
+
+    if(allPayments.length === 0){
+      contentArea.innerHTML =
+        '<div class="empty-state">' +
+          '<div class="icon">✅</div>' +
+          '<div class="title">كل الدفعات مدفوعة</div>' +
+          '<div class="desc">لا توجد دفعات مستحقة حالياً</div>' +
+        '</div>';
+      return;
+    }
+
+    const months = groupByMonth(allPayments);
+    contentArea.innerHTML = buildPaymentsHTML(months, { showButton: true });
+  }
+
+  function renderDetailsView(){
+    let filterHtml = '<div class="details-filter-wrap">' +
+      '<label for="unitFilterSelect" class="filter-label">🏠 الوحدة:</label>' +
+      '<select id="unitFilterSelect" class="filter-select">' +
+        '<option value="">— كل الوحدات —</option>';
+    units.forEach(function(u){
+      const sel = (detailsFilterUnitId === u.id) ? ' selected' : '';
+      filterHtml += '<option value="' + u.id + '"' + sel + '>' + esc(u.name) + '</option>';
+    });
+    filterHtml += '</select></div>';
+
+    const allPayments = [];
+    units.forEach(function(u){
+      if(detailsFilterUnitId && u.id !== detailsFilterUnitId) return;
+      getSchedule(u).forEach(function(p){
+        allPayments.push({
+          unitId: u.id, unitName: u.name, method: u.paymentMethod,
+          dueDate: p.dueDate, amount: p.amount, paid: p.paid, paidDate: p.paidDate
+        });
+      });
+    });
+
+    if(allPayments.length === 0){
+      contentArea.innerHTML = filterHtml +
+        '<div class="empty-state">' +
+          '<div class="icon">📅</div>' +
+          '<div class="title">لا توجد دفعات</div>' +
+          '<div class="desc">لم يتم العثور على دفعات مطابقة</div>' +
+        '</div>';
+      bindFilterSelect();
+      return;
+    }
+
+    const months = groupByMonth(allPayments);
+    contentArea.innerHTML = filterHtml + buildPaymentsHTML(months, { showButton: false });
+    bindFilterSelect();
+  }
+
+  function bindFilterSelect(){
+    const sel = document.getElementById('unitFilterSelect');
+    if(!sel) return;
+    sel.addEventListener('change', function(){
+      detailsFilterUnitId = this.value || null;
+      renderDetailsView();
+    });
+  }
+
+  contentArea.addEventListener('click', function(e){
+    const payBtn = e.target.closest('[data-pay-unit]');
+    if(payBtn){
+      e.stopPropagation();
+      openPayModal(payBtn.dataset.payUnit, payBtn.dataset.payDue);
+      return;
+    }
+    const row = e.target.closest('[data-unit-id]');
+    if(row) openDetailModal(row.dataset.unitId);
+  });
+
+  let toastTimer;
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2200);
+  }
+
+  viewToggle.addEventListener('click', function(e){
+    const btn = e.target.closest('button[data-view]');
+    if(!btn) return;
+    const v = btn.dataset.view;
+    if(v === currentView) return;
+    currentView = v;
+    Array.prototype.forEach.call(viewToggle.children, function(b){
+      b.classList.toggle('active', b.dataset.view === v);
+    });
+    renderContent();
+  });
+
+  /* ========= نافذة الوحدات ========= */
+  function openUnitsModal(){ renderUnitsList(); unitsModal.classList.add('show'); }
+  function closeUnitsModal(){ unitsModal.classList.remove('show'); }
+  unitsBtn.addEventListener('click', openUnitsModal);
+  unitsCloseBtn.addEventListener('click', closeUnitsModal);
+  unitsModal.addEventListener('click', function(e){ if(e.target === unitsModal) closeUnitsModal(); });
+
+  function renderUnitsList(){
+    if(units.length === 0){
+      unitsList.innerHTML = '<div class="units-empty">لا توجد وحدات بعد — اضغطي "إضافة وحدة جديدة" للبدء</div>';
+      return;
+    }
+    let html = '';
+    units.forEach(function(u){
+      const method = PAYMENT_METHODS[u.paymentMethod] || PAYMENT_METHODS.monthly;
+      const paymentAmt = getPaymentAmount(u);
+      html +=
+        '<li class="unit-card">' +
+          '<div class="unit-card-info">' +
+            '<div class="unit-card-name">' + esc(u.name) + '</div>' +
+            '<div class="unit-card-meta">' +
+              'الإيجار السنوي: <span class="rent-amount">' + formatMoneyFull(u.annualRent) + '</span>' +
+              ' — <span class="method-tag">' + method.label + '</span>' +
+              '<br>قيمة الدفعة: <span class="rent-amount">' + formatMoneyFull(paymentAmt) + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="unit-card-actions">' +
+            '<button type="button" class="edit-btn" data-edit-unit="' + u.id + '">✏️</button>' +
+            '<button type="button" class="del-btn" data-delete-unit="' + u.id + '">🗑️</button>' +
+          '</div>' +
+        '</li>';
+    });
+    unitsList.innerHTML = html;
+  }
+
+  unitsList.addEventListener('click', function(e){
+    const editBtn = e.target.closest('[data-edit-unit]');
+    if(editBtn){ closeUnitsModal(); openFormModal(editBtn.dataset.editUnit); return; }
+    const delBtn = e.target.closest('[data-delete-unit]');
+    if(delBtn){ closeUnitsModal(); openDeleteModal(delBtn.dataset.deleteUnit); return; }
+  });
+
+  addUnitBtn.addEventListener('click', function(){ closeUnitsModal(); openFormModal(null); });
+
+  /* ========= نموذج ========= */
+  function setMethod(m){
+    selectedMethod = m;
+    Array.prototype.forEach.call(methodGrid.children, function(b){
+      b.classList.toggle('active', b.dataset.method === m);
+    });
+  }
+  methodGrid.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-method]');
+    if(!b) return;
+    setMethod(b.dataset.method);
+  });
+
+  function updateDateDisplay(){
+    if(!selectedStartDate){ dateDisplay.textContent = 'اختر التاريخ'; return; }
+    dateDisplay.textContent = formatDate(selectedStartDate);
+  }
+
+  function openFormModal(id){
+    editingUnitId = id || null;
+    unitNameInput.classList.remove('input-error');
+    unitRentInput.classList.remove('input-error');
+
+    if(id){
+      const u = units.find(function(x){ return x.id === id; });
+      if(!u) return;
+      formTitle.textContent = 'تعديل بيانات الوحدة';
+      unitNameInput.value = u.name;
+      unitRentInput.value = u.annualRent;
+      setMethod(u.paymentMethod || 'monthly');
+      selectedStartDate = u.startDate;
+      submitBtn.textContent = '💾 حفظ التعديل';
+    } else {
+      formTitle.textContent = 'إضافة وحدة جديدة';
+      unitNameInput.value = '';
+      unitRentInput.value = '';
+      setMethod('quarterly');
+      selectedStartDate = toISO(todayMidnight());
+      submitBtn.textContent = '➕ إضافة الوحدة';
+    }
+    updateDateDisplay();
+    formModal.classList.add('show');
+  }
+  function closeFormModal(){ formModal.classList.remove('show'); editingUnitId = null; }
+  formCancel.addEventListener('click', closeFormModal);
+  formModal.addEventListener('click', function(e){ if(e.target === formModal) closeFormModal(); });
+
+  unitRentInput.addEventListener('input', function(){
+    const v = unitRentInput.value;
+    const c = normalizeDigits(v);
+    if(c !== v) unitRentInput.value = c;
+    unitRentInput.classList.remove('input-error');
+  });
+  unitNameInput.addEventListener('input', function(){ unitNameInput.classList.remove('input-error'); });
+
+  unitForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    unitNameInput.classList.remove('input-error');
+    unitRentInput.classList.remove('input-error');
+    unitRentInput.value = normalizeDigits(unitRentInput.value);
+
+    const name = unitNameInput.value.trim();
+    const rentRaw = unitRentInput.value.trim();
+    const rent = Number(rentRaw);
+
+    let firstInvalid = null;
+    if(!name){ unitNameInput.classList.add('input-error'); firstInvalid = firstInvalid || unitNameInput; }
+    if(!rentRaw || isNaN(rent) || rent <= 0){ unitRentInput.classList.add('input-error'); firstInvalid = firstInvalid || unitRentInput; }
+    if(firstInvalid){ firstInvalid.focus(); toast('⚠️ الرجاء إكمال الحقول المميّزة بالأحمر'); return; }
+    if(!selectedStartDate){ toast('⚠️ الرجاء اختيار تاريخ أول استحقاق'); return; }
+
+    if(editingUnitId){
+      const u = units.find(function(x){ return x.id === editingUnitId; });
+      if(u){
+        const changes = [];
+        if(u.name !== name) changes.push('الاسم');
+        if(Number(u.annualRent) !== rent) changes.push('الإيجار السنوي');
+        if(u.paymentMethod !== selectedMethod) changes.push('طريقة الدفع');
+        if(u.startDate !== selectedStartDate) changes.push('تاريخ الاستحقاق');
+        u.name = name;
+        u.annualRent = rent;
+        u.paymentMethod = selectedMethod;
+        u.startDate = selectedStartDate;
+        addLog('unit-edit', { name: name, changes: changes });
+      }
+      toast('✅ تم حفظ التعديل');
+    } else {
+      units.push({
+        id: uid(), name: name, annualRent: rent,
+        paymentMethod: selectedMethod, startDate: selectedStartDate, history: []
+      });
+      addLog('unit-add', { name: name });
+      toast('✅ تمت إضافة ' + name);
+    }
+    save();
+    closeFormModal();
+    render();
+  });
+
+  /* ========= تفاصيل الوحدة ========= */
+  function openDetailModal(id){
+    const u = units.find(function(x){ return x.id === id; });
+    if(!u) return;
+    currentDetailUnitId = id;
+
+    const nextDue = getNextDue(u);
+    const method = PAYMENT_METHODS[u.paymentMethod] || PAYMENT_METHODS.monthly;
+    const paymentAmt = getPaymentAmount(u);
+
+    detailName.textContent = u.name;
+    detailType.textContent = method.label;
+
+    let nextDueText = '—';
+    let daysText = '—';
+    if(nextDue){
+      nextDueText = formatDate(nextDue.date);
+      const today = todayMidnight();
+      const days = Math.round((nextDue.date - today) / 86400000);
+      if(days < 0) daysText = 'متأخر ' + daysWord(Math.abs(days));
+      else if(days === 0) daysText = 'مستحق اليوم';
+      else daysText = 'باقي ' + daysWord(days);
+    }
+
+    detailGrid.innerHTML =
+      '<div class="detail-row"><span class="detail-label">طريقة الدفع</span><span class="detail-value rtl">' + method.label + '</span></div>' +
+      '<div class="detail-row"><span class="detail-label">الإيجار السنوي</span><span class="detail-value">' + formatMoneyFull(u.annualRent) + '</span></div>' +
+      '<div class="detail-row"><span class="detail-label">قيمة الدفعة</span><span class="detail-value">' + formatMoneyFull(paymentAmt) + '</span></div>' +
+      '<div class="detail-row"><span class="detail-label">الاستحقاق القادم</span><span class="detail-value">' + nextDueText + '</span></div>' +
+      '<div class="detail-row"><span class="detail-label">المتبقي</span><span class="detail-value rtl">' + daysText + '</span></div>';
+
+    const hist = Array.isArray(u.history) ? u.history.slice().sort(function(a, b){
+      return a.dueDate < b.dueDate ? 1 : (a.dueDate > b.dueDate ? -1 : 0);
+    }) : [];
+
+    historyCount.textContent = hist.length;
+
+    if(hist.length === 0){
+      historyList.innerHTML = '<div class="hist-empty">لا توجد دفعات مسجّلة بعد</div>';
+    } else {
+      let items = '';
+      hist.forEach(function(h){
+        const dueD = fromISO(h.dueDate);
+        const paidD = h.paidDate ? fromISO(h.paidDate) : null;
+        const sameDay = paidD && toISO(paidD) === h.dueDate;
+        let metaLine = '';
+        if(paidD && !sameDay) metaLine = '<div class="hist-meta">📌 دُفعت في: ' + formatDate(paidD) + '</div>';
+        items +=
+          '<li class="history-item">' +
+            '<div class="hist-info">' +
+              '<div class="hist-date">📅 ' + formatDate(dueD) + '</div>' +
+              metaLine +
+            '</div>' +
+            '<span class="hist-amount">' + formatMoney(h.amount) + '</span>' +
+            '<button type="button" class="hist-del-btn" data-hist-del="' + u.id + '" data-hist-due="' + h.dueDate + '">×</button>' +
+          '</li>';
+      });
+      historyList.innerHTML = items;
+    }
+    detailModal.classList.add('show');
+  }
+  function closeDetailModal(){ detailModal.classList.remove('show'); currentDetailUnitId = null; }
+  detailCloseBtn.addEventListener('click', closeDetailModal);
+  detailModal.addEventListener('click', function(e){ if(e.target === detailModal) closeDetailModal(); });
+
+  detailPayBtn.addEventListener('click', function(){
+    if(!currentDetailUnitId) return;
+    const id = currentDetailUnitId;
+    closeDetailModal();
+    openPayModal(id, null);
+  });
+  detailEditBtn.addEventListener('click', function(){
+    if(!currentDetailUnitId) return;
+    const id = currentDetailUnitId;
+    closeDetailModal();
+    openFormModal(id);
+  });
+  detailDelBtn.addEventListener('click', function(){
+    if(!currentDetailUnitId) return;
+    const id = currentDetailUnitId;
+    closeDetailModal();
+    openDeleteModal(id);
+  });
+
+  historyList.addEventListener('click', function(e){
+    const btn = e.target.closest('[data-hist-del]');
+    if(!btn) return;
+    undoPayment(btn.dataset.histDel, btn.dataset.histDue);
+  });
+
+  /* ========= تأكيد الدفعة ========= */
+  function openPayModal(unitId, dueIso){
+    const u = units.find(function(x){ return x.id === unitId; });
+    if(!u) return;
+
+    let dueDate, amount;
+    if(dueIso){
+      dueDate = fromISO(dueIso);
+      if(getHistoryMap(u)[dueIso]){ toast('ℹ️ هذه الدفعة مدفوعة مسبقاً'); return; }
+      amount = getPaymentAmount(u);
+    } else {
+      const nd = getNextDue(u);
+      if(!nd){ toast('ℹ️ لا توجد دفعة قادمة لهذه الوحدة'); return; }
+      dueDate = nd.date;
+      amount = nd.amount;
+    }
+
+    pendingPayUnitId = unitId;
+    payModal.dataset.payDue = toISO(dueDate);
+
+    const method = PAYMENT_METHODS[u.paymentMethod] || PAYMENT_METHODS.monthly;
+    const after = addMonths(dueDate, method.months);
+    const today = todayMidnight();
+    const days = Math.round((after - today) / 86400000);
+
+    payUnitName.textContent = u.name;
+    payAmount.textContent = formatMoneyFull(amount);
+    payDueDate.textContent = formatDateWithDay(dueDate);
+    payNextDate.textContent = formatDateWithDay(after);
+
+    let daysMsg, daysClass;
+    if(days < 0){ daysMsg = 'متأخر ' + daysWord(Math.abs(days)); daysClass = 'danger'; }
+    else if(days <= 7){ daysMsg = 'باقي ' + daysWord(days); daysClass = 'warn'; }
+    else { daysMsg = 'باقي ' + daysWord(days); daysClass = ''; }
+    payNextDays.textContent = daysMsg;
+    payNextDays.className = 'confirm-next-days ' + daysClass;
+
+    payModal.classList.add('show');
+  }
+  function closePayModal(){ payModal.classList.remove('show'); pendingPayUnitId = null; }
+  payCancelBtn.addEventListener('click', closePayModal);
+  payModal.addEventListener('click', function(e){ if(e.target === payModal) closePayModal(); });
+
+  payConfirmBtn.addEventListener('click', function(){
+    if(!pendingPayUnitId) return;
+    const id = pendingPayUnitId;
+    const dueIso = payModal.dataset.payDue;
+    closePayModal();
+    confirmPayment(id, dueIso);
+  });
+
+  function confirmPayment(id, dueIso){
+    const u = units.find(function(x){ return x.id === id; });
+    if(!u) return;
+    if(getHistoryMap(u)[dueIso]){ toast('ℹ️ هذه الدفعة مدفوعة مسبقاً'); return; }
+
+    const amount = getPaymentAmount(u);
+    if(!Array.isArray(u.history)) u.history = [];
+    u.history.push({ dueDate: dueIso, paidDate: toISO(todayMidnight()), amount: amount });
+
+    addLog('payment', { name: u.name, amount: amount });
+    save();
+    render();
+    toast('✅ تم تسجيل دفعة ' + u.name);
+  }
+
+  function undoPayment(unitId, dueDate){
+    const u = units.find(function(x){ return x.id === unitId; });
+    if(!u || !Array.isArray(u.history)) return;
+    const entry = u.history.find(function(h){ return h.dueDate === dueDate; });
+    if(!entry) return;
+    if(!confirm('إلغاء دفعة ' + formatMoneyFull(entry.amount) + '\nالتي تاريخ استحقاقها ' + formatDate(dueDate) + ' ؟')) return;
+    u.history = u.history.filter(function(h){ return h.dueDate !== dueDate; });
+    addLog('payment-undo', { name: u.name, amount: entry.amount });
+    save();
+    render();
+    if(currentDetailUnitId === unitId) openDetailModal(unitId);
+    toast('↩️ تم إلغاء الدفعة');
+  }
+
+  /* ========= تأكيد الحذف ========= */
+  function openDeleteModal(id){
+    const u = units.find(function(x){ return x.id === id; });
+    if(!u) return;
+    pendingDeleteUnitId = id;
+    deleteUnitName.textContent = u.name;
+    deleteHistCount.textContent = Array.isArray(u.history) ? u.history.length : 0;
+    deleteModal.classList.add('show');
+  }
+  function closeDeleteModal(){ deleteModal.classList.remove('show'); pendingDeleteUnitId = null; }
+  deleteCancelBtn.addEventListener('click', closeDeleteModal);
+  deleteModal.addEventListener('click', function(e){ if(e.target === deleteModal) closeDeleteModal(); });
+  deleteConfirmBtn.addEventListener('click', function(){
+    if(!pendingDeleteUnitId) return;
+    const id = pendingDeleteUnitId;
+    const u = units.find(function(x){ return x.id === id; });
+    const name = u ? u.name : '';
+    units = units.filter(function(x){ return x.id !== id; });
+    if(detailsFilterUnitId === id) detailsFilterUnitId = null;
+    addLog('unit-delete', { name: name });
+    save();
+    closeDeleteModal();
+    render();
+    toast('🗑️ تم حذف ' + name);
+  });
+
+  /* ========= السجل ========= */
+  function openLogModal(){ renderLog(); logModal.classList.add('show'); }
+  function closeLogModal(){ logModal.classList.remove('show'); }
+  logBtn.addEventListener('click', openLogModal);
+  logCloseBtn.addEventListener('click', closeLogModal);
+  logModal.addEventListener('click', function(e){ if(e.target === logModal) closeLogModal(); });
+
+  function renderLog(){
+    if(activityLog.length === 0){
+      logList.innerHTML = '<div class="log-empty">لا توجد عمليات بعد</div>';
+      return;
+    }
+    let html = '';
+    activityLog.forEach(function(entry){
+      html +=
+        '<li class="log-item">' +
+          '<span class="log-icon">' + logIcon(entry.type) + '</span>' +
+          '<div class="log-body">' +
+            '<div class="log-text">' + esc(logText(entry)) + '</div>' +
+            '<div class="log-time">' + formatLogTime(entry.timestamp) + '</div>' +
+          '</div>' +
+        '</li>';
+    });
+    logList.innerHTML = html;
+  }
+
+  /* ========= منتقي التاريخ ========= */
+  function openPicker(){
+    const base = selectedStartDate ? fromISO(selectedStartDate) : todayMidnight();
+    pickerYear = base.getFullYear();
+    pickerMonth = base.getMonth();
+    pickerDay = base.getDate();
+    renderPicker();
+    pickerModal.classList.add('show');
+  }
+  function closePicker(){ pickerModal.classList.remove('show'); }
+  dateButton.addEventListener('click', openPicker);
+  pickerCancelBtn.addEventListener('click', closePicker);
+  pickerModal.addEventListener('click', function(e){ if(e.target === pickerModal) closePicker(); });
+
+  function renderPicker(){
+    pickerSelectedValue.textContent = pickerDay + '/' + (pickerMonth+1) + '/' + pickerYear;
+    yearDisplay.textContent = pickerYear;
+    let mh = '';
+    for(let m = 0; m < 12; m++){
+      mh += '<button type="button" data-month="' + m + '"' + (m === pickerMonth ? ' class="active"' : '') + '>' + (m+1) + '</button>';
+    }
+    monthGrid.innerHTML = mh;
+    const daysInMonth = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    const firstDay = new Date(pickerYear, pickerMonth, 1).getDay();
+    const today = todayMidnight();
+    let dh = '';
+    for(let i = 0; i < firstDay; i++) dh += '<span class="day-empty"></span>';
+    for(let d = 1; d <= daysInMonth; d++){
+      const isSel = d === pickerDay;
+      const isToday = (pickerYear === today.getFullYear() && pickerMonth === today.getMonth() && d === today.getDate());
+      let cls = [];
+      if(isSel) cls.push('selected');
+      if(isToday) cls.push('today');
+      dh += '<button type="button" data-day="' + d + '"' + (cls.length ? ' class="' + cls.join(' ') + '"' : '') + '>' + d + '</button>';
+    }
+    dayGrid.innerHTML = dh;
+  }
+
+  yearPrev.addEventListener('click', function(){
+    pickerYear--;
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+  yearNext.addEventListener('click', function(){
+    pickerYear++;
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+  monthGrid.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-month]');
+    if(!b) return;
+    pickerMonth = parseInt(b.dataset.month, 10);
+    const dim = new Date(pickerYear, pickerMonth + 1, 0).getDate();
+    if(pickerDay > dim) pickerDay = dim;
+    renderPicker();
+  });
+  dayGrid.addEventListener('click', function(e){
+    const b = e.target.closest('button[data-day]');
+    if(!b) return;
+    pickerDay = parseInt(b.dataset.day, 10);
+    renderPicker();
+  });
+  pickerConfirmBtn.addEventListener('click', function(){
+    const d = new Date(pickerYear, pickerMonth, pickerDay);
+    selectedStartDate = toISO(d);
+    updateDateDisplay();
+    closePicker();
+  });
+
+  /* ========= حجم الخط ========= */
+  function openFontModal(){ updateFontUI(); fontModal.classList.add('show'); }
+  function closeFontModal(){ fontModal.classList.remove('show'); }
+  function updateFontUI(){
+    fontLevelEl.textContent = FONT_LABELS[fontLevel];
+    fontMinus.disabled = (fontLevel === 0);
+    fontPlus.disabled  = (fontLevel === FONT_SIZES.length - 1);
+    fontPreview.textContent = 'نموذج للنص — ' + FONT_LABELS[fontLevel];
+  }
+  fontSizeBtn.addEventListener('click', openFontModal);
+  fontCloseBtn.addEventListener('click', closeFontModal);
+  fontModal.addEventListener('click', function(e){ if(e.target === fontModal) closeFontModal(); });
+  fontMinus.addEventListener('click', function(){
+    if(fontLevel > 0){ fontLevel--; applyFontLevel(); saveFontLevel(); updateFontUI(); }
+  });
+  fontPlus.addEventListener('click', function(){
+    if(fontLevel < FONT_SIZES.length - 1){ fontLevel++; applyFontLevel(); saveFontLevel(); updateFontUI(); }
+  });
+
+  /* ========= التحديث ========= */
+  function openRefresh(){ refreshModal.classList.add('show'); }
+  function closeRefresh(){ refreshModal.classList.remove('show'); }
+  refreshBtn.addEventListener('click', openRefresh);
+  refreshCancel.addEventListener('click', closeRefresh);
+  refreshModal.addEventListener('click', function(e){ if(e.target === refreshModal) closeRefresh(); });
+
+  refreshDataBtn.addEventListener('click', async function(){
+    closeRefresh();
+    if(!firebaseReady || !rtdbRef){ toast('⚠️ Firebase غير متصل'); return; }
+    setSyncState('saving', 'جارٍ التحديث…');
+    toast('🔄 جارٍ تحديث البيانات…');
+    try {
+      const snap = await rtdbRef.once('value');
+      if(snap.exists()){
+        const val = snap.val() || {};
+        units = Array.isArray(val.units) ? val.units.filter(function(u){ return u && u.id && u.name; }) : [];
+        activityLog = Array.isArray(val.activityLog) ? val.activityLog : [];
+        lastSavedJSON = JSON.stringify(buildState());
+        saveLocal();
+        render();
+        setSyncState('', 'متزامن');
+        toast('✅ تم تحديث البيانات');
+      } else {
+        setSyncState('', 'متزامن');
+        toast('ℹ️ لا توجد بيانات في السحابة بعد');
+      }
+    } catch(e){
+      console.error('Refresh error:', e);
+      setSyncState('error', 'تعذّر التحديث');
+      toast('⚠️ تعذّر تحديث البيانات');
+    }
+  });
+
+  refreshPageBtn.addEventListener('click', async function(){
+    closeRefresh();
+    toast('♻️ جارٍ إعادة التحميل…');
+    try {
+      if('caches' in window){
+        const names = await caches.keys();
+        await Promise.all(names.map(function(n){ return caches.delete(n); }));
+      }
+    } catch(e){}
+    try {
+      if('serviceWorker' in navigator){
+        const regs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(regs.map(function(r){ return r.update(); }));
+      }
+    } catch(e){}
+    try {
+      const url = new URL(location.href);
+      url.searchParams.set('_t', Date.now().toString());
+      setTimeout(function(){ location.replace(url.toString()); }, 350);
+    } catch(e){ location.reload(); }
+  });
+
+  /* ========= بدء التشغيل ========= */
+  loadFontLevel();
+  applyFontLevel();
+  load();
+
+})();
+</script>
+</body>
+</html>
