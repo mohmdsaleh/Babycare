@@ -82,26 +82,40 @@
   .net-box{
     background:linear-gradient(135deg,#1e6091,#2d8fbf);
     color:#fff;border-radius:var(--radius);padding:14px 16px;
-    margin-bottom:14px;box-shadow:0 6px 18px rgba(30,96,145,.25);
+    margin-bottom:12px;box-shadow:0 6px 18px rgba(30,96,145,.25);
     display:flex;justify-content:space-between;align-items:center;gap:10px;
   }
   .net-box.negative{background:linear-gradient(135deg,#dc2626,#ef4444);box-shadow:0 6px 18px rgba(220,38,38,.25);}
   .net-box.zero{background:linear-gradient(135deg,#64748b,#94a3b8);box-shadow:0 6px 18px rgba(100,116,139,.25);}
   .net-label{font-size:.85rem;font-weight:800;opacity:.9;}
-  .net-value{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;}
-  .net-value .sub{font-size:.72rem;font-weight:700;opacity:.85;display:block;margin-top:2px;}
+  .net-value{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;text-align:left;}
+  .net-value .sub{font-size:.68rem;font-weight:700;opacity:.85;display:block;margin-top:2px;}
 
-  /* ═══════════ زر الإضافة والفلتر ═══════════ */
+  /* ═══════════ صف الأزرار (إضافة + عودة) ═══════════ */
+  .action-row{
+    display:grid;grid-template-columns:1.6fr 1fr;gap:8px;
+    margin-bottom:12px;
+  }
   .add-expense-btn{
     display:flex;align-items:center;justify-content:center;gap:6px;
-    width:100%;padding:13px;margin-bottom:12px;
+    padding:13px 10px;
     background:linear-gradient(135deg,#dc2626,#ef4444);
     color:#fff;border:none;border-radius:14px;
-    font-family:inherit;font-size:1rem;font-weight:800;cursor:pointer;
+    font-family:inherit;font-size:.95rem;font-weight:800;cursor:pointer;
     box-shadow:0 4px 12px rgba(220,38,38,.28);
   }
   .add-expense-btn:active{transform:scale(.985);}
+  .back-btn{
+    display:flex;align-items:center;justify-content:center;gap:5px;
+    padding:13px 10px;
+    background:linear-gradient(135deg,#1e6091,#2d8fbf);
+    color:#fff;border:none;border-radius:14px;
+    font-family:inherit;font-size:.88rem;font-weight:800;cursor:pointer;
+    box-shadow:0 4px 12px rgba(30,96,145,.28);
+  }
+  .back-btn:active{transform:scale(.985);}
 
+  /* ═══════════ فلتر السنة ═══════════ */
   .filter-wrap{
     background:var(--card);border-radius:12px;padding:10px 12px;
     margin-bottom:12px;box-shadow:var(--shadow-sm);
@@ -281,6 +295,8 @@
     .exp-date{font-size:.66rem;}
     .exp-amount{font-size:.78rem;}
     .net-value{font-size:1.2rem;}
+    .action-row{grid-template-columns:1.4fr 1fr;gap:6px;}
+    .add-expense-btn,.back-btn{font-size:.82rem;padding:12px 6px;}
   }
 </style>
 </head>
@@ -288,7 +304,6 @@
 
 <header>
   <div class="header-left-tools">
-    <button class="header-tool-btn" onclick="location.href='building.html'" title="الرجوع إلى العمارة">🏢 العمارة</button>
     <button class="header-tool-btn" id="logBtn" title="السجل">📋 السجل</button>
   </div>
 
@@ -308,7 +323,7 @@
     <div class="stat-box">
       <div class="stat-year">المدخول المتوقع</div>
       <div class="stat-num" id="statIncome">0</div>
-      <div class="stat-lbl">إجمالي الإيجار السنوي</div>
+      <div class="stat-lbl">مجموع الإيجار السنوي للوحدات</div>
     </div>
     <div class="stat-box expenses">
       <div class="stat-year" id="statExpYearLabel">—</div>
@@ -323,8 +338,11 @@
     <div class="net-value" id="statNet">0 <span class="sub" id="netSub">—</span></div>
   </div>
 
-  <!-- إضافة مصروف -->
-  <button class="add-expense-btn" id="addExpenseBtn">➕ إضافة مصروف</button>
+  <!-- صف الأزرار: إضافة + عودة -->
+  <div class="action-row">
+    <button class="add-expense-btn" id="addExpenseBtn">➕ إضافة مصروف</button>
+    <button class="back-btn" onclick="location.href='building.html'">🏢 العودة</button>
+  </div>
 
   <!-- فلتر السنة -->
   <div class="filter-wrap">
@@ -557,8 +575,8 @@
   }
 
   /* الحالة */
-  let units = [];        // للقراءة فقط (من العمارة)
-  let expenses = [];     // مصاريف
+  let units = [];
+  let expenses = [];
   let activityLog = [];
   let selectedDate = null;
   let pendingDeleteId = null;
@@ -650,7 +668,7 @@
     else                          syncDotEl.classList.add('green');
   }
 
-  /* التخزين المحلي */
+  /* التخزين */
   function buildState(){ return { expenses: expenses, activityLog: activityLog }; }
   function saveLocal(){
     try { localStorage.setItem(EXP_STORAGE_KEY, JSON.stringify(buildState())); } catch(e){}
@@ -664,7 +682,6 @@
     } catch(e){ expenses = []; activityLog = []; }
   }
 
-  /* الحفظ */
   async function save(){
     saveLocal();
     if(!firebaseReady || !expRef){ setSyncState('offline'); return; }
@@ -680,14 +697,12 @@
     }
   }
 
-  /* التحميل */
   async function load(){
     loadLocal();
     render();
     if(!firebaseReady){ setSyncState('offline'); return; }
     setSyncState('saving');
     try {
-      // تحميل الوحدات لحساب المدخول
       const unitsSnap = await unitsRef.once('value');
       if(unitsSnap.exists()){
         const v = unitsSnap.val() || {};
@@ -696,7 +711,6 @@
         units = [];
       }
 
-      // تحميل المصاريف
       const expSnap = await expRef.once('value');
       if(expSnap.exists()){
         const v = expSnap.val() || {};
@@ -719,7 +733,6 @@
   function listenRealtime(){
     if(!firebaseReady) return;
 
-    // الاستماع لتغييرات الوحدات
     unitsRef.on('value', function(snap){
       if(!snap.exists()){ units = []; render(); return; }
       const v = snap.val() || {};
@@ -727,7 +740,6 @@
       render();
     });
 
-    // الاستماع لتغييرات المصاريف
     expRef.on('value', function(snap){
       if(!snap.exists()) return;
       const v = snap.val() || {};
@@ -741,6 +753,7 @@
       activityLog = incoming.activityLog;
       lastSavedJSON = incomingJSON;
       saveLocal();
+      renderYearFilter();
       render();
       setSyncState('synced');
       toast('☁️ تم تحديث البيانات من جهاز آخر');
@@ -781,19 +794,25 @@
     return formatDate(d) + ' - ' + h + ':' + m + ' ' + p;
   }
 
-  /* حسابات المصاريف */
+  /* ═══════════════════════════════════════════════════════════════
+     ✅ المدخول = مجموع الإيجار السنوي للوحدات (لا علاقة بالدفعات)
+     ═══════════════════════════════════════════════════════════════ */
   function getTotalIncome(){
     let sum = 0;
-    units.forEach(function(u){
-      sum += Number(u.annualRent) || 0;
-    });
+    for(let i = 0; i < units.length; i++){
+      const u = units[i];
+      const rent = Number(u.annualRent);
+      if(!isNaN(rent) && rent > 0) sum += rent;
+    }
     return sum;
   }
+
   function getExpensesForYear(year){
     if(!year) return expenses.slice();
+    const y = Number(year);
     return expenses.filter(function(e){
       if(!e.date) return false;
-      return fromISO(e.date).getFullYear() === Number(year);
+      return fromISO(e.date).getFullYear() === y;
     });
   }
   function getTotalExpenses(list){
@@ -807,7 +826,7 @@
         set[y] = true;
       }
     });
-    set[CURRENT_YEAR] = true;  // دائماً موجود
+    set[CURRENT_YEAR] = true;
     return Object.keys(set).map(Number).sort(function(a,b){ return b - a; });
   }
   function groupExpensesByMonth(list){
@@ -857,9 +876,12 @@
       statExpYearLabel.textContent = 'كل السنوات';
     }
 
-    statNet.textContent = formatMoney(net) + ' ' + CURRENCY;
-    netSub.textContent = (filterYear ? 'صافي ' + filterYear : 'صافي الإجمالي') +
-      ' — المدخول: ' + formatMoney(totalIncome) + ' | المصاريف: ' + formatMoney(totalExp);
+    statNet.innerHTML = formatMoney(net) + ' ' + CURRENCY +
+      '<span class="sub" id="netSub">' +
+        (filterYear ? 'صافي ' + filterYear : 'صافي الإجمالي') +
+        ' — المدخول: ' + formatMoney(totalIncome) +
+        ' | المصاريف: ' + formatMoney(totalExp) +
+      '</span>';
 
     netBox.classList.remove('negative','zero');
     if(net < 0) netBox.classList.add('negative');
@@ -910,7 +932,7 @@
   function getTypeIcon(type){
     if(!type) return '📌';
     const t = type.toLowerCase();
-    if(t.indexOf('كهرب') >= 0 || t.indexOf('⚡') >= 0) return '⚡';
+    if(t.indexOf('كهرب') >= 0) return '⚡';
     if(t.indexOf('ماء') >= 0 || t.indexOf('مياه') >= 0) return '💧';
     if(t.indexOf('صيان') >= 0) return '🔧';
     if(t.indexOf('نظاف') >= 0) return '🧹';
@@ -922,7 +944,6 @@
     return '📌';
   }
 
-  /* ملء فلتر السنوات */
   function renderYearFilter(){
     const current = yearFilter.value;
     const years = getAllYears();
@@ -939,7 +960,7 @@
     renderList();
   });
 
-  /* نافذة إضافة مصروف */
+  /* ✅ نافذة إضافة مصروف — بدون فتح الكيبورد تلقائياً */
   function openExpenseForm(){
     expenseTypeInput.value = '';
     expenseAmountInput.value = '';
@@ -948,7 +969,7 @@
     selectedDate = toISO(todayMidnight());
     updateDateDisplay();
     expenseFormModal.classList.add('show');
-    setTimeout(function(){ expenseTypeInput.focus(); }, 250);
+    // ✅ لا يوجد focus() — الكيبورد لا يظهر تلقائياً
   }
   function closeExpenseForm(){ expenseFormModal.classList.remove('show'); }
   addExpenseBtn.addEventListener('click', openExpenseForm);
@@ -1016,12 +1037,12 @@
     addLog('expense-add', { name: type, amount: amount });
     save();
     closeExpenseForm();
-    renderYearFilter();  // قد تحتاج السنة الجديدة
+    renderYearFilter();
     render();
     toast('✅ تم إضافة المصروف');
   });
 
-  /* حذف مصروف */
+  /* حذف */
   function openDeleteModal(id){
     const e = expenses.find(function(x){ return x.id === id; });
     if(!e) return;
@@ -1238,7 +1259,6 @@
   loadFontLevel();
   applyFontLevel();
 
-  // تعيين فلتر السنة الحالية افتراضياً
   yearFilter.value = String(CURRENT_YEAR);
 
   load().then(function(){
