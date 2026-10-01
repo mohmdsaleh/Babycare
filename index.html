@@ -53,9 +53,22 @@
   .child-row:active{background:#f0f7f5;}
   .child-row:last-child td{border-bottom:none;}
 
-  .name-cell{font-weight:800;color:#17302b;display:flex;align-items:center;gap:5px;}
-  .name-cell .arrow{font-size:.65rem;color:#8fa39e;flex-shrink:0;}
-  .name-text{flex:1;min-width:0;overflow-wrap:break-word;word-break:normal;line-height:1.35;text-align:right;font-size:.98rem;}
+  .name-cell{font-weight:800;color:#17302b;position:relative;}
+  .name-cell .arrow{
+    display:inline-block;
+    font-size:.6rem;color:#8fa39e;
+    vertical-align:middle;
+    margin-left:6px;
+    transition:transform .2s;
+    line-height:1;
+  }
+  .name-text{
+    display:inline;
+    overflow-wrap:break-word;
+    word-break:normal;
+    line-height:1.35;
+    font-size:.98rem;
+  }
 
   .amount-cell{font-weight:800;color:#1f7a6b;white-space:nowrap;font-size:.76rem;}
   .date-cell{font-weight:700;color:#46605b;white-space:nowrap;direction:ltr;font-size:.72rem;}
