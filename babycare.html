@@ -15,48 +15,49 @@
   header h1{margin:0;font-size:1.3rem;font-weight:800;}
   .header-date{margin-top:6px;font-size:.94rem;font-weight:700;letter-spacing:.2px;}
 
-   .header-left-tools{
+  /* الأزرار اليسرى */
+  .header-left-tools{
     position:absolute;top:10px;left:10px;
     display:flex;flex-direction:column;gap:5px;
     align-items:stretch;z-index:3;
   }
-  .header-left-tools .header-tool-btn{min-width:96px;}
-   .header-tool-btn{
-    padding:6px 12px;
-    border-radius:999px;
+  .header-tool-btn{
+    padding:6px 12px;border-radius:999px;
     background:rgba(255,255,255,.2);
     border:1px solid rgba(255,255,255,.35);
-    color:#fff;
-    font-family:inherit;
-    font-size:.72rem;
-    font-weight:700;
-    cursor:pointer;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    white-space:nowrap;
-    line-height:1;
-    min-width:96px;
+    color:#fff;font-family:inherit;font-size:.72rem;font-weight:700;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;
+    white-space:nowrap;line-height:1;min-width:96px;
   }
-  .header-tool-btn:active{
-    transform:scale(.95);
-    background:rgba(255,255,255,.32);
-  }
+  .header-tool-btn:active{transform:scale(.95);background:rgba(255,255,255,.32);}
+
+  /* الأزرار اليمنى (صغيرة جداً) */
   .header-right-tools{
     position:absolute;top:10px;right:10px;
     display:flex;flex-direction:column;gap:5px;
-    align-items:stretch;z-index:3;
+    align-items:center;z-index:3;
   }
+  .header-mini-btn{
+    width:30px;height:30px;border-radius:50%;
+    background:rgba(255,255,255,.2);
+    border:1px solid rgba(255,255,255,.35);
+    color:#fff;font-family:inherit;font-size:.72rem;font-weight:800;
+    cursor:pointer;display:flex;align-items:center;justify-content:center;
+    line-height:1;padding:0;
+  }
+  .header-mini-btn:active{transform:scale(.9);background:rgba(255,255,255,.35);}
 
-  .log-btn{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);color:#fff;font-family:inherit;font-size:.7rem;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px;white-space:nowrap;}
-  .log-btn:active{transform:scale(.94);background:rgba(255,255,255,.3);}
-
-  .sync-status{display:flex;align-items:center;gap:5px;font-size:.7rem;font-weight:700;padding:4px 9px;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);color:#fff;white-space:nowrap;}
-  .sync-status .dot{width:7px;height:7px;border-radius:50%;background:#4ade80;box-shadow:0 0 5px rgba(74,222,128,.8);}
-  .sync-status.saving .dot{background:#fbbf24;box-shadow:0 0 5px rgba(251,191,36,.8);}
-  .sync-status.error .dot{background:#ef4444;box-shadow:0 0 5px rgba(239,68,68,.8);}
-  .sync-status.offline .dot{background:#9ca3af;box-shadow:none;}
+  /* نقطة المزامنة */
+  .sync-dot{
+    width:10px;height:10px;border-radius:50%;
+    background:#9ca3af;
+    margin-top:2px;
+    transition:background .3s, box-shadow .3s;
+  }
+  .sync-dot.gray{background:#9ca3af;box-shadow:none;}
+  .sync-dot.green{background:#4ade80;box-shadow:0 0 7px rgba(74,222,128,.85);}
+  .sync-dot.orange{background:#fbbf24;box-shadow:0 0 7px rgba(251,191,36,.85);}
+  .sync-dot.red{background:#ef4444;box-shadow:0 0 7px rgba(239,68,68,.85);}
 
   main{max-width:680px;margin:0 auto;padding:0 10px;}
 
@@ -82,29 +83,19 @@
   .child-row:last-child td{border-bottom:none;}
 
   .name-cell{font-weight:800;color:#17302b;position:relative;}
-  .name-cell .arrow{
-    display:inline-block;
-    font-size:.6rem;color:#8fa39e;
-    vertical-align:middle;
-    margin-left:6px;
-    transition:transform .2s;
-    line-height:1;
-  }
-  .name-text{
-    display:inline;
-    overflow-wrap:break-word;
-    word-break:normal;
-    line-height:1.35;
-    font-size:.98rem;
-  }
+  .name-cell .arrow{display:inline-block;font-size:.6rem;color:#8fa39e;vertical-align:middle;margin-left:6px;transition:transform .2s;line-height:1;}
+  .name-text{display:inline;overflow-wrap:break-word;word-break:normal;line-height:1.35;font-size:.98rem;}
 
   .amount-cell{font-weight:800;color:#1f7a6b;white-space:nowrap;font-size:.76rem;}
   .date-cell{font-weight:700;color:#46605b;white-space:nowrap;direction:ltr;font-size:.72rem;}
-  .days-cell{white-space:nowrap;}
+  .days-cell{white-space:nowrap;text-align:center;}
+
+  .days-info{display:inline-flex;flex-direction:column;align-items:center;gap:2px;}
   .pill{display:inline-block;padding:3px 6px;border-radius:999px;font-size:.68rem;font-weight:800;white-space:nowrap;line-height:1.5;}
   .pill.ok{background:#e2f7ee;color:#0d7a55;}
   .pill.warn{background:#fff4e0;color:#a86a00;}
   .pill.danger{background:#fdeceb;color:#c0392b;}
+  .days-months{font-size:.58rem;font-weight:700;color:#94a3b8;line-height:1.2;white-space:nowrap;}
 
   /* ===== قسم الملاحظات ===== */
   .notes-section{margin-top:18px;}
@@ -132,27 +123,12 @@
 
   .form-field{margin-bottom:13px;}
   .form-field label{display:block;font-weight:700;margin-bottom:6px;font-size:.95rem;color:#3c4f4b;}
-  .form-field input[type=text],.form-field input[type=number],.form-field textarea{
-    width:100%;padding:12px;font-size:1.05rem;font-family:inherit;
-    border:2px solid #cfe3de;border-radius:12px;background:#f8fcfb;color:#1e2f2c;
-    transition:border-color .15s, background .15s, box-shadow .15s;
-  }
+  .form-field input[type=text],.form-field input[type=number],.form-field textarea{width:100%;padding:12px;font-size:1.05rem;font-family:inherit;border:2px solid #cfe3de;border-radius:12px;background:#f8fcfb;color:#1e2f2c;transition:border-color .15s, background .15s, box-shadow .15s;}
   .form-field textarea{resize:vertical;min-height:100px;line-height:1.6;}
   .form-field input:focus,.form-field textarea:focus{outline:none;border-color:#37b39a;background:#fff;}
 
-  /* ===== تمييز الحقل الناقص ===== */
-  .form-field input.input-error,
-  .form-field textarea.input-error{
-    border-color:#ef4444 !important;
-    background:#fff5f5 !important;
-    box-shadow:0 0 0 3px rgba(239,68,68,.18);
-    animation:shake .35s;
-  }
-  @keyframes shake{
-    0%,100%{transform:translateX(0);}
-    25%{transform:translateX(-4px);}
-    75%{transform:translateX(4px);}
-  }
+  .form-field input.input-error,.form-field textarea.input-error{border-color:#ef4444 !important;background:#fff5f5 !important;box-shadow:0 0 0 3px rgba(239,68,68,.18);animation:shake .35s;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-4px);}75%{transform:translateX(4px);}}
 
   .cycle-toggle{display:flex;gap:8px;}
   .cycle-toggle button{flex:1;padding:11px 8px;font-size:1rem;font-weight:800;font-family:inherit;border:2px solid #cfe3de;background:#f8fcfb;color:#5a6f6b;border-radius:11px;cursor:pointer;transition:.15s;}
@@ -169,14 +145,12 @@
   .preview-days.ok{background:#e2f7ee;color:#0d7a55;}
   .preview-days.warn{background:#fff4e0;color:#a86a00;}
   .preview-days.danger{background:#fdeceb;color:#c0392b;}
+  .preview-months{display:block;font-size:.72rem;color:#8fa39e;font-weight:700;margin-top:3px;}
 
   .modal-actions{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
   .btn-primary{width:100%;padding:12px;font-size:1rem;font-weight:800;font-family:inherit;background:#1f7a6b;color:#fff;border:none;border-radius:13px;cursor:pointer;box-shadow:0 3px 9px rgba(31,122,107,.3);}
-  .btn-primary:active{transform:scale(.985);}
   .btn-ghost{width:100%;padding:10px;font-size:.95rem;font-weight:700;font-family:inherit;background:#f0f2f1;color:#5a6f6b;border:none;border-radius:12px;cursor:pointer;}
-  .btn-ghost:active{transform:scale(.985);}
   .btn-danger{width:100%;padding:12px;font-size:1rem;font-weight:800;font-family:inherit;background:#c0392b;color:#fff;border:none;border-radius:13px;cursor:pointer;box-shadow:0 3px 9px rgba(192,57,43,.3);}
-  .btn-danger:active{transform:scale(.985);}
 
   /* ===== منتقي التاريخ ===== */
   .picker-card{background:#fff;border-radius:22px;padding:16px 14px;max-width:390px;width:100%;box-shadow:0 24px 70px rgba(0,0,0,.4);transform:scale(.9);transition:transform .25s;max-height:94vh;overflow-y:auto;}
@@ -188,20 +162,17 @@
 
   .year-nav{display:flex;align-items:center;justify-content:space-between;background:#eef4f2;border-radius:12px;padding:5px;margin-bottom:10px;}
   .year-nav button{width:38px;height:38px;border-radius:9px;border:none;background:#fff;font-size:1rem;font-weight:800;color:#1f7a6b;cursor:pointer;font-family:inherit;box-shadow:0 1px 3px rgba(0,0,0,.08);}
-  .year-nav button:active{transform:scale(.94);}
   .year-nav .year-display{font-size:1.15rem;font-weight:800;color:#17302b;letter-spacing:.5px;direction:ltr;}
 
   .section-mini-label{font-size:.76rem;font-weight:800;color:#5a6f6b;margin:3px 0 6px;}
   .month-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-bottom:10px;}
   .month-grid button{padding:9px 2px;font-size:.92rem;font-weight:800;font-family:inherit;background:#f8fcfb;border:2px solid #cfe3de;border-radius:10px;color:#37514c;cursor:pointer;transition:.15s;}
-  .month-grid button:active{transform:scale(.95);}
   .month-grid button.active{background:#1f7a6b;color:#fff;border-color:#1f7a6b;box-shadow:0 2px 7px rgba(31,122,107,.28);}
 
   .weekday-header{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px;}
   .weekday-header span{text-align:center;font-size:.72rem;font-weight:800;color:#7d918c;padding:4px 0;}
   .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:10px;}
   .day-grid button,.day-empty{aspect-ratio:1/1;padding:2px;font-size:.9rem;font-weight:700;font-family:inherit;background:#f8fcfb;border:2px solid #cfe3de;border-radius:9px;color:#37514c;cursor:pointer;transition:.15s;display:flex;align-items:center;justify-content:center;}
-  .day-grid button:active{transform:scale(.93);}
   .day-empty{background:transparent;border-color:transparent;cursor:default;pointer-events:none;}
   .day-grid button.today{border-color:#e05a4f;color:#e05a4f;font-weight:900;background:#fff5f4;}
   .day-grid button.selected{background:#1f7a6b;color:#fff;border-color:#1f7a6b;box-shadow:0 2px 7px rgba(31,122,107,.28);}
@@ -212,6 +183,7 @@
   .picker-info-days.danger{color:#c0392b;}
   .picker-info-days.warn{color:#a86a00;}
   .picker-info-days.ok{color:#0d7a55;}
+  .picker-info-months{display:block;font-size:.72rem;font-weight:700;color:#8fa39e;margin-top:3px;}
 
   /* ===== أيقونات التأكيد ===== */
   .confirm-icon,.delete-icon{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.9rem;margin:0 auto 12px;}
@@ -229,6 +201,7 @@
   .confirm-next-days{display:inline-block;margin-top:7px;padding:4px 11px;border-radius:999px;font-size:.85rem;font-weight:800;background:#e2f7ee;color:#0d7a55;}
   .confirm-next-days.warn{background:#fff4e0;color:#a86a00;}
   .confirm-next-days.danger{background:#fdeceb;color:#c0392b;}
+  .confirm-next-months{display:block;font-size:.72rem;color:#8fa39e;font-weight:700;margin-top:4px;}
 
   .delete-text{text-align:center;font-size:1rem;color:#37514c;margin:0 0 10px;font-weight:700;line-height:1.65;}
   .delete-text strong{color:#c0392b;font-size:1.08rem;}
@@ -243,10 +216,10 @@
   .child-info .detail-label{color:#5a6f6b;font-weight:700;flex-shrink:0;}
   .child-info .detail-value{color:#17302b;font-weight:800;text-align:left;direction:ltr;}
   .child-info .detail-value.hijri{color:#0d7a55;direction:rtl;}
+  .child-info .detail-value .sub-months{display:block;font-size:.76rem;color:#8fa39e;font-weight:700;margin-top:2px;direction:rtl;text-align:right;}
 
   .child-modal-actions{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:7px;margin-bottom:14px;}
   .child-modal-actions button{padding:11px 4px;border:none;border-radius:11px;font-family:inherit;font-size:.88rem;font-weight:800;cursor:pointer;}
-  .child-modal-actions button:active{transform:scale(.97);}
   .child-modal-actions .btn-pay{background:#1f7a6b;color:#fff;box-shadow:0 2px 7px rgba(31,122,107,.28);}
   .child-modal-actions .btn-edit{background:#eef4f2;color:#37514c;}
   .child-modal-actions .btn-del{background:#fdeceb;color:#c0392b;}
@@ -261,7 +234,6 @@
   .hist-age.advance{color:#a86a00;}
   .hist-amount{font-size:.92rem;font-weight:800;color:#1f7a6b;white-space:nowrap;}
   .hist-del{width:28px;height:28px;border-radius:50%;border:none;background:#fdeceb;color:#c0392b;font-size:.95rem;font-weight:800;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:inherit;line-height:1;padding:0;}
-  .hist-del:active{transform:scale(.92);}
   .hist-empty{text-align:center;color:#a0b3af;padding:12px;font-size:.86rem;font-weight:600;}
 
   /* ===== نافذة السجل ===== */
@@ -282,23 +254,19 @@
   .deleted-note-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px;}
   .deleted-note-time{font-size:.72rem;color:#8fa39e;font-weight:600;direction:ltr;}
   .restore-btn{padding:5px 10px;border-radius:9px;background:#1f7a6b;color:#fff;border:none;font-family:inherit;font-size:.74rem;font-weight:800;cursor:pointer;white-space:nowrap;}
-  .restore-btn:active{transform:scale(.95);}
 
   /* ===== نافذة حجم الخط ===== */
   .font-modal{max-width:340px;}
   .font-preview{background:#f8fcfb;border:1px solid #d6ebe5;border-radius:12px;padding:16px;text-align:center;font-size:1rem;color:#37514c;font-weight:700;margin-bottom:16px;min-height:64px;display:flex;align-items:center;justify-content:center;line-height:1.5;}
   .font-controls{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
   .font-step{flex:0 0 58px;height:58px;border-radius:14px;border:2px solid #cfe3de;background:#f8fcfb;color:#1f7a6b;font-size:1.7rem;font-weight:800;font-family:inherit;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;padding:0;}
-  .font-step:active{transform:scale(.95);background:#e2f7ee;}
   .font-step:disabled{opacity:.3;cursor:not-allowed;transform:none;}
   .font-level{flex:1;text-align:center;font-weight:800;color:#17302b;font-size:1.05rem;}
 
   /* ===== نافذة التحديث ===== */
   .refresh-modal{max-width:380px;}
   .refresh-option{display:flex;align-items:center;gap:12px;width:100%;padding:14px;margin-bottom:10px;background:#f8fcfb;border:2px solid #cfe3de;border-radius:14px;text-align:right;font-family:inherit;cursor:pointer;transition:.15s;}
-  .refresh-option:active{transform:scale(.98);background:#eef8f4;border-color:#37b39a;}
   .refresh-option.primary{background:linear-gradient(135deg,#1f7a6b,#37b39a);border-color:#1f7a6b;color:#fff;box-shadow:0 4px 12px rgba(31,122,107,.28);}
-  .refresh-option.primary:active{background:linear-gradient(135deg,#1a6a5d,#2fa088);}
   .refresh-option .icon{flex:0 0 44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:rgba(31,122,107,.1);}
   .refresh-option.primary .icon{background:rgba(255,255,255,.22);}
   .refresh-option .info{flex:1;min-width:0;}
@@ -317,17 +285,14 @@
 
 <header>
   <div class="header-left-tools">
-    <button class="header-tool-btn" id="fontSizeBtn" title="حجم الخط">Aa</button>
     <button class="header-tool-btn" onclick="location.href='building.html'" title="الذهاب إلى العمارة">🏢 العمارة</button>
+    <button class="header-tool-btn" id="logBtn" title="السجل">📋 السجل</button>
   </div>
 
   <div class="header-right-tools">
-    <button class="header-tool-btn" id="refreshBtn" title="تحديث">🔄</button>
-    <button class="log-btn" id="logBtn" title="السجل">📋</button>
-    <div class="sync-status" id="syncStatus">
-      <span class="dot"></span>
-      <span id="syncText">جارٍ الاتصال…</span>
-    </div>
+    <button class="header-mini-btn" id="refreshBtn" title="تحديث">🔄</button>
+    <button class="header-mini-btn" id="fontSizeBtn" title="حجم الخط">Aa</button>
+    <div class="sync-dot gray" id="syncDot" title="حالة المزامنة"></div>
   </div>
 
   <h1>👼 بيبي كير</h1>
@@ -350,7 +315,6 @@
 
   <div id="tableContainer"></div>
 
-  <!-- ===== قسم الملاحظات ===== -->
   <section class="notes-section">
     <div class="notes-header">
       <h3 class="notes-title">📝 الملاحظات</h3>
@@ -360,25 +324,19 @@
   </section>
 </main>
 
-<!-- ===== نافذة الإضافة / التعديل ===== -->
+<!-- نافذة الإضافة / التعديل -->
 <div class="modal-overlay" id="formModal">
   <div class="modal-card">
     <h3 class="modal-title" id="formTitle">إضافة طفل جديد</h3>
     <form id="childForm" autocomplete="off" novalidate>
-
       <div class="form-field">
         <label for="nameInput">اسم الطفل</label>
-        <input type="text" id="nameInput" placeholder="مثال: محمد أحمد"
-               autocomplete="off" autocorrect="off" autocapitalize="off"
-               spellcheck="false">
+        <input type="text" id="nameInput" placeholder="مثال: محمد أحمد" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
       </div>
-
       <div class="form-field">
         <label for="amountInput">المبلغ</label>
-        <input type="text" id="amountInput" placeholder="مثال: 500"
-               inputmode="decimal" autocomplete="off">
+        <input type="text" id="amountInput" placeholder="مثال: 500" inputmode="decimal" autocomplete="off">
       </div>
-
       <div class="form-field">
         <label>طريقة الدفع</label>
         <div class="cycle-toggle" id="cycleToggle">
@@ -386,7 +344,6 @@
           <button type="button" data-cycle="weekly">أسبوعي</button>
         </div>
       </div>
-
       <div class="form-field">
         <label>تاريخ استحقاق الدفعة القادمة</label>
         <button type="button" class="date-button" id="dateButton">
@@ -395,7 +352,6 @@
         </button>
         <div class="date-preview" id="datePreview"></div>
       </div>
-
       <div class="modal-actions">
         <button type="submit" class="btn-primary" id="submitBtn">➕ إضافة الطفل</button>
         <button type="button" class="btn-ghost" id="formCancel">إلغاء</button>
@@ -404,7 +360,7 @@
   </div>
 </div>
 
-<!-- ===== نافذة تفاصيل الطفل ===== -->
+<!-- نافذة تفاصيل الطفل -->
 <div class="modal-overlay" id="childModal">
   <div class="modal-card">
     <h3 class="child-modal-name" id="childModalName">—</h3>
@@ -422,7 +378,7 @@
   </div>
 </div>
 
-<!-- ===== منتقي التاريخ ===== -->
+<!-- منتقي التاريخ -->
 <div class="modal-overlay" id="pickerModal">
   <div class="picker-card">
     <h3 class="picker-title">اختر التاريخ</h3>
@@ -431,9 +387,9 @@
       <div class="picker-selected-label">يوم / شهر / سنة</div>
     </div>
     <div class="year-nav">
-      <button type="button" id="yearPrev" aria-label="السنة السابقة">◀</button>
+      <button type="button" id="yearPrev">◀</button>
       <span class="year-display" id="yearDisplay">2026</span>
-      <button type="button" id="yearNext" aria-label="السنة التالية">▶</button>
+      <button type="button" id="yearNext">▶</button>
     </div>
     <div class="section-mini-label">الشهر</div>
     <div class="month-grid" id="monthGrid"></div>
@@ -443,7 +399,9 @@
       <span>خميس</span><span>جمعة</span><span>سبت</span>
     </div>
     <div class="day-grid" id="dayGrid"></div>
-    <div class="picker-info"><div class="picker-info-days" id="pickerInfoDays">—</div></div>
+    <div class="picker-info">
+      <div class="picker-info-days" id="pickerInfoDays">—</div>
+    </div>
     <div class="modal-actions">
       <button type="button" class="btn-primary" id="pickerConfirm">✔ تأكيد التاريخ</button>
       <button type="button" class="btn-ghost" id="pickerCancel">إلغاء</button>
@@ -451,7 +409,7 @@
   </div>
 </div>
 
-<!-- ===== نافذة تأكيد الدفعة ===== -->
+<!-- تأكيد الدفعة -->
 <div class="modal-overlay" id="confirmModal">
   <div class="modal-card">
     <div class="confirm-icon">✅</div>
@@ -465,6 +423,7 @@
       <div class="confirm-next-label">الدفعة القادمة ستكون في</div>
       <div class="confirm-next-date" id="confirmNextDate"></div>
       <div class="confirm-next-days" id="confirmNextDays"></div>
+      <div class="confirm-next-months" id="confirmNextMonths"></div>
     </div>
     <div class="modal-actions">
       <button type="button" class="btn-primary" id="confirmYes">✅ نعم، استلمت المبلغ</button>
@@ -473,7 +432,7 @@
   </div>
 </div>
 
-<!-- ===== نافذة تأكيد الحذف ===== -->
+<!-- تأكيد الحذف -->
 <div class="modal-overlay" id="deleteModal">
   <div class="modal-card">
     <div class="delete-icon">🗑️</div>
@@ -490,8 +449,7 @@
   </div>
 </div>
 
-
-<!-- ===== نافذة تأكيد حذف الملاحظة ===== -->
+<!-- تأكيد حذف الملاحظة -->
 <div class="modal-overlay" id="noteDeleteModal">
   <div class="modal-card">
     <div class="delete-icon">🗑️</div>
@@ -508,7 +466,7 @@
   </div>
 </div>
 
-<!-- ===== نافذة إضافة / تعديل ملاحظة ===== -->
+<!-- إضافة / تعديل ملاحظة -->
 <div class="modal-overlay" id="noteModal">
   <div class="modal-card">
     <h3 class="modal-title" id="noteModalTitle">إضافة ملاحظة</h3>
@@ -523,36 +481,33 @@
   </div>
 </div>
 
-<!-- ===== نافذة السجل ===== -->
+<!-- السجل -->
 <div class="modal-overlay" id="logModal">
   <div class="modal-card log-card">
     <h3 class="modal-title">📋 السجل</h3>
-
     <div class="log-section-title">آخر العمليات</div>
     <ul class="log-list" id="logList"></ul>
-
     <div class="log-section-title">آخر الملاحظات المحذوفة</div>
     <ul class="deleted-list" id="deletedList"></ul>
-
     <button type="button" class="btn-ghost" id="logCloseBtn">إغلاق</button>
   </div>
 </div>
 
-<!-- ===== نافذة حجم الخط ===== -->
+<!-- حجم الخط -->
 <div class="modal-overlay" id="fontModal">
   <div class="modal-card font-modal">
     <h3 class="modal-title">حجم الخط</h3>
     <div class="font-preview" id="fontPreview">نموذج للنص</div>
     <div class="font-controls">
-      <button type="button" class="font-step" id="fontMinus" aria-label="تصغير">−</button>
+      <button type="button" class="font-step" id="fontMinus">−</button>
       <div class="font-level" id="fontLevel">متوسط</div>
-      <button type="button" class="font-step" id="fontPlus" aria-label="تكبير">+</button>
+      <button type="button" class="font-step" id="fontPlus">+</button>
     </div>
     <button type="button" class="btn-ghost" id="fontClose">إغلاق</button>
   </div>
 </div>
 
-<!-- ===== نافذة التحديث ===== -->
+<!-- التحديث -->
 <div class="modal-overlay" id="refreshModal">
   <div class="modal-card refresh-modal">
     <h3 class="modal-title">التحديث</h3>
@@ -560,14 +515,14 @@
       <div class="icon">🔄</div>
       <div class="info">
         <div class="title">تحديث البيانات فقط</div>
-        <div class="desc">يعيد جلب البيانات من السحابة بدون إعادة تحميل الصفحة. استخدميه إذا كان جهاز آخر قد أضاف تعديلات.</div>
+        <div class="desc">يعيد جلب البيانات من السحابة بدون إعادة تحميل الصفحة.</div>
       </div>
     </button>
     <button type="button" class="refresh-option primary" id="refreshPageBtn">
       <div class="icon">♻️</div>
       <div class="info">
         <div class="title">إعادة تحميل الصفحة بالكامل</div>
-        <div class="desc">يمسح الكاش ويعيد تحميل آخر نسخة من الكود. استخدميه بعد رفع تعديلات جديدة على GitHub.</div>
+        <div class="desc">يمسح الكاش ويعيد تحميل آخر نسخة من الكود.</div>
       </div>
     </button>
     <button type="button" class="btn-ghost" id="refreshCancel">إلغاء</button>
@@ -576,7 +531,7 @@
 
 <div class="toast" id="toast"></div>
 
-<!-- Firebase SDK (compat) -->
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database-compat.js"></script>
 
@@ -584,22 +539,16 @@
 (function(){
   'use strict';
 
-  /* ═══════════════════════════════════════════════════════════════
-     🔥🔥🔥  هنا المكان الوحيد الذي تحتاجين تعديله  🔥🔥🔥
-     ═══════════════════════════════════════════════════════════════ */
   const firebaseConfig = {
-  apiKey: "AIzaSyAfJAirfIorI6HvT8zUEmWYQYzH1et1i4c",
-  authDomain: "babycare-132a9.firebaseapp.com",
-  projectId: "babycare-132a9",
-  storageBucket: "babycare-132a9.firebasestorage.app",
-  messagingSenderId: "665179210280",
-  appId: "1:665179210280:web:c834e420d7ec43d9796b1d",
-  measurementId: "G-HWRVRWPNDP",
+    apiKey: "AIzaSyAfJAirfIorI6HvT8zUEmWYQYzH1et1i4c",
+    authDomain: "babycare-132a9.firebaseapp.com",
+    projectId: "babycare-132a9",
+    storageBucket: "babycare-132a9.firebasestorage.app",
+    messagingSenderId: "665179210280",
+    appId: "1:665179210280:web:c834e420d7ec43d9796b1d",
+    measurementId: "G-HWRVRWPNDP",
     databaseURL: "https://babycare-132a9-default-rtdb.firebaseio.com/"
   };
-  /* ═══════════════════════════════════════════════════════════════
-     ⬆️⬆️⬆️  لا تعدلي أي شيء بعد هذا السطر  ⬆️⬆️⬆️
-     ═══════════════════════════════════════════════════════════════ */
 
   const CURRENCY    = 'ر.س';
   const STORAGE_KEY = 'nursery_children_v2';
@@ -608,7 +557,6 @@
   const MAX_LOG     = 10;
   const MAX_DELETED_NOTES = 10;
 
-  /* ========= حجم الخط ========= */
   const FONT_SIZES  = [15, 16, 17, 18, 19, 20, 22];
   const FONT_LABELS = ['صغير جداً','صغير','متوسط','كبير','كبير جداً','أكبر','الأكبر'];
   const FONT_DEFAULT_INDEX = 2;
@@ -626,7 +574,6 @@
     } catch(e){}
   }
 
-  /* ========= أدوات التاريخ ========= */
   const AR_DAYS_SHORT = ['أحد','اثنين','ثلاثاء','أربعاء','خميس','جمعة','سبت'];
   function todayMidnight(){ const d = new Date(); d.setHours(0,0,0,0); return d; }
   function toISO(d){
@@ -645,6 +592,15 @@
     if(n >= 3 && n <= 10) return n + ' أيام';
     return n + ' يوم';
   }
+  /* ✅ دالة تفصيل الشهور للأيام فوق 30 */
+  function monthsBreakdown(days){
+    if(days <= 30) return '';
+    const months = Math.floor(days / 30);
+    const rem = days % 30;
+    let str = months + ' شهر';
+    if(rem > 0) str += ' ' + rem + ' يوم';
+    return str;
+  }
   function addPeriod(date, cycle){
     const d = new Date(date);
     if(cycle === 'weekly'){ d.setDate(d.getDate() + 7); return d; }
@@ -662,7 +618,6 @@
   }
   function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
 
-  /* ========= تحويل الأرقام العربية إلى إنجليزية ========= */
   const ARABIC_DIGITS_MAP = {
     '٠':'0','١':'1','٢':'2','٣':'3','٤':'4','٥':'5','٦':'6','٧':'7','٨':'8','٩':'9',
     '۰':'0','۱':'1','۲':'2','۳':'3','۴':'4','۵':'5','۶':'6','۷':'7','۸':'8','۹':'9'
@@ -673,7 +628,6 @@
     });
   }
 
-  /* ========= الحالة ========= */
   let children = [];
   let notes = [];
   let activityLog = [];
@@ -687,7 +641,7 @@
   let currentChildModalId = null;
   let pickerYear, pickerMonth, pickerDay;
 
-  /* ========= Firebase / RTDB ========= */
+  /* Firebase */
   let rtdb = null;
   let rtdbRef = null;
   let firebaseReady = false;
@@ -701,23 +655,20 @@
       rtdb = firebase.database();
       rtdbRef = rtdb.ref(RTDB_PATH);
       firebaseReady = true;
-    } else {
-      console.warn('⚠️ لم يتم إعداد firebaseConfig (أو databaseURL) بعد.');
     }
   } catch(e){
     console.error('Firebase init error:', e);
     firebaseReady = false;
   }
 
-  /* ========= عناصر الصفحة ========= */
+  /* عناصر الصفحة */
   const tableContainer = document.getElementById('tableContainer');
   const addBtn         = document.getElementById('addBtn');
   const toastEl        = document.getElementById('toast');
   const statChildren   = document.getElementById('statChildren');
   const statTotal      = document.getElementById('statTotal');
   const headerDate     = document.getElementById('headerDate');
-  const syncStatusEl   = document.getElementById('syncStatus');
-  const syncTextEl     = document.getElementById('syncText');
+  const syncDotEl      = document.getElementById('syncDot');
 
   const notesListEl = document.getElementById('notesList');
   const addNoteBtn  = document.getElementById('addNoteBtn');
@@ -780,6 +731,7 @@
   const confirmAmount   = document.getElementById('confirmAmount');
   const confirmNextDate = document.getElementById('confirmNextDate');
   const confirmNextDays = document.getElementById('confirmNextDays');
+  const confirmNextMonths = document.getElementById('confirmNextMonths');
   const confirmYes      = document.getElementById('confirmYes');
   const confirmNo       = document.getElementById('confirmNo');
 
@@ -802,21 +754,17 @@
   const noteSaveBtn   = document.getElementById('noteSaveBtn');
   const noteCancelBtn = document.getElementById('noteCancelBtn');
 
-  /* ========= حالة المزامنة ========= */
-  function setSyncState(state, text){
-    syncStatusEl.classList.remove('saving','error','offline');
-    if(state) syncStatusEl.classList.add(state);
-    syncTextEl.textContent = text;
+  /* حالة المزامنة */
+  function setSyncState(state){
+    syncDotEl.classList.remove('gray','green','orange','red');
+    if(state === 'saving')       syncDotEl.classList.add('orange');
+    else if(state === 'error')   syncDotEl.classList.add('red');
+    else if(state === 'offline') syncDotEl.classList.add('gray');
+    else                          syncDotEl.classList.add('green');
   }
 
-  /* ========= التخزين المحلي ========= */
   function buildStateObject(){
-    return {
-      children: children,
-      notes: notes,
-      activityLog: activityLog,
-      deletedNotes: deletedNotes
-    };
+    return { children: children, notes: notes, activityLog: activityLog, deletedNotes: deletedNotes };
   }
   function saveLocal(){
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(buildStateObject())); } catch(e){}
@@ -832,29 +780,27 @@
     } catch(e){ children = []; notes = []; activityLog = []; deletedNotes = []; }
   }
 
-  /* ========= الحفظ ========= */
   async function save(){
     saveLocal();
-    if(!firebaseReady || !rtdbRef){ setSyncState('offline', 'محلي فقط'); return; }
-    setSyncState('saving', 'جارٍ الحفظ…');
+    if(!firebaseReady || !rtdbRef){ setSyncState('offline'); return; }
+    setSyncState('saving');
     const payload = JSON.stringify(buildStateObject());
     lastSavedJSON = payload;
     try {
       await rtdbRef.set(Object.assign(buildStateObject(), { updatedAt: Date.now() }));
-      setSyncState('', 'متزامن');
+      setSyncState('synced');
     } catch(e){
       console.error('RTDB save error:', e);
-      setSyncState('error', 'تعذّر الحفظ');
+      setSyncState('error');
       toast('⚠️ تعذّر الحفظ في السحابة');
     }
   }
 
-  /* ========= التحميل ========= */
   async function load(){
     loadLocal();
     render();
-    if(!firebaseReady || !rtdbRef){ setSyncState('offline', 'غير متصل'); return; }
-    setSyncState('saving', 'جارٍ التحميل…');
+    if(!firebaseReady || !rtdbRef){ setSyncState('offline'); return; }
+    setSyncState('saving');
     try {
       const snap = await rtdbRef.once('value');
       if(snap.exists()){
@@ -866,20 +812,19 @@
         lastSavedJSON = JSON.stringify(buildStateObject());
         saveLocal();
         render();
-        setSyncState('', 'متزامن');
+        setSyncState('synced');
       } else if(children.length > 0 || notes.length > 0){
         await save();
       } else {
-        setSyncState('', 'متزامن');
+        setSyncState('synced');
       }
       listenRealtime();
     } catch(e){
       console.error('RTDB load error:', e);
-      setSyncState('error', 'تعذّر الاتصال');
+      setSyncState('error');
     }
   }
 
-  /* ========= الاستماع للتغييرات ========= */
   function listenRealtime(){
     if(!firebaseReady || !rtdbRef) return;
     rtdbRef.on('value', function(snap){
@@ -900,21 +845,20 @@
       lastSavedJSON = incomingJSON;
       saveLocal();
       render();
-      setSyncState('', 'متزامن');
+      setSyncState('synced');
       toast('☁️ تم تحديث البيانات من جهاز آخر');
     }, function(err){
       console.error('RTDB listen error:', err);
-      setSyncState('error', 'انقطع الاتصال');
+      setSyncState('error');
     });
   }
 
-  /* ========= سجل العمليات ========= */
+  /* سجل */
   function addLog(type, data){
     const entry = Object.assign({ id: uid(), type: type, timestamp: Date.now() }, data || {});
     activityLog.unshift(entry);
     if(activityLog.length > MAX_LOG) activityLog = activityLog.slice(0, MAX_LOG);
   }
-
   function logIcon(type){
     switch(type){
       case 'child-add': return '➕';
@@ -927,47 +871,37 @@
       default: return '•';
     }
   }
-
   function logText(entry){
     switch(entry.type){
-      case 'child-add':
-        return 'تمت إضافة الطفل ' + (entry.name || '—');
+      case 'child-add': return 'تمت إضافة الطفل ' + (entry.name || '—');
       case 'child-edit': {
         const fields = (entry.changes && entry.changes.length) ? ' (' + entry.changes.join('، ') + ')' : '';
         return 'تم تعديل بيانات ' + (entry.name || '—') + fields;
       }
-      case 'child-delete':
-        return 'تم حذف الطفل ' + (entry.name || '—');
-      case 'payment':
-        return 'تم استلام دفعة لـ ' + (entry.name || '—') + ' — ' + formatMoney(entry.amount || 0);
-      case 'note-add':
-        return 'تمت إضافة ملاحظة: ' + truncate(entry.text || '', 50);
-      case 'note-delete':
-        return 'تم حذف ملاحظة: ' + truncate(entry.text || '', 50);
-      case 'note-restore':
-        return 'تم استرجاع ملاحظة: ' + truncate(entry.text || '', 50);
-      default:
-        return '—';
+      case 'child-delete': return 'تم حذف الطفل ' + (entry.name || '—');
+      case 'payment': return 'تم استلام دفعة لـ ' + (entry.name || '—') + ' — ' + formatMoney(entry.amount || 0);
+      case 'note-add': return 'تمت إضافة ملاحظة: ' + truncate(entry.text || '', 50);
+      case 'note-delete': return 'تم حذف ملاحظة: ' + truncate(entry.text || '', 50);
+      case 'note-restore': return 'تم استرجاع ملاحظة: ' + truncate(entry.text || '', 50);
+      default: return '—';
     }
   }
-
   function truncate(text, max){
     if(!text) return '';
     return text.length > max ? text.slice(0, max) + '…' : text;
   }
+  function formatLogTime(ts){
+    const d = new Date(ts);
+    let hours = d.getHours();
+    const minutes = String(d.getMinutes()).padStart(2,'0');
+    const period = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    if(hours === 0) hours = 12;
+    const time = hours + ':' + minutes + ' ' + period;
+    return formatShort(d) + ' - ' + time;
+  }
 
-function formatLogTime(ts){
-  const d = new Date(ts);
-  let hours = d.getHours();
-  const minutes = String(d.getMinutes()).padStart(2,'0');
-  const period = hours >= 12 ? 'PM' : 'AM';
-  hours = hours % 12;
-  if(hours === 0) hours = 12;
-  const time = hours + ':' + minutes + ' ' + period;
-  return formatShort(d) + ' - ' + time;
-}
-
-  /* ========= حالة الدفعة ========= */
+  /* حالة الدفعة */
   function getStatus(child){
     const due   = fromISO(child.dueDate);
     const today = todayMidnight();
@@ -1019,7 +953,6 @@ function formatLogTime(ts){
     toastTimer = setTimeout(function(){ toastEl.classList.remove('show'); }, 2400);
   }
 
-  /* ========= رسم الواجهة ========= */
   function render(){
     renderHeader();
     renderStats();
@@ -1051,6 +984,13 @@ function formatLogTime(ts){
 
   function childRowHTML(c){
     const s = getStatus(c);
+    let daysHtml = '';
+    const absDays = Math.abs(s.days);
+    const mb = monthsBreakdown(absDays);
+    daysHtml = '<div class="days-info">' +
+      '<span class="pill ' + s.level + '">' + daysPillText(s.days) + '</span>' +
+      (mb ? '<span class="days-months">' + mb + '</span>' : '') +
+    '</div>';
     return '' +
       '<tr class="child-row" data-id="' + c.id + '">' +
         '<td class="name-cell">' +
@@ -1059,7 +999,7 @@ function formatLogTime(ts){
         '</td>' +
         '<td class="amount-cell">' + formatMoney(c.amount) + '</td>' +
         '<td class="date-cell">' + formatShort(s.due) + '</td>' +
-        '<td class="days-cell"><span class="pill ' + s.level + '">' + daysPillText(s.days) + '</span></td>' +
+        '<td class="days-cell">' + daysHtml + '</td>' +
       '</tr>';
   }
 
@@ -1082,7 +1022,6 @@ function formatLogTime(ts){
     notesListEl.innerHTML = html;
   }
 
-  /* ========= أحداث الجدول ========= */
   tableContainer.addEventListener('click', function(e){
     const row = e.target.closest('tr.child-row');
     if(!row) return;
@@ -1090,7 +1029,6 @@ function formatLogTime(ts){
     if(id) openChildModal(id);
   });
 
-  /* ========= نافذة تفاصيل الطفل ========= */
   function openChildModal(id){
     const c = children.find(function(x){ return x.id === id; });
     if(!c) return;
@@ -1098,6 +1036,11 @@ function formatLogTime(ts){
 
     const s = getStatus(c);
     const cycleTxt = c.cycle === 'weekly' ? 'أسبوعي' : 'شهري';
+
+    let daysValueHtml = daysPillText(s.days);
+    const absDays = Math.abs(s.days);
+    const mb = monthsBreakdown(absDays);
+    if(mb) daysValueHtml += '<span class="sub-months">' + mb + '</span>';
 
     childModalName.textContent = c.name;
     childInfoBox.innerHTML =
@@ -1108,7 +1051,7 @@ function formatLogTime(ts){
       '<div class="detail-row"><span class="detail-label">📅 تاريخ الاستحقاق</span>' +
         '<span class="detail-value">' + formatShort(s.due) + '</span></div>' +
       '<div class="detail-row"><span class="detail-label">⏳ المتبقي</span>' +
-        '<span class="detail-value">' + daysPillText(s.days) + '</span></div>';
+        '<span class="detail-value">' + daysValueHtml + '</span></div>';
 
     const hist = Array.isArray(c.history) ? c.history : [];
     if(hist.length === 0){
@@ -1167,19 +1110,17 @@ function formatLogTime(ts){
     openDeleteModal(id);
   });
 
-  /* حذف دفعة من داخل نافذة الطفل */
   childHistList.addEventListener('click', function(e){
     const btn = e.target.closest('[data-hist-del]');
     if(!btn) return;
     const childId = btn.dataset.histDel;
     const idx = parseInt(btn.dataset.histIdx, 10);
     if(deleteHistory(childId, idx)){
-      // إعادة فتح النافذة بعد الحذف
       openChildModal(childId);
     }
   });
 
-  /* ========= الملاحظات ========= */
+  /* الملاحظات */
   function openNoteModal(){
     noteModalTitle.textContent = 'إضافة ملاحظة';
     noteText.value = '';
@@ -1187,9 +1128,7 @@ function formatLogTime(ts){
     noteModal.classList.add('show');
     setTimeout(function(){ noteText.focus(); }, 250);
   }
-  function closeNoteModal(){
-    noteModal.classList.remove('show');
-  }
+  function closeNoteModal(){ noteModal.classList.remove('show'); }
   addNoteBtn.addEventListener('click', openNoteModal);
   noteCancelBtn.addEventListener('click', closeNoteModal);
   noteModal.addEventListener('click', function(e){
@@ -1245,12 +1184,10 @@ function formatLogTime(ts){
       pendingNoteDeleteId = null;
       return;
     }
-
     notes = notes.filter(function(n){ return n.id !== id; });
     const deleted = Object.assign({}, note, { deletedAt: Date.now() });
     deletedNotes.unshift(deleted);
     if(deletedNotes.length > MAX_DELETED_NOTES) deletedNotes = deletedNotes.slice(0, MAX_DELETED_NOTES);
-
     addLog('note-delete', { text: note.text });
     save();
     renderNotes();
@@ -1271,9 +1208,8 @@ function formatLogTime(ts){
     toast('♻️ تم استرجاع الملاحظة');
   }
 
-  /* ========= نافذة السجل ========= */
+  /* السجل */
   function renderLog(){
-    // سجل العمليات
     if(activityLog.length === 0){
       logListEl.innerHTML = '<div class="log-empty">لا توجد عمليات بعد</div>';
     } else {
@@ -1290,8 +1226,6 @@ function formatLogTime(ts){
       }
       logListEl.innerHTML = html;
     }
-
-    // الملاحظات المحذوفة
     if(deletedNotes.length === 0){
       deletedListEl.innerHTML = '<div class="log-empty">لا توجد ملاحظات محذوفة</div>';
     } else {
@@ -1322,12 +1256,11 @@ function formatLogTime(ts){
     restoreNote(btn.dataset.restore);
   });
 
-  /* ========= نافذة الإضافة / التعديل ========= */
+  /* نموذج الإضافة / التعديل */
   function openFormModal(id){
     editingId = id || null;
     nameInput.classList.remove('input-error');
     amountInput.classList.remove('input-error');
-
     if(id){
       const c = children.find(function(x){ return x.id === id; });
       if(!c) return;
@@ -1366,7 +1299,6 @@ function formatLogTime(ts){
     setCycle(b.dataset.cycle);
   });
 
-  /* ========= تحويل الأرقام العربية في حقل المبلغ ========= */
   amountInput.addEventListener('input', function(){
     const v = amountInput.value;
     const converted = normalizeDigits(v);
@@ -1388,12 +1320,14 @@ function formatLogTime(ts){
     else if(days === 1){ daysMsg = '⏰ مستحقة غداً'; daysClass = 'warn'; }
     else if(days <= 7){ daysMsg = '⏰ باقي ' + daysWord(days) + ' على الدفعة القادمة'; daysClass = 'warn'; }
     else { daysMsg = '✅ باقي ' + daysWord(days) + ' على الدفعة القادمة'; daysClass = 'ok'; }
+
+    const mb = monthsBreakdown(Math.abs(days));
     datePreview.innerHTML =
       '<div class="preview-row">📅 ' + formatShortWithDay(d) + '</div>' +
-      '<div class="preview-days ' + daysClass + '">' + daysMsg + '</div>';
+      '<div class="preview-days ' + daysClass + '">' + daysMsg + (mb ? '<span class="preview-months">' + mb + '</span>' : '') + '</div>';
   }
 
-  /* ========= منتقي التاريخ ========= */
+  /* منتقي التاريخ */
   function openPicker(){
     const base = selectedDueDate ? fromISO(selectedDueDate) : todayMidnight();
     pickerYear  = base.getFullYear();
@@ -1436,7 +1370,9 @@ function formatLogTime(ts){
     else if(days === 1){ daysMsg = '⏰ غداً (باقي يوم واحد)'; daysClass = 'warn'; }
     else if(days <= 7){ daysMsg = '⏰ باقي ' + daysWord(days); daysClass = 'warn'; }
     else { daysMsg = '✅ باقي ' + daysWord(days); daysClass = 'ok'; }
-    pickerInfoDays.textContent = daysMsg;
+
+    const mb = monthsBreakdown(Math.abs(days));
+    pickerInfoDays.innerHTML = daysMsg + (mb ? '<span class="picker-info-months">' + mb + '</span>' : '');
     pickerInfoDays.className = 'picker-info-days ' + daysClass;
   }
 
@@ -1477,22 +1413,17 @@ function formatLogTime(ts){
     closePicker();
   });
 
-  /* ========= إرسال النموذج مع التحقق ========= */
+  /* إرسال النموذج */
   childForm.addEventListener('submit', function(e){
     e.preventDefault();
-
-    // إزالة التمييز السابق
     nameInput.classList.remove('input-error');
     amountInput.classList.remove('input-error');
-
-    // تحويل الأرقام العربية في المبلغ
     amountInput.value = normalizeDigits(amountInput.value);
 
     const name = nameInput.value.trim();
     const amountRaw = amountInput.value.trim();
     const amount = Number(amountRaw);
 
-    // ===== التحقق =====
     let firstInvalid = null;
     if(!name){
       nameInput.classList.add('input-error');
@@ -1509,7 +1440,6 @@ function formatLogTime(ts){
     }
     if(!selectedDueDate){ toast('الرجاء اختيار التاريخ'); return; }
 
-    // ===== الحفظ =====
     if(editingId){
       const c = children.find(function(x){ return x.id === editingId; });
       if(c){
@@ -1518,34 +1448,27 @@ function formatLogTime(ts){
         if(Number(c.amount) !== amount) changes.push('المبلغ');
         if(c.cycle !== selectedCycle) changes.push('طريقة الدفع');
         if(c.dueDate !== selectedDueDate) changes.push('تاريخ الاستحقاق');
-
         c.name = name;
         c.amount = amount;
         c.cycle = selectedCycle;
         c.dueDate = selectedDueDate;
-
         addLog('child-edit', { name: name, changes: changes });
       }
       toast('✅ تم حفظ التعديل');
     } else {
       children.push({
-        id: uid(),
-        name: name,
-        amount: amount,
-        cycle: selectedCycle,
-        dueDate: selectedDueDate,
-        history: []
+        id: uid(), name: name, amount: amount,
+        cycle: selectedCycle, dueDate: selectedDueDate, history: []
       });
       addLog('child-add', { name: name });
       toast('✅ تمت إضافة ' + name);
     }
-
     save();
     closeFormModal();
     render();
   });
 
-  /* ========= تأكيد الحذف ========= */
+  /* تأكيد الحذف */
   function openDeleteModal(id){
     const c = children.find(function(x){ return x.id === id; });
     if(!c) return;
@@ -1570,7 +1493,7 @@ function formatLogTime(ts){
     toast('🗑️ تم الحذف');
   });
 
-  /* ========= تأكيد الدفعة ========= */
+  /* تأكيد الدفعة */
   function openConfirmModal(id){
     const c = children.find(function(x){ return x.id === id; });
     if(!c) return;
@@ -1586,6 +1509,10 @@ function formatLogTime(ts){
     else { daysMsg = 'باقي ' + daysWord(days); daysClass = 'ok'; }
     confirmNextDays.textContent = daysMsg;
     confirmNextDays.className = 'confirm-next-days ' + daysClass;
+
+    const mb = monthsBreakdown(days);
+    confirmNextMonths.textContent = mb || '';
+
     confirmModal.classList.add('show');
   }
   function closeConfirmModal(){ confirmModal.classList.remove('show'); pendingPayChildId = null; }
@@ -1611,7 +1538,6 @@ function formatLogTime(ts){
     toast('✅ تم تسجيل دفعة ' + c.name);
   }
 
-  /* ========= حذف دفعة ========= */
   function deleteHistory(id, idx){
     const c = children.find(function(x){ return x.id === id; });
     if(!c || !Array.isArray(c.history)) return false;
@@ -1627,7 +1553,7 @@ function formatLogTime(ts){
     return true;
   }
 
-  /* ========= حجم الخط ========= */
+  /* حجم الخط */
   function openFontModal(){ updateFontUI(); fontModal.classList.add('show'); }
   function closeFontModal(){ fontModal.classList.remove('show'); }
   function updateFontUI(){
@@ -1646,11 +1572,11 @@ function formatLogTime(ts){
     if(fontLevel < FONT_SIZES.length - 1){ fontLevel++; applyFontLevel(); saveFontLevel(); updateFontUI(); }
   });
 
-  /* ========= التحديث ========= */
+  /* التحديث */
   async function refreshData(){
     closeRefresh();
     if(!firebaseReady || !rtdbRef){ toast('⚠️ Firebase غير متصل'); return; }
-    setSyncState('saving', 'جارٍ التحديث…');
+    setSyncState('saving');
     toast('🔄 جارٍ تحديث البيانات…');
     try {
       const snap = await rtdbRef.once('value');
@@ -1663,15 +1589,15 @@ function formatLogTime(ts){
         lastSavedJSON = JSON.stringify(buildStateObject());
         saveLocal();
         render();
-        setSyncState('', 'متزامن');
+        setSyncState('synced');
         toast('✅ تم تحديث البيانات');
       } else {
-        setSyncState('', 'متزامن');
+        setSyncState('synced');
         toast('ℹ️ لا توجد بيانات في السحابة بعد');
       }
     } catch(e){
       console.error('Refresh error:', e);
-      setSyncState('error', 'تعذّر التحديث');
+      setSyncState('error');
       toast('⚠️ تعذّر تحديث البيانات');
     }
   }
@@ -1684,13 +1610,13 @@ function formatLogTime(ts){
         const names = await caches.keys();
         await Promise.all(names.map(function(n){ return caches.delete(n); }));
       }
-    } catch(e){ console.warn('Cache clear failed:', e); }
+    } catch(e){}
     try {
       if('serviceWorker' in navigator){
         const regs = await navigator.serviceWorker.getRegistrations();
         await Promise.all(regs.map(function(r){ return r.update(); }));
       }
-    } catch(e){ console.warn('SW update failed:', e); }
+    } catch(e){}
     try {
       const url = new URL(location.href);
       url.searchParams.set('_t', Date.now().toString());
@@ -1706,7 +1632,7 @@ function formatLogTime(ts){
   refreshDataBtn.addEventListener('click', refreshData);
   refreshPageBtn.addEventListener('click', fullReload);
 
-  /* ========= بدء التشغيل ========= */
+  /* بدء التشغيل */
   loadFontLevel();
   applyFontLevel();
   load();
