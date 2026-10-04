@@ -244,7 +244,7 @@
   .log-item:last-child{border-bottom:none;}
   .log-icon{font-size:1.1rem;line-height:1.3;flex-shrink:0;}
   .log-body{flex:1;min-width:0;}
-  .log-text{font-size:.88rem;font-weight:700;color:#37514c;line-height:1.5;word-break:break-word;}
+  .log-text{font-size:.88rem;font-weight:700;color:#37514c;line-height:1.5;word-break:break-word;white-space:pre-wrap;}
   .log-time{font-size:.72rem;color:#8fa39e;margin-top:3px;font-weight:600;direction:ltr;text-align:right;}
   .log-empty{text-align:center;color:#a0b3af;padding:16px;font-size:.86rem;font-weight:600;background:#f8fcfb;border-radius:12px;margin-bottom:14px;}
 
@@ -592,6 +592,8 @@
     if(n >= 3 && n <= 10) return n + ' أيام';
     return n + ' يوم';
   }
+   function fmtNum(n){ return Number(n).toLocaleString('en-US'); }
+  function cycleLabel(cycle){ return cycle === 'weekly' ? 'أسبوعي' : 'شهري'; }
   /* ✅ دالة تفصيل الشهور للأيام فوق 30 */
   function monthsBreakdown(days){
     if(days <= 30) return '';
@@ -874,9 +876,11 @@
   function logText(entry){
     switch(entry.type){
       case 'child-add': return 'تمت إضافة الطفل ' + (entry.name || '—');
-      case 'child-edit': {
-        const fields = (entry.changes && entry.changes.length) ? ' (' + entry.changes.join('، ') + ')' : '';
-        return 'تم تعديل بيانات ' + (entry.name || '—') + fields;
+            case 'child-edit': {
+        let str = 'تم تعديل بيانات ' + (entry.name || '—');
+        const changes = Array.isArray(entry.changes) ? entry.changes.filter(Boolean) : [];
+        if(changes.length) str += '\n• ' + changes.join('\n• ');
+        return str;
       }
       case 'child-delete': return 'تم حذف الطفل ' + (entry.name || '—');
       case 'payment': return 'تم استلام دفعة لـ ' + (entry.name || '—') + ' — ' + formatMoney(entry.amount || 0);
@@ -1440,19 +1444,38 @@
     }
     if(!selectedDueDate){ toast('الرجاء اختيار التاريخ'); return; }
 
-    if(editingId){
+        if(editingId){
       const c = children.find(function(x){ return x.id === editingId; });
       if(c){
+        const oldName   = c.name;
+        const oldAmount = Number(c.amount);
+        const oldCycle  = (c.cycle === 'weekly') ? 'weekly' : 'monthly';
+        const oldDue    = c.dueDate;
+
         const changes = [];
-        if(c.name !== name) changes.push('الاسم');
-        if(Number(c.amount) !== amount) changes.push('المبلغ');
-        if(c.cycle !== selectedCycle) changes.push('طريقة الدفع');
-        if(c.dueDate !== selectedDueDate) changes.push('تاريخ الاستحقاق');
-        c.name = name;
-        c.amount = amount;
-        c.cycle = selectedCycle;
-        c.dueDate = selectedDueDate;
-        addLog('child-edit', { name: name, changes: changes });
+
+        if(oldName !== name){
+          changes.push('الاسم: من «' + oldName + '» إلى «' + name + '»');
+        }
+        if(oldAmount !== amount){
+          changes.push('المبلغ: من ' + fmtNum(oldAmount) + ' إلى ' + fmtNum(amount));
+        }
+        if(oldCycle !== selectedCycle){
+          changes.push('طريقة الدفع: من ' + cycleLabel(oldCycle) + ' إلى ' + cycleLabel(selectedCycle));
+        }
+        if(oldDue !== selectedDueDate){
+          changes.push('تاريخ الاستحقاق: من ' + formatShort(fromISO(oldDue)) +
+                       ' إلى ' + formatShort(fromISO(selectedDueDate)));
+        }
+
+        c.name     = name;
+        c.amount   = amount;
+        c.cycle    = selectedCycle;
+        c.dueDate  = selectedDueDate;
+
+        if(changes.length){
+          addLog('child-edit', { name: name, changes: changes });
+        }
       }
       toast('✅ تم حفظ التعديل');
     } else {
